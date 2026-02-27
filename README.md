@@ -70,5 +70,5 @@ Essa organização facilita manutenção e futura integração com back-end ou b
 
 ## Autor
 
-André S. Gideão  
+André S. Judião
 Desenvolvedor Web
