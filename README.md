@@ -52,7 +52,7 @@ Essa funcionalidade permite testar o sistema sem necessidade de cadastro ou base
 O sistema foi organizado separando:
 
 - Estrutura (HTML)
-- Estilização (CSS)
+- Estilização (CSS, Bootstrap 5)
 - Lógica e interatividade (JavaScript)
 
 Essa organização facilita manutenção e futura integração com back-end ou base de dados.
