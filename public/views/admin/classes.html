@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alunos - Administração | SGE MED Angola</title>
+  <title>Classes - Administração | SGE MED Angola</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../css/global.css">
@@ -86,6 +86,19 @@
             </a>
           </div>
           <div class="nav-item">
+            <a href="classes.html" class="nav-link" data-title="Classes">
+              <span class="nav-link-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 4h20v12H2z" />
+                  <path d="M2 4v-2h20v2" />
+                  <path d="M2 16h20" />
+                </svg>
+              </span>
+              <span class="nav-link-text">Classes</span>
+            </a>
+          </div>
+          <div class="nav-item">
             <a href="turmas.html" class="nav-link" data-title="Turmas">
               <span class="nav-link-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -115,17 +128,7 @@
             </a>
           </div>
 
-          <div class="nav-item">
-            <a href="curso.html" class="nav-link" data-title="Cursos">
-              <span class="nav-link-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 2l9 4.9v9.8L12 22 3 16.7V6.9L12 2z" />
-                </svg>
-              </span>
-              <span class="nav-link-text">Cursos</span>
-            </a>
-          </div>
+          
           <div class="nav-item">
             <a href="alunos.html" class="nav-link" data-title="Alunos">
               <span class="nav-link-icon">
@@ -199,15 +202,13 @@
     <main class="main-content">
       <header class="main-header">
         <div class="header-left"><button class="mobile-toggle">☰</button>
-          <h1 class="header-title">Alunos</h1>
+          <h1 class="header-title">Classes</h1>
         </div>
         <div class="header-right">
           <div class="header-user">
-            <div class="header-user-avatar">SC</div>
-            <div class="header-user-info">
-              <span class="header-user-name">Secretário</span>
-              <span class="header-user-role">Secretária</span>
-            </div>
+            <div class="header-user-avatar">AD</div>
+            <div class="header-user-info"><span class="header-user-name">Administrador</span><span
+                class="header-user-role">Administração</span></div>
           </div>
         </div>
       </header>
@@ -215,37 +216,37 @@
       <div class="page-content">
         <div class="page-header d-flex justify-content-between align-items-center">
           <div>
-            <h2 class="page-title">Gestão de Alunos</h2>
-            <p class="page-subtitle">Lista de alunos inscritos</p>
+            <h2 class="page-title">Gestão de Classes</h2>
+            <p class="page-subtitle">Classes do Ensino Básico (1ª até 9ª)</p>
           </div>
+          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#classModal">Nova Classe</button>
         </div>
 
         <!-- Filters -->
         <div class="card mb-3">
           <div class="card-body">
             <div class="row g-3 align-items-end">
-              <div class="col-md-5">
+              <div class="col-md-6">
                 <label class="form-label">Pesquisar</label>
-                <input id="filterAlunoSearch" type="text" class="form-control" placeholder="Nome ou nº processo">
+                <input id="filterClassSearch" type="text" class="form-control" placeholder="Número ou nome da classe">
               </div>
-              <div class="col-md-3">
-                <label class="form-label">Curso</label>
-                <select id="filterAlunoCurso" class="form-control form-select">
-                  <option value="">Todos</option>
-                  <option>Informática</option>
-                  <option>Física</option>
+              <div class="col-md-4">
+                <label class="form-label">Série</label>
+                <select id="filterClassSerie" class="form-control form-select">
+                  <option value="">Todas</option>
+                  <option>1ª</option>
+                  <option>2ª</option>
+                  <option>3ª</option>
+                  <option>4ª</option>
+                  <option>5ª</option>
+                  <option>6ª</option>
+                  <option>7ª</option>
+                  <option>8ª</option>
+                  <option>9ª</option>
                 </select>
               </div>
               <div class="col-md-2">
-                <label class="form-label">Ano</label>
-                <select id="filterAlunoAno" class="form-control form-select">
-                  <option value="">Todos</option>
-                  <option>10ª</option>
-                  <option>11ª</option>
-                </select>
-              </div>
-              <div class="col-md-2">
-                <button id="btnFilterAluno" class="btn btn-outline-primary w-100">Filtrar</button>
+                <button id="btnFilterClass" class="btn btn-outline-primary w-100">Filtrar</button>
               </div>
             </div>
           </div>
@@ -257,41 +258,39 @@
               <table class="table table-hover align-middle">
                 <thead>
                   <tr>
-                    <th>Nome</th>
-                    <th>Nº Processo</th>
-                    <th>Curso</th>
-                    <th>Ano</th>
-                    <th>Contacto</th>
+                    <th>Série</th>
+                    <th>Nome da Classe</th>
+                    <th>Disciplinas</th>
+                    <th>Turmas</th>
+                    <th>Descrição</th>
                     <th>Ações</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>Ana Pereira</td>
-                    <td>2026-001</td>
-                    <td>Informática</td>
-                    <td>10ª</td>
-                    <td>+244 922 000 004</td>
+                    <td><span class="badge bg-info">1ª</span></td>
+                    <td>1ª Classe</td>
+                    <td>6 disciplinas</td>
+                    <td>3 turmas</td>
+                    <td>Classe do primeiro ano do Ensino Básico...</td>
                     <td>
-                      <a href="aluno-detalhes.html" class="btn btn-sm btn-outline-info me-1">Ver</a>
+                      <a href="classe-detalhes.html" class="btn btn-sm btn-outline-info me-1">Ver</a>
                       <button class="btn btn-sm btn-outline-secondary me-1 btn-edit" data-bs-toggle="modal"
-                        data-bs-target="#alunoModal" data-nome="Ana Pereira" data-processo="2026-001"
-                        data-curso="Informática" data-ano="10ª" data-contacto="+244 922 000 004">Editar</button>
-                      <button class="btn btn-outline-danger" id="btnEliminar">Eliminar</button>
+                        data-bs-target="#classModal" data-numero="1" data-nome="1ª Classe">Editar</button>
+                      <button class="btn btn-sm btn-outline-danger">Eliminar</button>
                     </td>
                   </tr>
                   <tr>
-                    <td>Pedro Santos</td>
-                    <td>2026-002</td>
-                    <td>Física</td>
-                    <td>11ª</td>
-                    <td>+244 922 000 005</td>
+                    <td><span class="badge bg-info">4ª</span></td>
+                    <td>4ª Classe</td>
+                    <td>8 disciplinas</td>
+                    <td>4 turmas</td>
+                    <td>Classe do quarto ano do Ensino Básico...</td>
                     <td>
-                      <a href="aluno-detalhes.html" class="btn btn-sm btn-outline-info me-1">Ver</a>
+                      <a href="classe-detalhes.html" class="btn btn-sm btn-outline-info me-1">Ver</a>
                       <button class="btn btn-sm btn-outline-secondary me-1 btn-edit" data-bs-toggle="modal"
-                        data-bs-target="#alunoModal" data-nome="Pedro Santos" data-processo="2026-002"
-                        data-curso="Física" data-ano="11ª" data-contacto="+244 922 000 005">Editar</button>
-                      <button class="btn btn-outline-danger" id="btnEliminar">Eliminar</button>
+                        data-bs-target="#classModal" data-numero="4" data-nome="4ª Classe">Editar</button>
+                      <button class="btn btn-sm btn-outline-danger">Eliminar</button>
                     </td>
                   </tr>
                 </tbody>
@@ -300,62 +299,81 @@
           </div>
         </div>
 
-        <!-- Modal: Adicionar / Editar Aluno -->
-        <div class="modal fade" id="alunoModal" tabindex="-1">
+        <!-- Modal: Adicionar / Editar Classe -->
+        <div class="modal fade" id="classModal" tabindex="-1">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="alunoModalTitle">Novo Aluno</h5>
+                <h5 class="modal-title" id="classModalTitle">Nova Classe</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
               </div>
-              <form id="formAluno">
+              <form id="formClass">
                 <div class="modal-body">
-                  <input type="hidden" id="alunoId" value="">
+                  <input type="hidden" id="classId" value="">
                   <div class="mb-3">
-                    <label class="form-label">Nome Completo</label>
-                    <input id="alunoNome" class="form-control">
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Nº Processo</label>
-                    <input id="alunoProcesso" class="form-control">
-                  </div>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="mb-3">
-                        <label class="form-label">Classe</label>
-                        <select id="alunoClasse" class="form-select form-control">
-                          <option value="">Selecione uma classe</option>
-                          <option value="EIA-10AD">EIA-10AD</option>
-                          <option value="INFGEST-11AD">INFGEST-11AD</option>
-                          <option value="12ª Classe">12ª Classe</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="mb-3">
-                        <label class="form-label">Curso</label>
-                        <select id="alunoCurso" class="form-select form-control">
-                          <option value="">Selecione um curso</option>
-                          <option value="Informática">Informática</option>
-                          <option value="Administração">Administração</option>
-                          <option value="Eletrónica">Eletrónica</option>
-                          <option value="Contabilidade">Contabilidade</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Turma</label>
-                    <select id="alunoTurma" class="form-select form-control">
-                      <option value="">Selecione uma turma</option>
-                      <option value="INFGEST-10AD">INFGEST-10AD</option>
-                      <option value="Turma B">Turma B</option>
-                      <option value="Turma C">Turma C</option>
+                    <label class="form-label">Série da Classe</label>
+                    <select id="classNumero" class="form-select form-control">
+                      <option value="">Selecione a série</option>
+                      <option value="1">1ª Classe</option>
+                      <option value="2">2ª Classe</option>
+                      <option value="3">3ª Classe</option>
+                      <option value="4">4ª Classe</option>
+                      <option value="5">5ª Classe</option>
+                      <option value="6">6ª Classe</option>
+                      <option value="7">7ª Classe</option>
+                      <option value="8">8ª Classe</option>
+                      <option value="9">9ª Classe</option>
                     </select>
                   </div>
                   <div class="mb-3">
-                    <label class="form-label">Telefone/Contacto</label>
-                    <input id="alunoContacto" class="form-control" type="tel">
+                    <label class="form-label">Nome da Classe</label>
+                    <input id="classNome" class="form-control" placeholder="Ex: 1ª Classe A">
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Descrição</label>
+                    <textarea id="classDesc" class="form-control" rows="3" placeholder="Descrição da classe..."></textarea>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <label class="form-label">Disciplinas da Classe</label>
+                    <div class="row g-2">
+                      <div class="col-md-6">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="disc_port" value="Português" name="disciplinas">
+                          <label class="form-check-label" for="disc_port">Português</label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="disc_mat" value="Matemática" name="disciplinas">
+                          <label class="form-check-label" for="disc_mat">Matemática</label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="disc_cien" value="Ciências" name="disciplinas">
+                          <label class="form-check-label" for="disc_cien">Ciências</label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="disc_hist" value="História" name="disciplinas">
+                          <label class="form-check-label" for="disc_hist">História</label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="disc_geo" value="Geografia" name="disciplinas">
+                          <label class="form-check-label" for="disc_geo">Geografia</label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="disc_fi" value="Educação Física" name="disciplinas">
+                          <label class="form-check-label" for="disc_fi">Educação Física</label>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="modal-footer">
@@ -366,28 +384,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Modal: Confirmação de Eliminação -->
-        <div class="modal fade" id="confirmarEliminacaoModal" tabindex="-1">
-          <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-              <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title">Confirmar Eliminação</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-              </div>
-              <div class="modal-body">
-                <p class="mb-0">Tem a certeza que deseja eliminar o aluno <strong>Ana Pereira Silva</strong>?</p>
-                <p class="text-muted small mt-2">Esta ação é irreversível e todos os dados do aluno serão removidos do
-                  sistema.</p>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-danger" id="btnConfirmarEliminacao">Sim, Eliminar</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
       </div>
       <footer class="main-footer">
         <p class="mb-0">Sistema de Escola Conectada &copy; 2026 - Ministério da Educação de Angola</p>
@@ -402,67 +398,30 @@
       document.addEventListener('click', function (e) {
         const btn = e.target.closest('.btn-edit');
         if (!btn) return;
+        const numero = btn.getAttribute('data-numero') || '';
         const nome = btn.getAttribute('data-nome') || '';
-        const processo = btn.getAttribute('data-processo') || '';
-        const curso = btn.getAttribute('data-curso') || '';
-        const ano = btn.getAttribute('data-ano') || '';
-        const contacto = btn.getAttribute('data-contacto') || '';
 
-        document.getElementById('alunoModalTitle').textContent = 'Editar Aluno';
-        document.getElementById('alunoNome').value = nome;
-        document.getElementById('alunoProcesso').value = processo;
-        document.getElementById('alunoCurso').value = curso;
-        document.getElementById('alunoAno').value = ano;
-        document.getElementById('alunoContacto').value = contacto;
+        document.getElementById('classModalTitle').textContent = 'Editar Classe';
+        document.getElementById('classNumero').value = numero;
+        document.getElementById('classNome').value = nome;
       });
 
-      const alunoModalEl = document.getElementById('alunoModal');
-      alunoModalEl.addEventListener('hidden.bs.modal', function () {
-        document.getElementById('alunoModalTitle').textContent = 'Novo Aluno';
-        document.getElementById('formAluno').reset();
+      const classModalEl = document.getElementById('classModal');
+      classModalEl.addEventListener('hidden.bs.modal', function () {
+        document.getElementById('classModalTitle').textContent = 'Nova Classe';
+        document.getElementById('formClass').reset();
       });
 
-      // Botão Eliminar Aluno
-      const btnEliminar = document.getElementById('btnEliminar');
-      btnEliminar.addEventListener('click', function (e) {
+      document.getElementById('formClass').addEventListener('submit', function (e) {
         e.preventDefault();
-        // Abrir modal de confirmação
-        const confirmarEliminacaoModal = new bootstrap.Modal(document.getElementById('confirmarEliminacaoModal'));
-        confirmarEliminacaoModal.show();
+        const data = {
+          numero: document.getElementById('classNumero').value,
+          nome: document.getElementById('classNome').value,
+          descricao: document.getElementById('classDesc').value
+        };
+        console.log('Classe form submit (stub):', data);
+        bootstrap.Modal.getInstance(classModalEl).hide();
       });
-
-
-      // Confirmar Eliminação
-      const btnConfirmarEliminacao = document.getElementById('btnConfirmarEliminacao');
-      btnConfirmarEliminacao.addEventListener('click', function () {
-        const nomeAluno = 'Ana Pereira Silva';
-
-        // Simular eliminação
-        if (typeof Utils !== 'undefined' && Utils.mostrarNotificacao) {
-          Utils.mostrarNotificacao('Aluno ' + nomeAluno + ' eliminado com sucesso!', 'success');
-        }
-
-        // Fechar modal
-        bootstrap.Modal.getInstance(document.getElementById('confirmarEliminacaoModal')).hide();
-
-        // Redirecionar após 1 segundo
-        setTimeout(function () {
-          window.location.href = 'alunos.html';
-        }, 1000);
-      });
-
-    document.getElementById('formAluno').addEventListener('submit', function (e) {
-      e.preventDefault();
-      const data = {
-        nome: document.getElementById('alunoNome').value,
-        processo: document.getElementById('alunoProcesso').value,
-        curso: document.getElementById('alunoCurso').value,
-        ano: document.getElementById('alunoAno').value,
-        contacto: document.getElementById('alunoContacto').value
-      };
-      console.log('Aluno form submit (stub):', data);
-      bootstrap.Modal.getInstance(alunoModalEl).hide();
-    });
     });
   </script>
 </body>

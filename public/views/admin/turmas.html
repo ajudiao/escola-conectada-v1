@@ -86,6 +86,19 @@
             </a>
           </div>
           <div class="nav-item">
+            <a href="classes.html" class="nav-link" data-title="Classes">
+              <span class="nav-link-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 4h20v12H2z" />
+                  <path d="M2 4v-2h20v2" />
+                  <path d="M2 16h20" />
+                </svg>
+              </span>
+              <span class="nav-link-text">Classes</span>
+            </a>
+          </div>
+          <div class="nav-item">
             <a href="turmas.html" class="nav-link" data-title="Turmas">
               <span class="nav-link-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -115,17 +128,7 @@
             </a>
           </div>
 
-          <div class="nav-item">
-            <a href="curso.html" class="nav-link" data-title="Cursos">
-              <span class="nav-link-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 2l9 4.9v9.8L12 22 3 16.7V6.9L12 2z" />
-                </svg>
-              </span>
-              <span class="nav-link-text">Cursos</span>
-            </a>
-          </div>
+          
           <div class="nav-item">
             <a href="alunos.html" class="nav-link" data-title="Alunos">
               <span class="nav-link-icon">
@@ -264,8 +267,8 @@
                 <thead>
                   <tr>
                     <th>Código</th>
-                    <th>Curso</th>
                     <th>Classe</th>
+                    <th>Turno</th>
                     <th>Sala</th>
                     <th>Ano Letivo</th>
                     <th>Diretor de Turma</th>
@@ -275,9 +278,9 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td>INFO-10AD</td>
-                    <td>Informática</td>
-                    <td>10ª</td>
+                    <td>4ª A</td>
+                    <td><span class="badge bg-info">4ª Classe</span></td>
+                    <td>Manhã</td>
                     <td>A101</td>
                     <td>2025/2026</td>
                     <td>Maria João</td>
@@ -285,15 +288,15 @@
                     <td>
                       <a href="turma-detalhes.html" class="btn btn-sm btn-outline-info me-1">Ver</a>
                       <button class="btn btn-sm btn-outline-secondary me-1 btn-edit" data-bs-toggle="modal"
-                        data-bs-target="#turmaModal" data-codigo="INFO-10AD" data-curso="Informática" data-ciclo="10ª"
+                        data-bs-target="#turmaModal" data-codigo="4ª A" data-classe="4" data-turno="Matutino"
                         data-sala="A101" data-ano="2025/2026" data-prof="Maria João" data-num="32">Editar</button>
                       <button class="btn btn-sm btn-outline-danger">Eliminar</button>
                     </td>
                   </tr>
                   <tr>
-                    <td>EIA-11AD</td>
-                    <td>Electrónica</td>
-                    <td>11ª</td>
+                    <td>7ª B</td>
+                    <td><span class="badge bg-info">7ª Classe</span></td>
+                    <td>Tarde</td>
                     <td>B202</td>
                     <td>2024/2025</td>
                     <td>Joaquim Silva</td>
@@ -301,7 +304,7 @@
                     <td>
                       <a href="turma-detalhes.html" class="btn btn-sm btn-outline-info me-1">Ver</a>
                       <button class="btn btn-sm btn-outline-secondary me-1 btn-edit" data-bs-toggle="modal"
-                        data-bs-target="#turmaModal" data-codigo="EIA-11AD" data-curso="Física" data-ciclo="11ª"
+                        data-bs-target="#turmaModal" data-codigo="7ª B" data-classe="7" data-turno="Vespertino"
                         data-sala="B202" data-ano="2024/2025" data-prof="Joaquim Silva" data-num="28">Editar</button>
                       <button class="btn btn-sm btn-outline-danger">Eliminar</button>
                     </td>
@@ -325,25 +328,21 @@
                   <input type="hidden" id="turmaId" value="">
                   <div class="mb-3">
                     <label class="form-label">Código</label>
-                    <input id="turmaCodigo" class="form-control">
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Curso</label>
-                    <select id="turmaCurso" class="form-select form-control">
-                      <option value="">Selecione um curso</option>
-                      <option value="Informática">Informática</option>
-                      <option value="Administração">Administração</option>
-                      <option value="Eletrónica">Eletrónica</option>
-                      <option value="Contabilidade">Contabilidade</option>
-                    </select>
+                    <input id="turmaCodigo" class="form-control" placeholder="Ex: 4ª A, 7ª B">
                   </div>
                   <div class="mb-3">
                     <label class="form-label">Classe</label>
                     <select id="turmaCiclo" class="form-select form-control">
                       <option value="">Selecione uma classe</option>
-                      <option value="EIA-10AD">EIA-10AD</option>
-                      <option value="INFGEST-11AD">INFGEST-11AD</option>
-                      <option value="12ª Classe">12ª Classe</option>
+                      <option value="1">1ª Classe</option>
+                      <option value="2">2ª Classe</option>
+                      <option value="3">3ª Classe</option>
+                      <option value="4">4ª Classe</option>
+                      <option value="5">5ª Classe</option>
+                      <option value="6">6ª Classe</option>
+                      <option value="7">7ª Classe</option>
+                      <option value="8">8ª Classe</option>
+                      <option value="9">9ª Classe</option>
                     </select>
                   </div>
                   <div class="mb-3">
