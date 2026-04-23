@@ -110,23 +110,7 @@
               <span class="nav-link-text">Turmas</span>
             </a>
           </div>
-          <div class="nav-item">
-            <a href="disciplinas.html" class="nav-link" data-title="Disciplinas">
-              <span class="nav-link-icon">
-
-                <!-- Ícone Livro / Disciplinas -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-
-                  <path d="M2 4h7a4 4 0 0 1 4 4v12a4 4 0 0 0-4-4H2z" />
-                  <path d="M22 4h-7a4 4 0 0 0-4 4v12a4 4 0 0 1 4-4h7z" />
-
-                </svg>
-
-              </span>
-              <span class="nav-link-text">Disciplinas</span>
-            </a>
-          </div>
+         
 
           
           <div class="nav-item">
@@ -231,7 +215,7 @@
                 <input id="filterClassSearch" type="text" class="form-control" placeholder="Número ou nome da classe">
               </div>
               <div class="col-md-4">
-                <label class="form-label">Série</label>
+                <label class="form-label">Classe</label>
                 <select id="filterClassSerie" class="form-control form-select">
                   <option value="">Todas</option>
                   <option>1ª</option>
@@ -258,8 +242,7 @@
               <table class="table table-hover align-middle">
                 <thead>
                   <tr>
-                    <th>Série</th>
-                    <th>Nome da Classe</th>
+                    <th>Classe</th>
                     <th>Disciplinas</th>
                     <th>Turmas</th>
                     <th>Descrição</th>
@@ -269,7 +252,6 @@
                 <tbody>
                   <tr>
                     <td><span class="badge bg-info">1ª</span></td>
-                    <td>1ª Classe</td>
                     <td>6 disciplinas</td>
                     <td>3 turmas</td>
                     <td>Classe do primeiro ano do Ensino Básico...</td>
@@ -282,7 +264,7 @@
                   </tr>
                   <tr>
                     <td><span class="badge bg-info">4ª</span></td>
-                    <td>4ª Classe</td>
+              
                     <td>8 disciplinas</td>
                     <td>4 turmas</td>
                     <td>Classe do quarto ano do Ensino Básico...</td>
@@ -311,9 +293,9 @@
                 <div class="modal-body">
                   <input type="hidden" id="classId" value="">
                   <div class="mb-3">
-                    <label class="form-label">Série da Classe</label>
+                    <label class="form-label">Classe</label>
                     <select id="classNumero" class="form-select form-control">
-                      <option value="">Selecione a série</option>
+                      <option value="">Selecione a classe</option>
                       <option value="1">1ª Classe</option>
                       <option value="2">2ª Classe</option>
                       <option value="3">3ª Classe</option>
@@ -324,10 +306,6 @@
                       <option value="8">8ª Classe</option>
                       <option value="9">9ª Classe</option>
                     </select>
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Nome da Classe</label>
-                    <input id="classNome" class="form-control" placeholder="Ex: 1ª Classe A">
                   </div>
                   <div class="mb-3">
                     <label class="form-label">Descrição</label>

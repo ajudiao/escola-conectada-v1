@@ -116,23 +116,6 @@
               <span class="nav-link-text">Turmas</span>
             </a>
           </div>
-          <div class="nav-item">
-            <a href="disciplinas.html" class="nav-link" data-title="Disciplinas">
-              <span class="nav-link-icon">
-
-                <!-- Ícone Livro / Disciplinas -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-
-                  <path d="M2 4h7a4 4 0 0 1 4 4v12a4 4 0 0 0-4-4H2z" />
-                  <path d="M22 4h-7a4 4 0 0 0-4 4v12a4 4 0 0 1 4-4h7z" />
-
-                </svg>
-
-              </span>
-              <span class="nav-link-text">Disciplinas</span>
-            </a>
-          </div>
 
           
           <div class="nav-item">
@@ -249,9 +232,9 @@
                 <label class="form-label">Turma</label>
                 <select id="filterProfTurma" class="form-control form-select">
                   <option value="">Todas</option>
-                  <option value="1">INFGEST-10AD1 — Manhã — A101</option>
-                  <option value="2">Turma B1 — Tarde — B202</option>
-                  <option value="3">Turma C1 — Noite — C303</option>
+                  <option value="1"><span>4A</span> — Manhã — A101</option>
+                  <option value="2"><span>4B</span> — Tarde — A102</option>
+                  <option value="3"><span>4C</span> — Noite — A103</option>
                 </select>
               </div>
               <div class="col-md-2">
@@ -284,7 +267,7 @@
                       <a href="professor-detalhes.html" class="btn btn-sm btn-outline-info me-1">Ver</a>
                       <button class="btn btn-sm btn-outline-secondary me-1 btn-edit" data-bs-toggle="modal"
                         data-bs-target="#profModal" data-nome="Maria João" data-email="maria.joao@escola.med.ao"
-                        data-telefone="+244 923 000 002" data-disciplinas="Matemática" data-turmas="1,3">Editar</button>
+                        data-telefone="+244 923 000 002" data-disciplinas="Matemática" data-turmas="1,3" data-senha="">Editar</button>
                       <button class="btn btn-sm btn-outline-danger">Eliminar</button>
                     </td>
                   </tr>
@@ -297,7 +280,7 @@
                       <a href="professor-detalhes.html" class="btn btn-sm btn-outline-info me-1">Ver</a>
                       <button class="btn btn-sm btn-outline-secondary me-1 btn-edit" data-bs-toggle="modal"
                         data-bs-target="#profModal" data-nome="Joaquim Silva" data-email="joaquim.silva@escola.med.ao"
-                        data-telefone="+244 923 000 003" data-disciplinas="Física" data-turmas="2">Editar</button>
+                        data-telefone="+244 923 000 003" data-disciplinas="Física" data-turmas="2" data-senha="">Editar</button>
                       <button class="btn btn-sm btn-outline-danger">Eliminar</button>
                     </td>
                   </tr>
@@ -331,79 +314,156 @@
                     <input type="tel" id="profTelefone" class="form-control">
                   </div>
                   <div class="mb-3">
-                    <label class="form-label">Disciplinas que Leciona</label>
-                    <div class="border rounded p-3" style="max-height: 200px; overflow-y: auto;">
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="disc_mat" value="Matemática"
-                          name="disciplinas">
-                        <label class="form-check-label" for="disc_mat">Matemática</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="disc_port" value="Português"
-                          name="disciplinas">
-                        <label class="form-check-label" for="disc_port">Português</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="disc_ing" value="Inglês" name="disciplinas">
-                        <label class="form-check-label" for="disc_ing">Inglês</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="disc_fis" value="Física" name="disciplinas">
-                        <label class="form-check-label" for="disc_fis">Física</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="disc_qui" value="Química"
-                          name="disciplinas">
-                        <label class="form-check-label" for="disc_qui">Química</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="disc_bio" value="Biologia"
-                          name="disciplinas">
-                        <label class="form-check-label" for="disc_bio">Biologia</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="disc_hist" value="História"
-                          name="disciplinas">
-                        <label class="form-check-label" for="disc_hist">História</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="disc_geo" value="Geografia"
-                          name="disciplinas">
-                        <label class="form-check-label" for="disc_geo">Geografia</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="disc_info" value="Informática"
-                          name="disciplinas">
-                        <label class="form-check-label" for="disc_info">Informática</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="disc_ed" value="Educação Física"
-                          name="disciplinas">
-                        <label class="form-check-label" for="disc_ed">Educação Física</label>
-                      </div>
-                    </div>
+                    <label class="form-label">Senha Inicial</label>
+                    <input type="password" id="profSenha" class="form-control" required placeholder="Digite uma senha inicial">
                   </div>
                   <div class="mb-3">
-                    <label class="form-label">Turmas</label>
-                    <div class="border rounded p-3" style="max-height: 200px; overflow-y: auto;">
+                    <label class="form-label">Turmas e Disciplinas</label>
+                    <div class="border rounded p-3" style="height: 220px; overflow-y: auto;">
                       <!-- Exemplos estáticos; idealmente carregar via API -->
-                      <div class="form-check">
-                        <input class="form-check-input turma-checkbox" type="checkbox" id="turma_1" value="1"
-                          name="turmas">
-                        <label class="form-check-label" for="turma_1">INFO-10AD <small class="text-muted">• Turno: Manhã —
-                            Clase: 10ª — Sala: A101 — Curso: Informática</small></label>
+                      <div class="row g-3 align-items-center mb-3">
+                        <div class="col-auto">
+                          <div class="form-check mb-0">
+                            <input class="form-check-input turma-checkbox" type="checkbox" id="turma_1" value="1"
+                              name="turmas">
+                            <label class="form-check-label" for="turma_1">AD</label>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="small text-muted">Turno: Manhã — Classe: 7ª — Sala: 01</div>
+                        </div>
+                        <div class="col-md-4">
+                          <select class="form-select turma-disciplina-select" data-turma-id="1" name="turma_disciplina_1"
+                            disabled>
+                            <option value="">Disciplina</option>
+                            <option>Matemática</option>
+                            <option>Português</option>
+                            <option>Inglês</option>
+                            <option>Física</option>
+                            <option>Química</option>
+                            <option>Biologia</option>
+                          </select>
+                        </div>
                       </div>
-                      <div class="form-check">
-                        <input class="form-check-input turma-checkbox" type="checkbox" id="turma_2" value="2"
-                          name="turmas">
-                        <label class="form-check-label" for="turma_2">EIA-11AD <small class="text-muted">• Turno: Tarde —
-                            Clase: 11ª — Sala: B202 — Curso: Electrónica</small></label>
+                      <div class="row g-3 align-items-center mb-3">
+                        <div class="col-auto">
+                          <div class="form-check mb-0">
+                            <input class="form-check-input turma-checkbox" type="checkbox" id="turma_2" value="2"
+                              name="turmas">
+                            <label class="form-check-label" for="turma_2">AB</label>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="small text-muted">Turno: Tarde — Classe: 3ª — Sala: 14</div>
+                        </div>
+                        <div class="col-md-4">
+                          <select class="form-select turma-disciplina-select" data-turma-id="2" name="turma_disciplina_2"
+                            disabled>
+                            <option value="">Disciplina</option>
+                            <option>Matemática</option>
+                            <option>Português</option>
+                            <option>Inglês</option>
+                            <option>Física</option>
+                            <option>Química</option>
+                            <option>Biologia</option>
+                          </select>
+                        </div>
                       </div>
-                      <div class="form-check">
-                        <input class="form-check-input turma-checkbox" type="checkbox" id="turma_3" value="3"
-                          name="turmas">
-                        <label class="form-check-label" for="turma_3">TUR-303 <small class="text-muted">• Turno: Noite —
-                            Clase: 12ª — Sala: C303 — Curso: Mecânica</small></label>
+                      <div class="row g-3 align-items-center mb-3">
+                        <div class="col-auto">
+                          <div class="form-check mb-0">
+                            <input class="form-check-input turma-checkbox" type="checkbox" id="turma_3" value="3"
+                              name="turmas">
+                            <label class="form-check-label" for="turma_3">BD</label>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="small text-muted">Turno: Noite — Classe: 12ª — Sala: 3</div>
+                        </div>
+                        <div class="col-md-4">
+                          <select class="form-select turma-disciplina-select" data-turma-id="3" name="turma_disciplina_3"
+                            disabled>
+                            <option value="">Disciplina</option>
+                            <option>Matemática</option>
+                            <option>Português</option>
+                            <option>Inglês</option>
+                            <option>Física</option>
+                            <option>Química</option>
+                            <option>Biologia</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="row g-3 align-items-center mb-3">
+                        <div class="col-auto">
+                          <div class="form-check mb-0">
+                            <input class="form-check-input turma-checkbox" type="checkbox" id="turma_4" value="4"
+                              name="turmas">
+                            <label class="form-check-label" for="turma_4">CD</label>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="small text-muted">Turno: Manhã — Classe: 6ª — Sala: 08</div>
+                        </div>
+                        <div class="col-md-4">
+                          <select class="form-select turma-disciplina-select" data-turma-id="4" name="turma_disciplina_4"
+                            disabled>
+                            <option value="">Disciplina</option>
+                            <option>Matemática</option>
+                            <option>Português</option>
+                            <option>Inglês</option>
+                            <option>Física</option>
+                            <option>Química</option>
+                            <option>Biologia</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="row g-3 align-items-center mb-3">
+                        <div class="col-auto">
+                          <div class="form-check mb-0">
+                            <input class="form-check-input turma-checkbox" type="checkbox" id="turma_5" value="5"
+                              name="turmas">
+                            <label class="form-check-label" for="turma_5">EF</label>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="small text-muted">Turno: Tarde — Classe: 9ª — Sala: 05</div>
+                        </div>
+                        <div class="col-md-4">
+                          <select class="form-select turma-disciplina-select" data-turma-id="5" name="turma_disciplina_5"
+                            disabled>
+                            <option value="">Disciplina</option>
+                            <option>Matemática</option>
+                            <option>Português</option>
+                            <option>Inglês</option>
+                            <option>Física</option>
+                            <option>Química</option>
+                            <option>Biologia</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="row g-3 align-items-center mb-0">
+                        <div class="col-auto">
+                          <div class="form-check mb-0">
+                            <input class="form-check-input turma-checkbox" type="checkbox" id="turma_6" value="6"
+                              name="turmas">
+                            <label class="form-check-label" for="turma_6">GH</label>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="small text-muted">Turno: Noite — Classe: 8ª — Sala: 12</div>
+                        </div>
+                        <div class="col-md-4">
+                          <select class="form-select turma-disciplina-select" data-turma-id="6" name="turma_disciplina_6"
+                            disabled>
+                            <option value="">Disciplina</option>
+                            <option>Matemática</option>
+                            <option>Português</option>
+                            <option>Inglês</option>
+                            <option>Física</option>
+                            <option>Química</option>
+                            <option>Biologia</option>
+                          </select>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -489,43 +549,78 @@
         const nome = btn.getAttribute('data-nome') || '';
         const email = btn.getAttribute('data-email') || '';
         const telefone = btn.getAttribute('data-telefone') || '';
-        const disciplinas = (btn.getAttribute('data-disciplinas') || '').split(',').map(s => s.trim()).filter(Boolean);
-        const turmas = (btn.getAttribute('data-turmas') || '').split(',').map(s => s.trim()).filter(Boolean);
+        const senha = btn.getAttribute('data-senha') || '';
+        const turmas = (btn.getAttribute('data-turmas') || '').split(',').map(item => item.trim()).filter(Boolean);
 
         document.getElementById('profModalTitle').textContent = 'Editar Professor';
         document.getElementById('profNome').value = nome;
         document.getElementById('profEmail').value = email;
         document.getElementById('profTelefone').value = telefone;
+        document.getElementById('profSenha').value = senha;
 
-        // set discipline checkboxes
-        document.querySelectorAll('input[name="disciplinas"]').forEach(cb => {
-          cb.checked = disciplinas.includes(cb.value);
+        const turmaMap = turmas.reduce((map, item) => {
+          const parts = item.split(':').map(s => s.trim());
+          const id = parts[0];
+          const disciplina = parts.length > 1 ? parts.slice(1).join(':') : null;
+          if (id) map[id] = disciplina;
+          return map;
+        }, {});
+
+        document.querySelectorAll('.turma-checkbox').forEach(cb => {
+          const turmaId = cb.value;
+          const selectedDisciplina = turmaMap[turmaId];
+          const select = document.querySelector(`.turma-disciplina-select[data-turma-id="${turmaId}"]`);
+          cb.checked = selectedDisciplina !== undefined;
+          if (select) {
+            select.disabled = !cb.checked;
+            select.value = selectedDisciplina || '';
+          }
         });
 
-        // set turma checkboxes
-        document.querySelectorAll('input[name="turmas"]').forEach(cb => {
-          cb.checked = turmas.includes(cb.value);
+        // enable selects for any selected turma and clear unselected ones
+        document.querySelectorAll('.turma-disciplina-select').forEach(select => {
+          const turmaId = select.dataset.turmaId;
+          select.disabled = !document.querySelector(`.turma-checkbox[value="${turmaId}"]`).checked;
         });
       });
 
-      // Reset modal when closed
       const profModalEl = document.getElementById('profModal');
       profModalEl.addEventListener('hidden.bs.modal', function () {
         document.getElementById('profModalTitle').textContent = 'Novo Professor';
         document.getElementById('formProfessor').reset();
+        document.querySelectorAll('.turma-disciplina-select').forEach(select => {
+          select.disabled = true;
+        });
+      });
+
+      document.querySelectorAll('.turma-checkbox').forEach(cb => {
+        cb.addEventListener('change', function () {
+          const turmaId = this.value;
+          const select = document.querySelector(`.turma-disciplina-select[data-turma-id="${turmaId}"]`);
+          if (select) {
+            select.disabled = !this.checked;
+            if (!this.checked) select.value = '';
+          }
+        });
       });
 
       // Prevent default submit (user will hook to backend later)
       document.getElementById('formProfessor').addEventListener('submit', function (e) {
         e.preventDefault();
-        const disciplinas = Array.from(document.querySelectorAll('input[name="disciplinas"]:checked')).map(i => i.value);
-        const turmas = Array.from(document.querySelectorAll('input[name="turmas"]:checked')).map(i => i.value);
+        const selectedTurmas = Array.from(document.querySelectorAll('.turma-checkbox:checked')).map(cb => {
+          const turmaId = cb.value;
+          const select = document.querySelector(`.turma-disciplina-select[data-turma-id="${turmaId}"]`);
+          return {
+            id: turmaId,
+            disciplina: select ? select.value : ''
+          };
+        });
         const data = {
           nome: document.getElementById('profNome').value,
           email: document.getElementById('profEmail').value,
           telefone: document.getElementById('profTelefone').value,
-          disciplinas: disciplinas,
-          turmas: turmas
+          senha: document.getElementById('profSenha').value,
+          turmas: selectedTurmas
         };
         console.log('Professor form submit (stub):', data);
         // close modal

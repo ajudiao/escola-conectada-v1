@@ -110,23 +110,7 @@
               <span class="nav-link-text">Turmas</span>
             </a>
           </div>
-          <div class="nav-item">
-            <a href="disciplinas.html" class="nav-link" data-title="Disciplinas">
-              <span class="nav-link-icon">
-
-                <!-- Ícone Livro / Disciplinas -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-
-                  <path d="M2 4h7a4 4 0 0 1 4 4v12a4 4 0 0 0-4-4H2z" />
-                  <path d="M22 4h-7a4 4 0 0 0-4 4v12a4 4 0 0 1 4-4h7z" />
-
-                </svg>
-
-              </span>
-              <span class="nav-link-text">Disciplinas</span>
-            </a>
-          </div>
+         
 
           
           <div class="nav-item">
@@ -230,24 +214,8 @@
                 <label class="form-label">Pesquisar</label>
                 <input id="filterEncSearch" type="text" class="form-control" placeholder="Nome, contacto ou email">
               </div>
-              <div class="col-md-3">
-                <label class="form-label">Tem filho na turma</label>
-                <select id="filterEncTurma" class="form-control form-select">
-                  <option value="">Todos</option>
-                  <option>INFGEST-11AD</option>
-                  <option>EIA-11AD</option>
-                </select>
-              </div>
-              <div class="col-md-2">
-                <label class="form-label">Min Filhos</label>
-                <select id="filterEncMinFilhos" class="form-control form-select">
-                  <option value="">Qualquer</option>
-                  <option value="1">1+</option>
-                  <option value="2">2+</option>
-                </select>
-              </div>
-              <div class="col-md-2">
-                <button id="btnFilterEnc" class="btn btn-outline-primary w-100">Filtrar</button>
+              <div class="col-md-7">
+                <button id="btnFilterEnc" class="btn btn-outline-primary">Filtrar</button>
               </div>
             </div>
           </div>
@@ -262,7 +230,6 @@
                     <th>Nome</th>
                     <th>Contacto</th>
                     <th>Email</th>
-                    <th>Educandos</th>
                     <th>Ações</th>
                   </tr>
                 </thead>
@@ -271,13 +238,13 @@
                     <td>Maria José Santos</td>
                     <td>+244 912 345 678</td>
                     <td>maria.santos@email.ao</td>
-                    <td>Ana Maria Santos, Pedro João Santos</td>
                     <td>
                       <a href="encarregado-detalhes.html" class="btn btn-sm btn-outline-info me-1">Ver</a>
                       <button class="btn btn-sm btn-outline-secondary me-1 btn-edit-enc" data-bs-toggle="modal"
-                        data-bs-target="#encModal" data-nome="Maria José Santos" data-contacto="+244 912 345 678"
-                        data-email="maria.santos@email.ao"
-                        data-filhos="Ana Maria Santos,Pedro João Santos">Editar</button>
+                        data-bs-target="#encModal" data-id="1" data-nome="Maria José Santos" data-nascimento="1978-05-15"
+                        data-identidade="00123456LA89" data-profissao="Professora" data-endereco="Rua da Paz, 45, Luanda"
+                        data-contacto="+244 912 345 678" data-contacto-alt="+244 913 456 789"
+                        data-email="maria.santos@email.ao" data-relacao="Mãe">Editar</button>
                       <button class="btn btn-sm btn-outline-danger">Eliminar</button>
                     </td>
                   </tr>
@@ -285,12 +252,13 @@
                     <td>António Silva</td>
                     <td>+244 923 111 222</td>
                     <td>antonio.silva@email.ao</td>
-                    <td>João Silva</td>
                     <td>
                       <a href="encarregado-detalhes.html" class="btn btn-sm btn-outline-info me-1">Ver</a>
                       <button class="btn btn-sm btn-outline-secondary me-1 btn-edit-enc" data-bs-toggle="modal"
-                        data-bs-target="#encModal" data-nome="António Silva" data-contacto="+244 923 111 222"
-                        data-email="antonio.silva@email.ao" data-filhos="João Silva">Editar</button>
+                        data-bs-target="#encModal" data-id="2" data-nome="António Silva" data-nascimento="1975-08-22"
+                        data-identidade="00234567LA90" data-profissao="Engenheiro" data-endereco="Avenida Angola, 123, Bengo"
+                        data-contacto="+244 923 111 222" data-contacto-alt="+244 924 222 333"
+                        data-email="antonio.silva@email.ao" data-relacao="Pai">Editar</button>
                       <button class="btn btn-sm btn-outline-danger">Eliminar</button>
                     </td>
                   </tr>
@@ -308,17 +276,28 @@
                 <h5 class="modal-title" id="encModalTitle">Novo Encarregado</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
               </div>
-              <form id="formEncarregado">
+              <form id="formEncarregado" action="processar_encarregado.php" method="post">
                 <div class="modal-body">
-                  <input type="hidden" id="encId" value="">
-                  <div class="mb-3"><label class="form-label">Nome</label><input id="encNome" class="form-control">
+                  <input type="hidden" id="encId" name="encId" value="">
+                  <div class="mb-3"><label class="form-label">Nome</label><input id="encNome" name="encNome" class="form-control">
                   </div>
-                  <div class="mb-3"><label class="form-label">Contacto</label><input id="encContacto"
-                      class="form-control"></div>
-                  <div class="mb-3"><label class="form-label">Email</label><input id="encEmail" class="form-control">
+                  <div class="row">
+                    <div class="col-md-6 mb-3"><label class="form-label">Data de Nascimento</label><input id="encNascimento" name="encNascimento" type="date" class="form-control"></div>
+                    <div class="col-md-6 mb-3"><label class="form-label">Número de Identidade</label><input id="encIdentidade" name="encIdentidade" class="form-control"></div>
                   </div>
-                  <div class="mb-3"><label class="form-label">Educandos (nomes separados por vírgula)</label><input
-                      id="encFilhos" class="form-control" placeholder="Ana Pereira, João Silva"></div>
+                  <div class="mb-3"><label class="form-label">Profissão</label><input id="encProfissao" name="encProfissao" class="form-control">
+                  </div>
+                  <div class="mb-3"><label class="form-label">Endereço</label><input id="encEndereco" name="encEndereco" class="form-control">
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3"><label class="form-label">Contacto</label><input id="encContacto" name="encContacto" class="form-control"></div>
+                    <div class="col-md-6 mb-3"><label class="form-label">Número Alternativo</label><input id="encContactoAlt" name="encContactoAlt" class="form-control"></div>
+                  </div>
+                  <div class="mb-3"><label class="form-label">Email</label><input id="encEmail" name="encEmail" class="form-control">
+                  </div>
+                  <div class="mb-3"><label class="form-label">Relação com Educandos</label><input id="encRelacao" name="encRelacao" class="form-control" placeholder="Ex: Mãe, Pai, Avó, Tutor">
+                  </div>
+                  <div class="mb-3"><label class="form-label">Senha Inicial</label><input id="encSenha" name="encSenha" type="password" class="form-control" placeholder="Senha para login inicial"></div>
                 </div>
                 <div class="modal-footer"><button type="button" class="btn btn-outline-secondary"
                     data-bs-dismiss="modal">Cancelar</button><button type="submit"
@@ -343,49 +322,51 @@
       document.addEventListener('click', function (e) {
         const btn = e.target.closest('.btn-edit-enc');
         if (!btn) return;
+        const id = btn.getAttribute('data-id') || '';
         const nome = btn.getAttribute('data-nome') || '';
         const contacto = btn.getAttribute('data-contacto') || '';
         const email = btn.getAttribute('data-email') || '';
-        const filhos = btn.getAttribute('data-filhos') || '';
+        const nascimento = btn.getAttribute('data-nascimento') || '';
+        const identidade = btn.getAttribute('data-identidade') || '';
+        const profissao = btn.getAttribute('data-profissao') || '';
+        const endereco = btn.getAttribute('data-endereco') || '';
+        const contactoAlt = btn.getAttribute('data-contacto-alt') || '';
+        const relacao = btn.getAttribute('data-relacao') || '';
 
         document.getElementById('encModalTitle').textContent = 'Editar Encarregado';
+        document.getElementById('encId').value = id;
         document.getElementById('encNome').value = nome;
+        document.getElementById('encNascimento').value = nascimento;
+        document.getElementById('encIdentidade').value = identidade;
+        document.getElementById('encProfissao').value = profissao;
+        document.getElementById('encEndereco').value = endereco;
         document.getElementById('encContacto').value = contacto;
+        document.getElementById('encContactoAlt').value = contactoAlt;
         document.getElementById('encEmail').value = email;
-        document.getElementById('encFilhos').value = filhos.replace(/,/g, ', ');
+        document.getElementById('encRelacao').value = relacao;
+        document.getElementById('encSenha').value = '';
       });
 
       const encModalEl = document.getElementById('encModal');
       encModalEl.addEventListener('hidden.bs.modal', function () {
         document.getElementById('encModalTitle').textContent = 'Novo Encarregado';
         document.getElementById('formEncarregado').reset();
+        document.getElementById('encSenha').type = 'password';
       });
 
-      document.getElementById('formEncarregado').addEventListener('submit', function (e) {
-        e.preventDefault();
-        const data = {
-          nome: document.getElementById('encNome').value,
-          contacto: document.getElementById('encContacto').value,
-          email: document.getElementById('encEmail').value,
-          filhos: document.getElementById('encFilhos').value.split(',').map(s => s.trim()).filter(Boolean)
-        };
-        console.log('Encarregado form submit (stub):', data);
-        bootstrap.Modal.getInstance(encModalEl).hide();
-      });
+      // Form submit will be handled by PHP
+      // Modal will close after PHP redirect/response
 
       // Simple filter implementation (client-side)
       document.getElementById('btnFilterEnc').addEventListener('click', function () {
         const q = document.getElementById('filterEncSearch').value.toLowerCase().trim();
-        const minFilhos = document.getElementById('filterEncMinFilhos').value;
         const rows = Array.from(document.querySelectorAll('#listaEncarregados tr'));
         rows.forEach(r => {
           const nome = r.children[0].textContent.toLowerCase();
           const contacto = r.children[1].textContent.toLowerCase();
           const email = r.children[2].textContent.toLowerCase();
-          const filhos = r.children[3].textContent.split(',').map(s => s.trim()).filter(Boolean);
           let visible = true;
           if (q && !(nome.includes(q) || contacto.includes(q) || email.includes(q))) visible = false;
-          if (minFilhos && filhos.length < parseInt(minFilhos)) visible = false;
           r.style.display = visible ? '' : 'none';
         });
       });
