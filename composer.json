@@ -1,0 +1,17 @@
+{
+    "name": "andrejudiao/escola",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "ander-dev"
+        }
+    ],
+    "require": {
+        "twig/twig": "^3.24",
+        "pecee/simple-router": "^5.4"
+    }
+}
