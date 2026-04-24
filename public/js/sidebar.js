@@ -1,5 +1,5 @@
 /* ===========================================
-   Sistema de Escola Conectada - MED Angola
+   Escola Conectada - MED Angola
    Sidebar JavaScript
    =========================================== */
 
@@ -187,65 +187,48 @@ function gerarSidebar(perfil) {
   const menuItens = {
     admin: [
       { grupo: 'Principal', itens: [
-        { icon: 'dashboard', texto: 'Dashboard', link: 'dashboard.html' }
+        { icon: 'dashboard', texto: 'Dashboard', link: '/admin' }
       ]},
       { grupo: 'Comunicação', itens: [
-        { icon: 'megaphone', texto: 'Avisos', link: 'avisos.html', badge: 2 }
+        { icon: 'megaphone', texto: 'Avisos', link: '/avisos', badge: 2 }
       ]},
       { grupo: 'Conta', itens: [
-        { icon: 'user', texto: 'Meu Perfil', link: 'perfil.html' },
-        { icon: 'logout', texto: 'Sair', link: '../login.html' }
+        { icon: 'user', texto: 'Meu Perfil', link: '/perfil' },
+        { icon: 'logout', texto: 'Sair', link: '/logout' }
       ]}
     ],
     professor: [
       { grupo: 'Principal', itens: [
-        { icon: 'dashboard', texto: 'Dashboard', link: 'dashboard.html' }
+        { icon: 'dashboard', texto: 'Dashboard', link: 'professor' }
       ]},
       { grupo: 'Académico', itens: [
-        { icon: 'users', texto: 'Minhas Turmas', link: 'turmas.html' },
-        { icon: 'clipboard', texto: 'Mini-Pauta', link: 'mini-pauta.html' },
-        { icon: 'calendar-x', texto: 'Faltas', link: 'faltas.html' }
+        { icon: 'users', texto: 'Minhas Turmas', link: '/turmas' },
+        { icon: 'clipboard', texto: 'Mini-Pauta', link: '/notas' },
+        { icon: 'calendar-x', texto: 'Faltas', link: '/faltas' }
       ]},
       { grupo: 'Comunicação', itens: [
-        { icon: 'megaphone', texto: 'Avisos', link: 'avisos.html', badge: 3 }
+        { icon: 'megaphone', texto: 'Avisos', link: '/avisos', badge: 3 }
       ]},
       { grupo: 'Conta', itens: [
-        { icon: 'user', texto: 'Meu Perfil', link: 'perfil.html' },
-        { icon: 'logout', texto: 'Sair', link: '../login.html' }
-      ]}
-    ],
-    aluno: [
-      { grupo: 'Principal', itens: [
-        { icon: 'dashboard', texto: 'Dashboard', link: 'dashboard.html' }
-      ]},
-      { grupo: 'Académico', itens: [
-        { icon: 'grade', texto: 'Minhas Notas', link: 'notas.html' },
-        { icon: 'chart', texto: 'Desempenho', link: 'desempenho.html' },
-        { icon: 'calendar-x', texto: 'Faltas', link: 'faltas.html' }
-      ]},
-      { grupo: 'Comunicação', itens: [
-        { icon: 'megaphone', texto: 'Avisos', link: 'avisos.html', badge: 2 }
-      ]},
-      { grupo: 'Conta', itens: [
-        { icon: 'user', texto: 'Meu Perfil', link: 'perfil.html' },
-        { icon: 'logout', texto: 'Sair', link: '../login.html' }
+        { icon: 'user', texto: 'Meu Perfil', link: '/perfil' },
+        { icon: 'logout', texto: 'Sair', link: '/logout' }
       ]}
     ],
     encarregado: [
       { grupo: 'Principal', itens: [
-        { icon: 'dashboard', texto: 'Dashboard', link: 'dashboard.html' }
+        { icon: 'dashboard', texto: 'Dashboard', link: '/encarregado' }
       ]},
       { grupo: 'Educandos', itens: [
-        { icon: 'users', texto: 'Meus Educandos', link: 'filhos.html' },
+        { icon: 'users', texto: 'Meus Educandos', link: '/filhos' },
         { icon: 'grade', texto: 'Notas', link: 'notas.html' },
-        { icon: 'calendar-x', texto: 'Faltas', link: 'faltas.html' }
+        { icon: 'calendar-x', texto: 'Faltas', link: '/faltas' }
       ]},
       { grupo: 'Comunicação', itens: [
-        { icon: 'megaphone', texto: 'Avisos', link: 'avisos.html', badge: 2 }
+        { icon: 'megaphone', texto: 'Avisos', link: '/avisos', badge: 2 }
       ]},
       { grupo: 'Conta', itens: [
-        { icon: 'user', texto: 'Meu Perfil', link: 'perfil.html' },
-        { icon: 'logout', texto: 'Sair', link: '../login.html' }
+        { icon: 'user', texto: 'Meu Perfil', link: '/perfil' },
+        { icon: 'logout', texto: 'Sair', link: '/logout' }
       ]}
     ]
   };
@@ -253,7 +236,6 @@ function gerarSidebar(perfil) {
   const perfisNomes = {
     admin: 'Administração',
     professor: 'Professor',
-    aluno: 'Aluno',
     encarregado: 'Encarregado'
   };
 

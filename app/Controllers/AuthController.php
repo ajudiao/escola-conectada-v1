@@ -9,10 +9,10 @@ class AuthController extends Controller
 {
     private UsuarioRepository $usuarioRepo;
 
-    // public function __construct()
-    // {
-    //     $this->usuarioRepo = new UsuarioRepository();
-    // }
+    public function __construct()
+    {
+        $this->usuarioRepo = new UsuarioRepository();
+    }
 
     public function loginForm()
     {
@@ -37,7 +37,7 @@ class AuthController extends Controller
 
         if (!$user || !password_verify($senha, $user->senha)) {
             $error = "Email ou senha inválidos.";
-            $this->view('dashboard/login', [
+            $this->view('login', [
                 'error' => $error
             ]);
             unset($error);
@@ -69,12 +69,15 @@ class AuthController extends Controller
     {
         switch ($perfil) {
             case 'admin':
+            case 'Administrador':
                 header('Location: /admin');
                 break;
             case 'professor':
+            case 'Professor':
                 header('Location: /professor');
                 break;
             case 'encarregado':
+            case 'Encarregado':
                 header('Location: /encarregado');
                 break;
             default:

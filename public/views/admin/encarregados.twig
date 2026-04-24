@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Turmas - Administração | SGE MED Angola</title>
+  <title>Encarregados - Administração | SGE MED Angola</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../css/global.css">
@@ -186,7 +186,7 @@
     <main class="main-content">
       <header class="main-header">
         <div class="header-left"><button class="mobile-toggle">☰</button>
-          <h1 class="header-title">Turmas</h1>
+          <h1 class="header-title">Encarregados</h1>
         </div>
         <div class="header-right">
           <div class="header-user">
@@ -200,45 +200,22 @@
       <div class="page-content">
         <div class="page-header d-flex justify-content-between align-items-center">
           <div>
-            <h2 class="page-title">Gestão de Turmas</h2>
-            <p class="page-subtitle">Turmas e respetivos detalhes</p>
+            <h2 class="page-title">Gestão de Encarregados</h2>
+            <p class="page-subtitle">Adicionar e gerir encarregados e os seus educandos</p>
           </div>
-          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#turmaModal">Nova Turma</button>
+          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#encModal">Novo Encarregado</button>
         </div>
 
         <!-- Filters -->
         <div class="card mb-3">
           <div class="card-body">
             <div class="row g-3 align-items-end">
-              <div class="col-md-4">
+              <div class="col-md-5">
                 <label class="form-label">Pesquisar</label>
-                <input id="filterTurmaSearch" type="text" class="form-control" placeholder="Código, curso, professor...">
+                <input id="filterEncSearch" type="text" class="form-control" placeholder="Nome, contacto ou email">
               </div>
-              <div class="col-md-2">
-                <label class="form-label">Classe</label>
-                <select id="filterTurmaCiclo" class="form-control form-select">
-                  <option value="">Todos</option>
-                  <option>10ª</option>
-                  <option>11ª</option>
-                  <option>12ª</option>
-                  <option>13ª</option>
-                </select>
-              </div>
-              <div class="col-md-2">
-                <label class="form-label">Sala</label>
-                <input id="filterTurmaSala" type="text" class="form-control" placeholder="Ex: A101">
-              </div>
-              <div class="col-md-2">
-                <label class="form-label">Ano Letivo</label>
-                <select id="filterTurmaAno" class="form-control form-select">
-                  <option value="">Todos</option>
-                  <option value="2023/2024">2023/2024</option>
-                  <option value="2024/2025">2024/2025</option>
-                  <option value="2025/2026">2025/2026</option>
-                </select>
-              </div>
-              <div class="col-md-2">
-                <button id="btnFilterTurma" class="btn btn-outline-primary w-100">Filtrar</button>
+              <div class="col-md-7">
+                <button id="btnFilterEnc" class="btn btn-outline-primary">Filtrar</button>
               </div>
             </div>
           </div>
@@ -250,46 +227,38 @@
               <table class="table table-hover align-middle">
                 <thead>
                   <tr>
-                    <th>Código</th>
-                    <th>Classe</th>
-                    <th>Turno</th>
-                    <th>Sala</th>
-                    <th>Ano Letivo</th>
-                    <th>Diretor de Turma</th>
-                    <th>Nº Alunos</th>
+                    <th>Nome</th>
+                    <th>Contacto</th>
+                    <th>Email</th>
                     <th>Ações</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id="listaEncarregados">
                   <tr>
-                    <td>4A</td>
-                    <td><span class="badge bg-info">4ª Classe</span></td>
-                    <td>Manhã</td>
-                    <td>A101</td>
-                    <td>2025/2026</td>
-                    <td>Maria João</td>
-                    <td>32</td>
+                    <td>Maria José Santos</td>
+                    <td>+244 912 345 678</td>
+                    <td>maria.santos@email.ao</td>
                     <td>
-                      <a href="turma-detalhes.html" class="btn btn-sm btn-outline-info me-1">Ver</a>
-                      <button class="btn btn-sm btn-outline-secondary me-1 btn-edit" data-bs-toggle="modal"
-                        data-bs-target="#turmaModal" data-codigo="4ª A" data-classe="4" data-turno="Matutino"
-                        data-sala="A101" data-ano="2025/2026" data-prof="Maria João" data-num="32">Editar</button>
+                      <a href="encarregado-detalhes.html" class="btn btn-sm btn-outline-info me-1">Ver</a>
+                      <button class="btn btn-sm btn-outline-secondary me-1 btn-edit-enc" data-bs-toggle="modal"
+                        data-bs-target="#encModal" data-id="1" data-nome="Maria José Santos" data-nascimento="1978-05-15"
+                        data-identidade="00123456LA89" data-profissao="Professora" data-endereco="Rua da Paz, 45, Luanda"
+                        data-contacto="+244 912 345 678" data-contacto-alt="+244 913 456 789"
+                        data-email="maria.santos@email.ao" data-relacao="Mãe">Editar</button>
                       <button class="btn btn-sm btn-outline-danger">Eliminar</button>
                     </td>
                   </tr>
                   <tr>
-                    <td>7B</td>
-                    <td><span class="badge bg-info">7ª Classe</span></td>
-                    <td>Tarde</td>
-                    <td>B202</td>
-                    <td>2024/2025</td>
-                    <td>Joaquim Silva</td>
-                    <td>28</td>
+                    <td>António Silva</td>
+                    <td>+244 923 111 222</td>
+                    <td>antonio.silva@email.ao</td>
                     <td>
-                      <a href="turma-detalhes.html" class="btn btn-sm btn-outline-info me-1">Ver</a>
-                      <button class="btn btn-sm btn-outline-secondary me-1 btn-edit" data-bs-toggle="modal"
-                        data-bs-target="#turmaModal" data-codigo="7ª B" data-classe="7" data-turno="Vespertino"
-                        data-sala="B202" data-ano="2024/2025" data-prof="Joaquim Silva" data-num="28">Editar</button>
+                      <a href="encarregado-detalhes.html" class="btn btn-sm btn-outline-info me-1">Ver</a>
+                      <button class="btn btn-sm btn-outline-secondary me-1 btn-edit-enc" data-bs-toggle="modal"
+                        data-bs-target="#encModal" data-id="2" data-nome="António Silva" data-nascimento="1975-08-22"
+                        data-identidade="00234567LA90" data-profissao="Engenheiro" data-endereco="Avenida Angola, 123, Bengo"
+                        data-contacto="+244 923 111 222" data-contacto-alt="+244 924 222 333"
+                        data-email="antonio.silva@email.ao" data-relacao="Pai">Editar</button>
                       <button class="btn btn-sm btn-outline-danger">Eliminar</button>
                     </td>
                   </tr>
@@ -299,74 +268,48 @@
           </div>
         </div>
 
-        <!-- Modal: Adicionar / Editar Turma -->
-        <div class="modal fade" id="turmaModal" tabindex="-1">
+        <!-- Modal: Adicionar / Editar Encarregado -->
+        <div class="modal fade" id="encModal" tabindex="-1">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="turmaModalTitle">Nova Turma</h5>
+                <h5 class="modal-title" id="encModalTitle">Novo Encarregado</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
               </div>
-              <form id="formTurma">
+              <form id="formEncarregado" action="processar_encarregado.php" method="post">
                 <div class="modal-body">
-                  <input type="hidden" id="turmaId" value="">
-                  <div class="mb-3">
-                    <label class="form-label">Código</label>
-                    <input id="turmaCodigo" class="form-control" placeholder="Ex: 4ª A, 7ª B">
+                  <input type="hidden" id="encId" name="encId" value="">
+                  <div class="mb-3"><label class="form-label">Nome</label><input id="encNome" name="encNome" class="form-control">
                   </div>
-                  <div class="mb-3">
-                    <label class="form-label">Classe</label>
-                    <select id="turmaCiclo" class="form-select form-control">
-                      <option value="">Selecione uma classe</option>
-                      <option value="1">1ª Classe</option>
-                      <option value="2">2ª Classe</option>
-                      <option value="3">3ª Classe</option>
-                      <option value="4">4ª Classe</option>
-                      <option value="5">5ª Classe</option>
-                      <option value="6">6ª Classe</option>
-                      <option value="7">7ª Classe</option>
-                      <option value="8">8ª Classe</option>
-                      <option value="9">9ª Classe</option>
-                    </select>
+                  <div class="row">
+                    <div class="col-md-6 mb-3"><label class="form-label">Data de Nascimento</label><input id="encNascimento" name="encNascimento" type="date" class="form-control"></div>
+                    <div class="col-md-6 mb-3"><label class="form-label">Número de Identidade</label><input id="encIdentidade" name="encIdentidade" class="form-control"></div>
                   </div>
-                  <div class="mb-3">
-                    <label class="form-label">Turno</label>
-                    <select id="turmaTurno" class="form-select form-control">
-                      <option value="">Selecione um turno</option>
-                      <option value="Matutino">Matutino (Manhã)</option>
-                      <option value="Vespertino">Vespertino (Tarde)</option>
-                      <option value="Noturno">Noturno (Noite)</option>
-                    </select>
+                  <div class="mb-3"><label class="form-label">Profissão</label><input id="encProfissao" name="encProfissao" class="form-control">
                   </div>
-                  <div class="mb-3">
-                    <label class="form-label">Sala</label>
-                    <input id="turmaSala" type="text" class="form-control" placeholder="Ex: A101">
+                  <div class="mb-3"><label class="form-label">Endereço</label><input id="encEndereco" name="encEndereco" class="form-control">
                   </div>
-                  <div class="mb-3">
-                    <label class="form-label">Ano Letivo</label>
-                    <select id="turmaAno" class="form-select form-control">
-                      <option value="">Selecione o ano letivo</option>
-                      <option value="2023/2024">2023/2024</option>
-                      <option value="2024/2025">2024/2025</option>
-                      <option value="2025/2026">2025/2026</option>
-                    </select>
+                  <div class="row">
+                    <div class="col-md-6 mb-3"><label class="form-label">Contacto</label><input id="encContacto" name="encContacto" class="form-control"></div>
+                    <div class="col-md-6 mb-3"><label class="form-label">Número Alternativo</label><input id="encContactoAlt" name="encContactoAlt" class="form-control"></div>
                   </div>
-                  <div class="mb-3">
-                    <label class="form-label">Nº Alunos</label>
-                    <input id="turmaNum" type="number" class="form-control">
+                  <div class="mb-3"><label class="form-label">Email</label><input id="encEmail" name="encEmail" class="form-control">
                   </div>
+                  <div class="mb-3"><label class="form-label">Relação com Educandos</label><input id="encRelacao" name="encRelacao" class="form-control" placeholder="Ex: Mãe, Pai, Avó, Tutor">
+                  </div>
+                  <div class="mb-3"><label class="form-label">Senha Inicial</label><input id="encSenha" name="encSenha" type="password" class="form-control" placeholder="Senha para login inicial"></div>
                 </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-                  <button type="submit" class="btn btn-primary">Guardar</button>
-                </div>
+                <div class="modal-footer"><button type="button" class="btn btn-outline-secondary"
+                    data-bs-dismiss="modal">Cancelar</button><button type="submit"
+                    class="btn btn-primary">Guardar</button></div>
               </form>
             </div>
           </div>
         </div>
       </div>
+
       <footer class="main-footer">
-        <p class="mb-0">Sistema de Escola Conectada &copy; 2026 - Ministério da Educação de Angola</p>
+        <p class="mb-0">Escola Conectada &copy; 2026 - Ministério da Educação de Angola</p>
       </footer>
     </main>
   </div>
@@ -375,71 +318,56 @@
   <script src="../../js/sidebar.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
+      // Edit button population
       document.addEventListener('click', function (e) {
-        const btn = e.target.closest('.btn-edit');
+        const btn = e.target.closest('.btn-edit-enc');
         if (!btn) return;
-        const codigo = btn.getAttribute('data-codigo') || '';
-        const curso = btn.getAttribute('data-curso') || '';
-        const ciclo = btn.getAttribute('data-ciclo') || '';
-        const sala = btn.getAttribute('data-sala') || '';
-        const ano = btn.getAttribute('data-ano') || '';
-        const prof = btn.getAttribute('data-prof') || '';
-        const num = btn.getAttribute('data-num') || '';
+        const id = btn.getAttribute('data-id') || '';
+        const nome = btn.getAttribute('data-nome') || '';
+        const contacto = btn.getAttribute('data-contacto') || '';
+        const email = btn.getAttribute('data-email') || '';
+        const nascimento = btn.getAttribute('data-nascimento') || '';
+        const identidade = btn.getAttribute('data-identidade') || '';
+        const profissao = btn.getAttribute('data-profissao') || '';
+        const endereco = btn.getAttribute('data-endereco') || '';
+        const contactoAlt = btn.getAttribute('data-contacto-alt') || '';
+        const relacao = btn.getAttribute('data-relacao') || '';
 
-        document.getElementById('turmaModalTitle').textContent = 'Editar Turma';
-        document.getElementById('turmaCodigo').value = codigo;
-        document.getElementById('turmaCurso').value = curso;
-        document.getElementById('turmaCiclo').value = ciclo;
-        document.getElementById('turmaSala').value = sala;
-        document.getElementById('turmaAno').value = ano;
-        document.getElementById('turmaProf').value = prof;
-        document.getElementById('turmaNum').value = num;
+        document.getElementById('encModalTitle').textContent = 'Editar Encarregado';
+        document.getElementById('encId').value = id;
+        document.getElementById('encNome').value = nome;
+        document.getElementById('encNascimento').value = nascimento;
+        document.getElementById('encIdentidade').value = identidade;
+        document.getElementById('encProfissao').value = profissao;
+        document.getElementById('encEndereco').value = endereco;
+        document.getElementById('encContacto').value = contacto;
+        document.getElementById('encContactoAlt').value = contactoAlt;
+        document.getElementById('encEmail').value = email;
+        document.getElementById('encRelacao').value = relacao;
+        document.getElementById('encSenha').value = '';
       });
 
-      const turmaModalEl = document.getElementById('turmaModal');
-      turmaModalEl.addEventListener('hidden.bs.modal', function () {
-        document.getElementById('turmaModalTitle').textContent = 'Nova Turma';
-        document.getElementById('formTurma').reset();
+      const encModalEl = document.getElementById('encModal');
+      encModalEl.addEventListener('hidden.bs.modal', function () {
+        document.getElementById('encModalTitle').textContent = 'Novo Encarregado';
+        document.getElementById('formEncarregado').reset();
+        document.getElementById('encSenha').type = 'password';
       });
 
-      document.getElementById('formTurma').addEventListener('submit', function (e) {
-        e.preventDefault();
-        const data = {
-          codigo: document.getElementById('turmaCodigo').value,
-          curso: document.getElementById('turmaCurso').value,
-          ciclo: document.getElementById('turmaCiclo').value,
-          sala: document.getElementById('turmaSala').value,
-          ano: document.getElementById('turmaAno').value,
-          professor: document.getElementById('turmaProf').value,
-          numero: document.getElementById('turmaNum').value
-        };
-        console.log('Turma form submit (stub):', data);
-        bootstrap.Modal.getInstance(turmaModalEl).hide();
-      });
+      // Form submit will be handled by PHP
+      // Modal will close after PHP redirect/response
 
-      // Filter turmas by search, classe, sala and ano letivo
-      document.getElementById('btnFilterTurma').addEventListener('click', function() {
-        const q = document.getElementById('filterTurmaSearch').value.trim().toLowerCase();
-        const classe = document.getElementById('filterTurmaCiclo').value;
-        const sala = document.getElementById('filterTurmaSala').value.trim().toLowerCase();
-        const ano = document.getElementById('filterTurmaAno').value;
-
-        document.querySelectorAll('table tbody tr').forEach(tr => {
-          const cols = tr.children;
-          const codigo = (cols[0]?.textContent||'').toLowerCase();
-          const curso = (cols[1]?.textContent||'').toLowerCase();
-          const classeTd = (cols[2]?.textContent||'').trim();
-          const salaTd = (cols[3]?.textContent||'').toLowerCase();
-          const anoTd = (cols[4]?.textContent||'').trim();
-          const prof = (cols[5]?.textContent||'').toLowerCase();
-
-          let matches = true;
-          if (q) matches = matches && (codigo.includes(q) || curso.includes(q) || prof.includes(q));
-          if (classe) matches = matches && (classeTd === classe);
-          if (sala) matches = matches && salaTd.includes(sala);
-          if (ano) matches = matches && (anoTd === ano);
-
-          tr.style.display = matches ? '' : 'none';
+      // Simple filter implementation (client-side)
+      document.getElementById('btnFilterEnc').addEventListener('click', function () {
+        const q = document.getElementById('filterEncSearch').value.toLowerCase().trim();
+        const rows = Array.from(document.querySelectorAll('#listaEncarregados tr'));
+        rows.forEach(r => {
+          const nome = r.children[0].textContent.toLowerCase();
+          const contacto = r.children[1].textContent.toLowerCase();
+          const email = r.children[2].textContent.toLowerCase();
+          let visible = true;
+          if (q && !(nome.includes(q) || contacto.includes(q) || email.includes(q))) visible = false;
+          r.style.display = visible ? '' : 'none';
         });
       });
     });

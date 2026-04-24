@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alunos - Administração | SGE MED Angola</title>
+  <title>Turmas - Administração | SGE MED Angola</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../css/global.css">
@@ -111,6 +111,7 @@
             </a>
           </div>
          
+
           
           <div class="nav-item">
             <a href="alunos.html" class="nav-link" data-title="Alunos">
@@ -185,7 +186,7 @@
     <main class="main-content">
       <header class="main-header">
         <div class="header-left"><button class="mobile-toggle">☰</button>
-          <h1 class="header-title">Alunos</h1>
+          <h1 class="header-title">Turmas</h1>
         </div>
         <div class="header-right">
           <div class="header-user">
@@ -199,38 +200,45 @@
       <div class="page-content">
         <div class="page-header d-flex justify-content-between align-items-center">
           <div>
-            <h2 class="page-title">Gestão de Alunos</h2>
-            <p class="page-subtitle">Lista de alunos inscritos</p>
+            <h2 class="page-title">Gestão de Turmas</h2>
+            <p class="page-subtitle">Turmas e respetivos detalhes</p>
           </div>
-          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#alunoModal">Novo Aluno</button>
+          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#turmaModal">Nova Turma</button>
         </div>
 
         <!-- Filters -->
         <div class="card mb-3">
           <div class="card-body">
             <div class="row g-3 align-items-end">
-              <div class="col-md-5">
+              <div class="col-md-4">
                 <label class="form-label">Pesquisar</label>
-                <input id="filterAlunoSearch" type="text" class="form-control" placeholder="Nome ou nº processo">
-              </div>
-              <div class="col-md-3">
-                <label class="form-label">Curso</label>
-                <select id="filterAlunoCurso" class="form-control form-select">
-                  <option value="">Todos</option>
-                  <option>Informática</option>
-                  <option>Física</option>
-                </select>
+                <input id="filterTurmaSearch" type="text" class="form-control" placeholder="Código, curso, professor...">
               </div>
               <div class="col-md-2">
-                <label class="form-label">Ano</label>
-                <select id="filterAlunoAno" class="form-control form-select">
+                <label class="form-label">Classe</label>
+                <select id="filterTurmaCiclo" class="form-control form-select">
                   <option value="">Todos</option>
                   <option>10ª</option>
                   <option>11ª</option>
+                  <option>12ª</option>
+                  <option>13ª</option>
                 </select>
               </div>
               <div class="col-md-2">
-                <button id="btnFilterAluno" class="btn btn-outline-primary w-100">Filtrar</button>
+                <label class="form-label">Sala</label>
+                <input id="filterTurmaSala" type="text" class="form-control" placeholder="Ex: A101">
+              </div>
+              <div class="col-md-2">
+                <label class="form-label">Ano Letivo</label>
+                <select id="filterTurmaAno" class="form-control form-select">
+                  <option value="">Todos</option>
+                  <option value="2023/2024">2023/2024</option>
+                  <option value="2024/2025">2024/2025</option>
+                  <option value="2025/2026">2025/2026</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <button id="btnFilterTurma" class="btn btn-outline-primary w-100">Filtrar</button>
               </div>
             </div>
           </div>
@@ -242,135 +250,110 @@
               <table class="table table-hover align-middle">
                 <thead>
                   <tr>
-                    <th>Nº Processo</th>
-                    <th>Nome</th>
-                    <th>Contacto</th>
+                    <th>Código</th>
+                    <th>Classe</th>
+                    <th>Turno</th>
+                    <th>Sala</th>
+                    <th>Ano Letivo</th>
+                    <th>Diretor de Turma</th>
+                    <th>Nº Alunos</th>
                     <th>Ações</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>2026-001</td>
-                    <td>Ana Pereira</td>
-                    <td>+244 922 000 004</td>
+                    <td>4A</td>
+                    <td><span class="badge bg-info">4ª Classe</span></td>
+                    <td>Manhã</td>
+                    <td>A101</td>
+                    <td>2025/2026</td>
+                    <td>Maria João</td>
+                    <td>32</td>
                     <td>
-                      <a href="aluno-detalhes.html" class="btn btn-sm btn-outline-info me-1">Ver</a>
+                      <a href="turma-detalhes.html" class="btn btn-sm btn-outline-info me-1">Ver</a>
                       <button class="btn btn-sm btn-outline-secondary me-1 btn-edit" data-bs-toggle="modal"
-                        data-bs-target="#alunoModal" data-nome="Ana Pereira" data-processo="2026-001"
-                        data-nascimento="2010-05-12" data-sexo="Feminino"
-                        data-email="ana.pereira@escola.med.ao" data-contato="+244 922 000 004"
-                        data-turma="1" data-codigo-encarregado="ENC-001">Editar</button>
+                        data-bs-target="#turmaModal" data-codigo="4ª A" data-classe="4" data-turno="Matutino"
+                        data-sala="A101" data-ano="2025/2026" data-prof="Maria João" data-num="32">Editar</button>
                       <button class="btn btn-sm btn-outline-danger">Eliminar</button>
                     </td>
                   </tr>
                   <tr>
-                    <td>2026-002</td>
-                    <td>Pedro Santos</td>
-                    <td>+244 922 000 005</td>
+                    <td>7B</td>
+                    <td><span class="badge bg-info">7ª Classe</span></td>
+                    <td>Tarde</td>
+                    <td>B202</td>
+                    <td>2024/2025</td>
+                    <td>Joaquim Silva</td>
+                    <td>28</td>
                     <td>
-                      <a href="aluno-detalhes.html" class="btn btn-sm btn-outline-info me-1">Ver</a>
+                      <a href="turma-detalhes.html" class="btn btn-sm btn-outline-info me-1">Ver</a>
                       <button class="btn btn-sm btn-outline-secondary me-1 btn-edit" data-bs-toggle="modal"
-                        data-bs-target="#alunoModal" data-nome="Pedro Santos" data-processo="2026-002"
-                        data-nascimento="2009-11-28" data-sexo="Masculino"
-                        data-email="pedro.santos@escola.med.ao" data-contato="+244 922 000 005"
-                        data-turma="2" data-codigo-encarregado="ENC-002">Editar</button>
+                        data-bs-target="#turmaModal" data-codigo="7ª B" data-classe="7" data-turno="Vespertino"
+                        data-sala="B202" data-ano="2024/2025" data-prof="Joaquim Silva" data-num="28">Editar</button>
                       <button class="btn btn-sm btn-outline-danger">Eliminar</button>
-                    </tr>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
           </div>
         </div>
 
-        <!-- Modal: Adicionar / Editar Aluno -->
-        <div class="modal fade" id="alunoModal" tabindex="-1">
-          <div class="modal-dialog modal-lg">
+        <!-- Modal: Adicionar / Editar Turma -->
+        <div class="modal fade" id="turmaModal" tabindex="-1">
+          <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="alunoModalTitle">Novo Aluno</h5>
+                <h5 class="modal-title" id="turmaModalTitle">Nova Turma</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
               </div>
-              <form id="formAluno" action="processar_aluno.php" method="post">
-                        <div class="modal-body">
-                  <input type="hidden" id="alunoId" name="alunoId" value="">
-
-                  <div class="mb-4 p-3 border rounded bg-light">
-                    <h6 class="mb-3">Dados Pessoais</h6>
-                    <div class="row g-3">
-                      <div class="col-md-6">
-                        <label class="form-label">Nome Completo</label>
-                        <input id="alunoNome" name="alunoNome" class="form-control" required>
-                      </div>
-                      <div class="col-md-6">
-                        <label class="form-label">Nº Processo</label>
-                        <input id="alunoProcesso" name="alunoProcesso" class="form-control" required>
-                      </div>
-                      <div class="col-md-4">
-                        <label class="form-label">Data de Nascimento</label>
-                        <input id="alunoNascimento" name="alunoNascimento" class="form-control" type="date" required>
-                      </div>
-                      <div class="col-md-4">
-                        <label class="form-label">Sexo</label>
-                        <select id="alunoSexo" name="alunoSexo" class="form-select" required>
-                          <option value="">Selecione...</option>
-                          <option value="Masculino">Masculino</option>
-                          <option value="Feminino">Feminino</option>
-                          <option value="Outro">Outro</option>
-                        </select>
-                      </div>
-                      <div class="col-md-4">
-                        <label class="form-label">Nacionalidade</label>
-                        <input id="alunoNacionalidade" name="alunoNacionalidade" class="form-control" type="text" placeholder="Ex: Angolana" required>
-                      </div>
-                      <div class="col-md-6">
-                        <label class="form-label">Email</label>
-                        <input id="alunoEmail" name="alunoEmail" class="form-control" type="email">
-                      </div>
-                      <div class="col-md-6">
-                        <label class="form-label">Telefone/Contacto</label>
-                        <input id="alunoContacto" name="alunoContacto" class="form-control" type="tel" required>
-                      </div>
-                    </div>
+              <form id="formTurma">
+                <div class="modal-body">
+                  <input type="hidden" id="turmaId" value="">
+                  <div class="mb-3">
+                    <label class="form-label">Código</label>
+                    <input id="turmaCodigo" class="form-control" placeholder="Ex: 4ª A, 7ª B">
                   </div>
-
-                  <div class="mb-4 p-3 border rounded bg-light">
-                    <h6 class="mb-3">Turma</h6>
-                    <div class="row g-3">
-                      <div class="col-md-12">
-                        <label class="form-label">Selecione uma Turma</label>
-                        <div class="border rounded p-3">
-                          <div class="form-check">
-                            <input class="form-check-input turma-radio" type="checkbox" id="turma_1" name="alunoTurma" value="1">
-                            <label class="form-check-label" for="turma_1">
-                              <strong>4A</strong> — Manhã — Sala 04
-                            </label>
-                          </div>
-                          <div class="form-check">
-                            <input class="form-check-input turma-radio" type="checkbox" id="turma_2" name="alunoTurma" value="2">
-                            <label class="form-check-label" for="turma_2">
-                              <strong>4B</strong> — Tarde — Sala 12
-                            </label>
-                          </div>
-                          <div class="form-check">
-                            <input class="form-check-input turma-radio" type="checkbox" id="turma_3" name="alunoTurma" value="3">
-                            <label class="form-check-label" for="turma_3">
-                              <strong>4C</strong> — Noite — Sala 15
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                  <div class="mb-3">
+                    <label class="form-label">Classe</label>
+                    <select id="turmaCiclo" class="form-select form-control">
+                      <option value="">Selecione uma classe</option>
+                      <option value="1">1ª Classe</option>
+                      <option value="2">2ª Classe</option>
+                      <option value="3">3ª Classe</option>
+                      <option value="4">4ª Classe</option>
+                      <option value="5">5ª Classe</option>
+                      <option value="6">6ª Classe</option>
+                      <option value="7">7ª Classe</option>
+                      <option value="8">8ª Classe</option>
+                      <option value="9">9ª Classe</option>
+                    </select>
                   </div>
-
-                  <div class="mb-4 p-3 border rounded bg-light">
-                    <h6 class="mb-3">Responsável</h6>
-                    <p class="text-muted small mb-3">⚠️ Certifique-se de que o encarregado já está adicionado no sistema. Utilize o código do encarregado para associá-lo a este aluno.</p>
-                    <div class="row g-3">
-                      <div class="col-md-6">
-                        <label class="form-label">Código do Responsável</label>
-                        <input id="alunoCodigoEncarregado" name="alunoCodigoEncarregado" class="form-control" type="text" placeholder="Ex: ENC-001" required>
-                      </div>
-                    </div>
+                  <div class="mb-3">
+                    <label class="form-label">Turno</label>
+                    <select id="turmaTurno" class="form-select form-control">
+                      <option value="">Selecione um turno</option>
+                      <option value="Matutino">Matutino (Manhã)</option>
+                      <option value="Vespertino">Vespertino (Tarde)</option>
+                      <option value="Noturno">Noturno (Noite)</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Sala</label>
+                    <input id="turmaSala" type="text" class="form-control" placeholder="Ex: A101">
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Ano Letivo</label>
+                    <select id="turmaAno" class="form-select form-control">
+                      <option value="">Selecione o ano letivo</option>
+                      <option value="2023/2024">2023/2024</option>
+                      <option value="2024/2025">2024/2025</option>
+                      <option value="2025/2026">2025/2026</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Nº Alunos</label>
+                    <input id="turmaNum" type="number" class="form-control">
                   </div>
                 </div>
                 <div class="modal-footer">
@@ -383,7 +366,7 @@
         </div>
       </div>
       <footer class="main-footer">
-        <p class="mb-0">Sistema de Escola Conectada &copy; 2026 - Ministério da Educação de Angola</p>
+        <p class="mb-0">Escola Conectada &copy; 2026 - Ministério da Educação de Angola</p>
       </footer>
     </main>
   </div>
@@ -395,57 +378,70 @@
       document.addEventListener('click', function (e) {
         const btn = e.target.closest('.btn-edit');
         if (!btn) return;
-        const nome = btn.getAttribute('data-nome') || '';
-        const processo = btn.getAttribute('data-processo') || '';
-        const nascimento = btn.getAttribute('data-nascimento') || '';
-        const sexo = btn.getAttribute('data-sexo') || '';
-        const email = btn.getAttribute('data-email') || '';
-        const contacto = btn.getAttribute('data-contacto') || '';
-        const turma = btn.getAttribute('data-turma') || '';
-        const codigoEncarregado = btn.getAttribute('data-codigo-encarregado') || '';
+        const codigo = btn.getAttribute('data-codigo') || '';
+        const curso = btn.getAttribute('data-curso') || '';
+        const ciclo = btn.getAttribute('data-ciclo') || '';
+        const sala = btn.getAttribute('data-sala') || '';
+        const ano = btn.getAttribute('data-ano') || '';
+        const prof = btn.getAttribute('data-prof') || '';
+        const num = btn.getAttribute('data-num') || '';
 
-        document.getElementById('alunoModalTitle').textContent = 'Editar Aluno';
-        document.getElementById('alunoNome').value = nome;
-        document.getElementById('alunoProcesso').value = processo;
-        document.getElementById('alunoNascimento').value = nascimento;
-        document.getElementById('alunoSexo').value = sexo;
-        document.getElementById('alunoEmail').value = email;
-        document.getElementById('alunoContacto').value = contacto;
-        
-        // Marcar a turma correta
-        document.querySelectorAll('.turma-radio').forEach(cb => cb.checked = false);
-        if (turma) {
-          const turmaCb = document.getElementById('turma_' + turma);
-          if (turmaCb) {
-            turmaCb.checked = true;
-            document.getElementById('turmaCheckboxes').style.display = 'flex';
-          }
-        }
-        
-        document.getElementById('alunoCodigoEncarregado').value = codigoEncarregado;
+        document.getElementById('turmaModalTitle').textContent = 'Editar Turma';
+        document.getElementById('turmaCodigo').value = codigo;
+        document.getElementById('turmaCurso').value = curso;
+        document.getElementById('turmaCiclo').value = ciclo;
+        document.getElementById('turmaSala').value = sala;
+        document.getElementById('turmaAno').value = ano;
+        document.getElementById('turmaProf').value = prof;
+        document.getElementById('turmaNum').value = num;
       });
 
-      const alunoModalEl = document.getElementById('alunoModal');
-      alunoModalEl.addEventListener('hidden.bs.modal', function () {
-        document.getElementById('alunoModalTitle').textContent = 'Novo Aluno';
-        document.getElementById('formAluno').reset();
-        document.querySelectorAll('.turma-radio').forEach(cb => cb.checked = false);
+      const turmaModalEl = document.getElementById('turmaModal');
+      turmaModalEl.addEventListener('hidden.bs.modal', function () {
+        document.getElementById('turmaModalTitle').textContent = 'Nova Turma';
+        document.getElementById('formTurma').reset();
       });
 
-      // Apenas uma turma pode ser marcada por vez
-      document.querySelectorAll('.turma-radio').forEach(checkbox => {
-        checkbox.addEventListener('change', function () {
-          if (this.checked) {
-            // Desmarcar todos os outros
-            document.querySelectorAll('.turma-radio').forEach(cb => {
-              if (cb !== this) cb.checked = false;
-            });
-          }
+      document.getElementById('formTurma').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const data = {
+          codigo: document.getElementById('turmaCodigo').value,
+          curso: document.getElementById('turmaCurso').value,
+          ciclo: document.getElementById('turmaCiclo').value,
+          sala: document.getElementById('turmaSala').value,
+          ano: document.getElementById('turmaAno').value,
+          professor: document.getElementById('turmaProf').value,
+          numero: document.getElementById('turmaNum').value
+        };
+        console.log('Turma form submit (stub):', data);
+        bootstrap.Modal.getInstance(turmaModalEl).hide();
+      });
+
+      // Filter turmas by search, classe, sala and ano letivo
+      document.getElementById('btnFilterTurma').addEventListener('click', function() {
+        const q = document.getElementById('filterTurmaSearch').value.trim().toLowerCase();
+        const classe = document.getElementById('filterTurmaCiclo').value;
+        const sala = document.getElementById('filterTurmaSala').value.trim().toLowerCase();
+        const ano = document.getElementById('filterTurmaAno').value;
+
+        document.querySelectorAll('table tbody tr').forEach(tr => {
+          const cols = tr.children;
+          const codigo = (cols[0]?.textContent||'').toLowerCase();
+          const curso = (cols[1]?.textContent||'').toLowerCase();
+          const classeTd = (cols[2]?.textContent||'').trim();
+          const salaTd = (cols[3]?.textContent||'').toLowerCase();
+          const anoTd = (cols[4]?.textContent||'').trim();
+          const prof = (cols[5]?.textContent||'').toLowerCase();
+
+          let matches = true;
+          if (q) matches = matches && (codigo.includes(q) || curso.includes(q) || prof.includes(q));
+          if (classe) matches = matches && (classeTd === classe);
+          if (sala) matches = matches && salaTd.includes(sala);
+          if (ano) matches = matches && (anoTd === ano);
+
+          tr.style.display = matches ? '' : 'none';
         });
       });
-
-      // Submissão do formulário ficará a cargo do backend PHP puro.
-      // O formulário usa action="processar_aluno.php" e method="post" para envio normal.
     });
   </script>
 </body>

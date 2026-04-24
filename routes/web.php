@@ -34,26 +34,9 @@ Router::group([
 ], function () {
 
     // Dashboard
+    Router::get('', 'DashboardController@index');
     Router::get('/', 'DashboardController@index');
     Router::get('/notificacoes', 'NotificationsController@index');
-
-    //
-    // USUÁRIOS (REST)
-    //
-    Router::get('/usuarios', 'UsuariosController@index');
-    Router::post('/usuarios', 'UsuariosController@store');
-    Router::post('/usuarios/update/{id}', 'UsuariosController@update');
-    Router::get('/usuarios/delete/{id}', 'UsuariosController@delete');
-
-    // Perfil e Configurações
-    Router::get('/perfil', 'PerfilController@index');
-    Router::post('/perfil/foto', 'PerfilController@updatePhoto');
-    Router::post('/perfil/senha', 'PerfilController@changePassword');
-
-    Router::get('/configuracoes', 'DashboardController@configuracoes');
-    Router::post('/configuracoes/backup', 'DashboardController@backup');
-    Router::post('/configuracoes/delete-all', 'DashboardController@deleteAllData');
-    Router::get('/configuracoes/export', 'DashboardController@exportCsv');
 
     Router::get('/logout', 'AuthController@logout');
 });
@@ -104,6 +87,14 @@ Router::group([
     Router::get('/avisos', 'AvisosController@index');
     Router::get('/logout', 'AuthController@logout');
 });
+
+// Rota fallback para páginas não encontradas
+Router::get('/{any}', function () {
+    http_response_code(404);
+    View::render('errors/404', [
+        'message' => 'A página que você tentou acessar não foi encontrada.'
+    ]);
+})->where(['any' => '.*']);
 
 //
 // ------------------------

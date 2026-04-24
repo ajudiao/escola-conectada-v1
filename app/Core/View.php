@@ -15,7 +15,7 @@ class View
     {
         if (self::$twig === null) {
 
-            $loader = new FilesystemLoader(BASE_PATH . '/escola/public/views');
+            $loader = new FilesystemLoader(BASE_PATH . '/public/views');
 
             self::$twig = new Environment($loader, [
                 'cache' => false,

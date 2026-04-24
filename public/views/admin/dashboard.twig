@@ -1,3 +1,5 @@
+{% extends "layouts/main.twig" %}
+{% block content %}
    <!-- Main Content -->
     <main class="main-content">
       <!-- Header -->
@@ -242,6 +244,7 @@
       </div>
 
       <!-- Footer -->
-      {{ include '../components/footer.twig' }}
+      {% include "components/footer.twig" %}
     </main>
   
+  {% endblock %}

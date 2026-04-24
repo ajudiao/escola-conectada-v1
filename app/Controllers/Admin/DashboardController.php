@@ -11,39 +11,9 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $countCar = (new CarRepository())->getTheNumberOfVehicles();
-        $countSeles = (new VendaRepository())->getTheNumbersSeles();
-        $countClients = (new ClienteRepository())->getTheNumbersClients();
-        
-        // Dados para os gráficos
-        $vendaRepo = new VendaRepository();
-        $salesByMonth = $vendaRepo->getSalesByMonth(12);
-        $topBrands = $vendaRepo->getTopBrands(5);
-        
-        // Mês/Ano atual ou selecionado
-        $currentMonth = date('m');
-        $currentYear = date('Y');
-        $selectedMonth = isset($_GET['month']) ? (int)$_GET['month'] : $currentMonth;
-        $selectedYear = isset($_GET['year']) ? (int)$_GET['year'] : $currentYear;
-        
-        // Buscar vendas do mês selecionado agrupadas por dia
-        $salesByDay = $vendaRepo->getSalesByDay($selectedYear, $selectedMonth);
-        $lastDayWithSales = $vendaRepo->getLastDayWithSales($selectedYear, $selectedMonth);
-        $recentSales = $vendaRepo->getRecentSales(4);
-
-        echo $this->view('dashboard/index', [
-            'countCar' => $countCar,
-            'countSeles' => $countSeles,
-            'countClients' => $countClients,
-            'salesByMonth' => $salesByMonth,
-            'topBrands' => $topBrands,
-            'salesByDay' => $salesByDay,
-            'selectedMonth' => $selectedMonth,
-            'selectedYear' => $selectedYear,
-            'lastDayWithSales' => $lastDayWithSales,
-            'recentSales' => $recentSales,
-            'title' => 'Dashboard - ' . APP_NAME,
+        echo $this->view('admin/dashboard', [
             'userName' => $_SESSION['user_nome'] ?? 'Admin',
+            'title' => "Dashboard - Administração | Escola Conectada",
         ]);
     }
 
