@@ -1,0 +1,77 @@
+<!-- Modal: Novo/Editar Aviso -->
+<div class="modal fade" id="novoAvisoModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitulo">Publicar Novo Aviso</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="formNovoAviso" action="/admin/avisos" method="POST">
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label">Título do Aviso <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" name="titulo" id="avisoTitulo" required
+                placeholder="Digite o título do aviso">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Destinatário <span class="text-danger">*</span></label>
+              <select class="form-control form-select" name="destinatario" id="avisoDestinatario" required>
+                <option value="">Selecione...</option>
+                <option value="geral">Geral (Todos)</option>
+                <option value="professores">Apenas Professores</option>
+                <option value="encarregados">Apenas Encarregados</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Prioridade</label>
+              <select class="form-control form-select" name="prioridade" id="avisoPrioridade">
+                <option value="normal">Normal</option>
+                <option value="alta">Alta</option>
+                <option value="urgente">Urgente</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Conteúdo do Aviso <span class="text-danger">*</span></label>
+              <textarea class="form-control" name="conteudo" id="avisoConteudo" rows="5" required
+                placeholder="Digite o conteúdo completo do aviso..."></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="botaoSubmitModal">Publicar Aviso</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Função para abrir o modal de edição com dados do aviso
+  function editarAviso(id, titulo, conteudo, destinatario, prioridade) {
+    document.getElementById('modalTitulo').textContent = 'Editar Aviso';
+    document.getElementById('formNovoAviso').action = '/admin/avisos/' + id;
+    document.getElementById('avisoTitulo').value = titulo;
+    document.getElementById('avisoConteudo').value = conteudo;
+    document.getElementById('avisoDestinatario').value = destinatario;
+    document.getElementById('avisoPrioridade').value = prioridade;
+    document.getElementById('botaoSubmitModal').textContent = 'Atualizar Aviso';
+    
+    const modal = new bootstrap.Modal(document.getElementById('novoAvisoModal'));
+    modal.show();
+  }
+
+  // Função para resetar o modal ao fechar
+  document.getElementById('novoAvisoModal').addEventListener('hidden.bs.modal', function () {
+    document.getElementById('modalTitulo').textContent = 'Publicar Novo Aviso';
+    document.getElementById('formNovoAviso').action = '/admin/avisos';
+    document.getElementById('formNovoAviso').reset();
+    document.getElementById('botaoSubmitModal').textContent = 'Publicar Aviso';
+  });
+
+  // Confirmação de exclusão
+  function confirmarDelecao(avisoTitulo) {
+    return confirm('Tem certeza que deseja deletar o aviso "' + avisoTitulo + '"?');
+  }
+</script>

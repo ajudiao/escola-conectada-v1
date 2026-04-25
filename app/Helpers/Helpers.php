@@ -75,4 +75,19 @@ class Helpers
     {
         return htmlspecialchars(trim($value), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     }
+
+    public static function flashMessage(string $message, string $type = 'success'): void
+    {
+        if (!isset($_SESSION['flash'])) {
+            $_SESSION['flash'] = [];
+        }
+        $_SESSION['flash'][] = ['message' => $message, 'type' => $type];
+    }
+
+    public static function getFlashMessages(): array
+    {
+        $messages = $_SESSION['flash'] ?? [];
+        unset($_SESSION['flash']);
+        return $messages;
+    }
 }

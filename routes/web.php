@@ -36,7 +36,53 @@ Router::group([
     // Dashboard
     Router::get('', 'DashboardController@index');
     Router::get('/', 'DashboardController@index');
-    Router::get('/notificacoes', 'NotificationsController@index');
+    Router::get('/perfil', 'DashboardController@perfil');
+    
+    Router::get('/avisos', 'AvisosController@index');
+    Router::post('/avisos', 'AvisosController@store');
+    Router::get('/avisos/{id}/edit', 'AvisosController@edit');
+    Router::post('/avisos/{id}', 'AvisosController@update');
+    Router::post('/avisos/{id}/delete', 'AvisosController@destroy');
+   
+    // Professor
+    Router::get('/professores', 'ProfessoresController@index');
+    Router::get('/professores/create', 'ProfessoresController@create');
+    Router::post('/professores', 'ProfessoresController@store');
+    Router::get('/professores/{id}/edit', 'ProfessoresController@edit');
+    Router::post('/professores/{id}', 'ProfessoresController@update');
+    Router::post('/professores/{id}/delete', 'ProfessoresController@destroy');
+
+    // Classe
+    Router::get('/classes', 'ClasseController@index');
+    Router::get('/classes/create', 'ClasseController@create');
+    Router::get('/classe/show', 'ClasseController@show');
+    Router::post('/classes', 'ClasseController@store');
+    Router::get('/classes/{id}/edit', 'ClasseController@edit');
+    Router::post('/classes/{id}', 'ClasseController@update');
+    Router::post('/classes/{id}/delete', 'ClasseController@destroy');
+
+    // Turmas
+    Router::get('/turmas', 'TurmaController@index');
+    Router::get('/turma/create', 'TurmaController@create');
+    Router::get('/turma/show', 'TurmaController@show');
+    Router::post('/turma', 'TurmaController@store');
+    Router::get('/turma/{id}/edit', 'TurmaController@edit');
+    Router::post('/turma/{id}', 'TurmaController@update');
+    Router::post('/turma/{id}/delete', 'TurmaController@destroy');
+
+    // Alunos
+    Router::get('/alunos', 'AlunosController@index');
+    Router::get('/alunos/create', 'AlunosController@create');
+    Router::post('/alunos', 'AlunosController@store');
+    Router::get('/alunos/{id}/edit', 'AlunosController@edit');
+    Router::post('/alunos/{id}', 'AlunosController@update');
+    Router::post('/alunos/{id}/delete', 'AlunosController@destroy');
+    Router::get('/aluno/show', 'AlunosController@show');
+    
+    // Encarregado
+    Router::get('/encarregados', 'EncarregadoController@index');
+    Router::get('/encarregado/show', 'EncarregadoController@show');
+    
 
     Router::get('/logout', 'AuthController@logout');
 });

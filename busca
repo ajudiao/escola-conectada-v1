@@ -1,0 +1,61 @@
+SELECT d.*
+FROM disciplina d
+JOIN classe_disciplina cd ON cd.disciplina_id = d.id
+WHERE cd.classe_id = ?
+ORDER BY d.nome;
+
+
+
+SELECT 
+    c.id,
+    c.nome,
+    c.descricao
+FROM classe c
+INNER JOIN classe_disciplina cd ON cd.classe_id = c.id
+WHERE cd.disciplina_id = ?
+ORDER BY c.id;
+
+SELECT 
+    c.id,
+    c.nome,
+    c.descricao
+FROM classe c
+INNER JOIN classe_disciplina cd ON cd.classe_id = c.id
+WHERE cd.disciplina_id = 2
+ORDER BY c.id;
+
+
+Query correta (disciplinas + classes associadas)
+SELECT 
+    d.id,
+    d.nome AS disciplina,
+    d.descricao,
+    GROUP_CONCAT(c.nome ORDER BY c.id SEPARATOR ', ') AS classes
+FROM disciplina d
+INNER JOIN classe_disciplina cd ON cd.disciplina_id = d.id
+INNER JOIN classe c ON c.id = cd.classe_id
+GROUP BY d.id, d.nome, d.descricao
+ORDER BY d.id;
+
+ou
+
+SELECT 
+    d.nome AS disciplina,
+    c.nome AS classe
+FROM disciplina d
+INNER JOIN classe_disciplina cd ON cd.disciplina_id = d.id
+INNER JOIN classe c ON c.id = cd.classe_id
+ORDER BY d.id, c.id;
+
+
+Ver turma e classes associadas
+SELECT 
+    t.codigo,
+    c.nome AS classe,
+    t.sala,
+    t.turno,
+    t.ano_lectivo,
+    t.quantidade_alunos
+FROM turma t
+JOIN classe c ON c.id = t.id_classe
+ORDER BY c.id, t.codigo;

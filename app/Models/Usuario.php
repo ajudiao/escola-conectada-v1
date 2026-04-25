@@ -5,7 +5,7 @@ namespace App\Models;
 class Usuario
 {
     public ?int $id;
-    public string $nome;
+    public string $nome_completo;
     public string $email;
     public string $telefone;
     public string $senha;
@@ -15,13 +15,13 @@ class Usuario
 
     public function __construct(array $data = [])
     {
-        $this->id         = isset($data['id']) ? (int)$data['id'] : null;
-        $this->nome       = $data['nome'] ?? '';
-        $this->email      = $data['email'] ?? '';
-        $this->telefone   = $data['telefone'] ?? '';
-        $this->senha      = $data['senha'] ?? '';
-        $this->perfil     = $data['perfil'] ?? 'Administrador';
-        $this->created_at = $data['created_at'] ?? date('Y-m-d H:i:s');
-        $this->foto       = $data['foto'] ?? null;
+        $this->id                   = isset($data['id']) ? (int)$data['id'] : null;
+        $this->nome_completo        = $data['nome_completo'] ?? '';
+        $this->email                = $data['email'] ?? '';
+        $this->telefone             = $data['telefone'] ?? '';
+        $this->senha                = $data['senha'] ?? '';
+        $this->perfil               = $data['perfil'] ?? 'Administrador';
+        $this->created_at           = $data['created_at'] ?? date('Y-m-d H:i:s');
+        $this->foto                 = $data['foto'] ?? null;
     }
 }
