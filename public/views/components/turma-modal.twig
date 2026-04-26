@@ -1,0 +1,65 @@
+<!-- Modal: Adicionar / Editar Turma -->
+<div class="modal fade" id="turmaModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="turmaModalTitle">Nova Turma</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="formTurma" action="/admin/turma" method="POST">
+        <div class="modal-body">
+          <div id="turmaFormAlert" class="alert d-none" role="alert"></div>
+          <input type="hidden" id="turmaId" name="id" value="">
+
+          <div class="mb-3">
+            <label class="form-label">Código</label>
+            <input id="turmaCodigo" name="codigo" class="form-control" placeholder="Ex: 4ª A, 7ª B" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Classe</label>
+            <select id="turmaClasse" name="id_classe" class="form-select" required>
+              <option value="">Selecione uma classe</option>
+              {% for classe in classes %}
+              <option value="{{ classe.id }}">{{ classe.nome }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Turno</label>
+            <select id="turmaTurno" name="turno" class="form-select" required>
+              <option value="">Selecione um turno</option>
+              <option value="manha">Matutino</option>
+              <option value="tarde">Vespertino</option>
+              <option value="noite">Noturno</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Sala</label>
+            <input id="turmaSala" name="sala" type="text" class="form-control" placeholder="Ex: A101" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Ano Letivo</label>
+            <select id="turmaAno" name="ano_lectivo" class="form-select" required>
+              <option value="2025/2026">2025/2026</option>
+              <option value="2024/2025">2024/2025</option>
+              <option value="2023/2024">2023/2024</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Quantidade de Alunos</label>
+            <input id="turmaNum" name="quantidade_alunos" type="number" min="0" class="form-control" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -10,37 +10,53 @@ use App\Repositories\AvisoRepository;
 
 class AvisosController extends Controller{
 
-    private AvisoRepository $avisoRepo;
-
-    public function __construct()
+    private function getActivityLogs()
     {
-        $this->avisoRepo = new AvisoRepository();
+        $db = \App\Core\Database::getInstance();
+        $stmt = $db->query("SELECT al.*, u.nome_completo as user_nome FROM activity_log al LEFT JOIN usuarios u ON al.user_id = u.id ORDER BY al.created_at DESC LIMIT 100");
+        return $stmt->fetchAll();
     }
 
     public function index()
     {
-        // Obter filtros da query string
-        $search = $_GET['search'] ?? null;
-        $destinatario = $_GET['destinatario'] ?? null;
-        $prioridade = $_GET['prioridade'] ?? null;
+        $perfil = $_SESSION['user_perfil'] ?? 'admin';
 
-        // Buscar avisos com filtros aplicados
-        if ($search || $destinatario || $prioridade) {
-            $avisos = $this->avisoRepo->findFiltered($search, $destinatario, $prioridade);
+        if ($perfil === 'admin') {
+            // Mostrar logs de atividade para admin
+            $logs = $this->getActivityLogs();
+            echo $this->view('admin/avisos', [
+                'userName' => $_SESSION['user_nome'] ?? 'Admin',
+                'title' => "Logs de Atividade | Escola Conectada",
+                'flashMessages' => Helpers::getFlashMessages(),
+                'logs' => $logs,
+                'perfil' => $perfil,
+                'isLogs' => true,
+            ]);
         } else {
-            $avisos = $this->avisoRepo->findAll();
-        }
+            // Obter filtros da query string
+            $search = $_GET['search'] ?? null;
+            $destinatario = $_GET['destinatario'] ?? null;
+            $prioridade = $_GET['prioridade'] ?? null;
 
-        echo $this->view('admin/avisos', [
-            'userName' => $_SESSION['user_nome'] ?? 'Admin',
-            'title' => "Avisos | Escola Conectada",
-            'flashMessages' => Helpers::getFlashMessages(),
-            'avisos' => $avisos,
-            'search' => $search,
-            'destinatario' => $destinatario,
-            'prioridade' => $prioridade,
-            'perfil' => $_SESSION['user_perfil'] ?? 'admin',
-        ]);
+            // Buscar avisos com filtros aplicados
+            if ($search || $destinatario || $prioridade) {
+                $avisos = $this->avisoRepo->findFiltered($search, $destinatario, $prioridade);
+            } else {
+                $avisos = $this->avisoRepo->findAll();
+            }
+
+            echo $this->view('admin/avisos', [
+                'userName' => $_SESSION['user_nome'] ?? 'Admin',
+                'title' => "Avisos | Escola Conectada",
+                'flashMessages' => Helpers::getFlashMessages(),
+                'avisos' => $avisos,
+                'search' => $search,
+                'destinatario' => $destinatario,
+                'prioridade' => $prioridade,
+                'perfil' => $perfil,
+                'isLogs' => false,
+            ]);
+        }
     }
 
     public function store()
@@ -70,6 +86,7 @@ class AvisosController extends Controller{
             try {
                 $this->avisoRepo->create($aviso);
                 Helpers::flashMessage('Aviso "' . $titulo . '" publicado com sucesso!', 'success');
+                Helpers::logActivity("Aviso Criado", "Aviso '$titulo' criado.");
             } catch (\Exception $e) {
                 Helpers::flashMessage('Erro ao publicar aviso: ' . $e->getMessage(), 'error');
             }
@@ -129,6 +146,7 @@ class AvisosController extends Controller{
             try {
                 $this->avisoRepo->update($aviso);
                 Helpers::flashMessage('Aviso "' . $titulo . '" atualizado com sucesso!', 'success');
+                Helpers::logActivity("Aviso Atualizado", "Aviso '$titulo' atualizado.");
             } catch (\Exception $e) {
                 Helpers::flashMessage('Erro ao atualizar aviso: ' . $e->getMessage(), 'error');
             }
@@ -150,6 +168,7 @@ class AvisosController extends Controller{
         try {
             $this->avisoRepo->delete($id);
             Helpers::flashMessage('Aviso "' . $aviso->titulo . '" deletado com sucesso!', 'success');
+            Helpers::logActivity("Aviso Deletado", "Aviso '$aviso->titulo' deletado.");
         } catch (\Exception $e) {
             Helpers::flashMessage('Erro ao deletar aviso: ' . $e->getMessage(), 'error');
         }

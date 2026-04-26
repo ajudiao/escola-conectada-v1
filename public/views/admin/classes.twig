@@ -5,12 +5,20 @@
       {% include 'components/header.twig' %}
 
       <div class="page-content">
+          {% if flashMessages %}
+          {% for message in flashMessages %}
+            <div class="alert alert-{{ message.type == 'success' ? 'success' : 'danger' }} alert-dismissible fade show" role="alert">
+              {{ message.message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
         <div class="page-header d-flex justify-content-between align-items-center">
           <div>
             <h2 class="page-title">Gestão de Classes</h2>
             <p class="page-subtitle">Classes do Ensino Básico (1ª até 9ª)</p>
           </div>
-          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#classModal">Nova Classe</button>
+          <button id="btnNewClass" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#classModal">Nova Classe</button>
         </div>
 
         <!-- Filters -->
@@ -57,105 +65,29 @@
                   </tr>
                 </thead>
                 <tbody>
+                  {% for classe in classes %}
                   <tr>
-                    <td><span class="badge bg-info">1ª</span></td>
-                    <td>6 disciplinas</td>
-                    <td>3 turmas</td>
-                    <td>Classe do primeiro ano do Ensino Básico...</td>
+                    <td><span class="badge bg-info">{{ classe.nome }}</span></td>
+                    <td>{{ classe.num_disciplinas }} disciplinas</td>
+                    <td>{{ classe.num_turmas }} turmas</td> <!-- Placeholder, ajustar depois -->
+                    <td>{{ classe.descricao }}</td>
                     <td>
-                      <a href="/admin/classe/show" class="btn btn-sm btn-outline-info me-1">Ver</a>
+                      <a href="/admin/classe/show/{{ classe.id }}" class="btn btn-sm btn-outline-info me-1">Ver</a>
                       <button class="btn btn-sm btn-outline-secondary me-1 btn-edit" data-bs-toggle="modal"
-                        data-bs-target="#classModal" data-numero="1" data-nome="1ª Classe">Editar</button>
-                      <button class="btn btn-sm btn-outline-danger">Eliminar</button>
+                        data-bs-target="#classModal" data-id="{{ classe.id }}" data-nome="{{ classe.nome }}">Editar</button>
+                      <form method="POST" action="/admin/classes/{{ classe.id }}/delete" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja eliminar esta classe?')">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                      </form>
                     </td>
                   </tr>
+                  {% endfor %}
                 </tbody>
               </table>
             </div>
           </div>
         </div>
 
-        <!-- Modal: Adicionar / Editar Classe -->
-        <div class="modal fade" id="classModal" tabindex="-1">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="classModalTitle">Nova Classe</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-              </div>
-              <form id="formClass">
-                <div class="modal-body">
-                  <input type="hidden" id="classId" value="">
-                  <div class="mb-3">
-                    <label class="form-label">Classe</label>
-                    <select id="classNumero" class="form-select form-control">
-                      <option value="">Selecione a classe</option>
-                      <option value="1">1ª Classe</option>
-                      <option value="2">2ª Classe</option>
-                      <option value="3">3ª Classe</option>
-                      <option value="4">4ª Classe</option>
-                      <option value="5">5ª Classe</option>
-                      <option value="6">6ª Classe</option>
-                      <option value="7">7ª Classe</option>
-                      <option value="8">8ª Classe</option>
-                      <option value="9">9ª Classe</option>
-                    </select>
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Descrição</label>
-                    <textarea id="classDesc" class="form-control" rows="3" placeholder="Descrição da classe..."></textarea>
-                  </div>
-                  
-                  <div class="mb-3">
-                    <label class="form-label">Disciplinas da Classe</label>
-                    <div class="row g-2">
-                      <div class="col-md-6">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="disc_port" value="Português" name="disciplinas">
-                          <label class="form-check-label" for="disc_port">Português</label>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="disc_mat" value="Matemática" name="disciplinas">
-                          <label class="form-check-label" for="disc_mat">Matemática</label>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="disc_cien" value="Ciências" name="disciplinas">
-                          <label class="form-check-label" for="disc_cien">Ciências</label>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="disc_hist" value="História" name="disciplinas">
-                          <label class="form-check-label" for="disc_hist">História</label>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="disc_geo" value="Geografia" name="disciplinas">
-                          <label class="form-check-label" for="disc_geo">Geografia</label>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="disc_fi" value="Educação Física" name="disciplinas">
-                          <label class="form-check-label" for="disc_fi">Educação Física</label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-                  <button type="submit" class="btn btn-primary">Guardar</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
+        {% include 'components/class-modal.twig' %}
       </div>
       <footer class="main-footer">
         <p class="mb-0">Escola Conectada &copy; 2026 - Ministério da Educação de Angola</p>
@@ -163,36 +95,6 @@
     </main>
   </div>
   
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      document.addEventListener('click', function (e) {
-        const btn = e.target.closest('.btn-edit');
-        if (!btn) return;
-        const numero = btn.getAttribute('data-numero') || '';
-        const nome = btn.getAttribute('data-nome') || '';
-
-        document.getElementById('classModalTitle').textContent = 'Editar Classe';
-        document.getElementById('classNumero').value = numero;
-        document.getElementById('classNome').value = nome;
-      });
-
-      const classModalEl = document.getElementById('classModal');
-      classModalEl.addEventListener('hidden.bs.modal', function () {
-        document.getElementById('classModalTitle').textContent = 'Nova Classe';
-        document.getElementById('formClass').reset();
-      });
-
-      document.getElementById('formClass').addEventListener('submit', function (e) {
-        e.preventDefault();
-        const data = {
-          numero: document.getElementById('classNumero').value,
-          nome: document.getElementById('classNome').value,
-          descricao: document.getElementById('classDesc').value
-        };
-        console.log('Classe form submit (stub):', data);
-        bootstrap.Modal.getInstance(classModalEl).hide();
-      });
-    });
-  </script>
+  <script src="/js/classes.js"></script>
 
 {% endblock %}

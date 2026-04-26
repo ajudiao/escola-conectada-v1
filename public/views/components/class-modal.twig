@@ -1,0 +1,54 @@
+<!-- Modal: Adicionar / Editar Classe -->
+<div class="modal fade" id="classModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="classModalTitle">Nova Classe</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="formClass" action="/admin/classe" method="POST">
+        <div class="modal-body">
+          <div id="classFormAlert" class="alert d-none" role="alert"></div>
+          <input type="hidden" id="classId" name="id" value="">
+          <div class="mb-3">
+            <label class="form-label">Classe</label>
+            <select id="classNumero" name="numero" class="form-select form-control">
+              <option value="">Selecione a classe</option>
+              <option value="1">1ª Classe</option>
+              <option value="2">2ª Classe</option>
+              <option value="3">3ª Classe</option>
+              <option value="4">4ª Classe</option>
+              <option value="5">5ª Classe</option>
+              <option value="6">6ª Classe</option>
+              <option value="7">7ª Classe</option>
+              <option value="8">8ª Classe</option>
+              <option value="9">9ª Classe</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Descrição</label>
+            <textarea id="classDesc" name="descricao" class="form-control" rows="3" placeholder="Descrição da classe..."></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Disciplinas da Classe</label>
+            <div class="row g-2">
+              {% for disciplina in disciplinas %}
+              <div class="col-md-6">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="disc_{{ disciplina.id }}" value="{{ disciplina.id }}" name="disciplinas[]">
+                  <label class="form-check-label" for="disc_{{ disciplina.id }}">{{ disciplina.nome }}</label>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -20,9 +20,10 @@
         <!-- Page Header -->
         <div class="page-header d-flex justify-content-between align-items-start flex-wrap gap-3">
           <div>
-            <h2 class="page-title">Gestão de Avisos</h2>
-            <p class="page-subtitle mb-0">Publique avisos para toda a comunidade escolar</p>
+            <h2 class="page-title">{% if isLogs %}Logs de Atividade{% else %}Gestão de Avisos{% endif %}</h2>
+            <p class="page-subtitle mb-0">{% if isLogs %}Registro de todas as operações realizadas no sistema{% else %}Publique avisos para toda a comunidade escolar{% endif %}</p>
           </div>
+          {% if not isLogs %}
           <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#novoAvisoModal">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -31,9 +32,11 @@
             </svg>
             Novo Aviso
           </button>
+          {% endif %}
         </div>
 
         <!-- Filters -->
+        {% if not isLogs %}
         <div class="card mb-4">
           <div class="card-body">
             <form method="GET" action="/admin/avisos" class="row g-3 align-items-end mb-4">
@@ -68,8 +71,12 @@
                 </div>
               {% endif %}
             </form>
+          </div>
+        </div>
+        {% endif %}
 
         <!-- Avisos List -->
+        {% if not isLogs %}
         <div class="avisos-list">
           {% if avisos %}
             {% for aviso in avisos %}
@@ -126,6 +133,43 @@
             </div>
           {% endif %}
         </div>
+        {% else %}
+        <!-- Logs List -->
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Data/Hora</th>
+                    <th>Usuário</th>
+                    <th>Ação</th>
+                    <th>Descrição</th>
+                    <th>IP</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if logs %}
+                    {% for log in logs %}
+                      <tr>
+                        <td>{{ log.created_at | date('d/m/Y H:i:s') }}</td>
+                        <td>{{ log.user_nome ?: 'Sistema' }}</td>
+                        <td><span class="badge bg-secondary">{{ log.action }}</span></td>
+                        <td>{{ log.description }}</td>
+                        <td>{{ log.ip_address ?: '-' }}</td>
+                      </tr>
+                    {% endfor %}
+                  {% else %}
+                    <tr>
+                      <td colspan="5" class="text-center">Nenhum log de atividade encontrado.</td>
+                    </tr>
+                  {% endif %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        {% endif %}
       </div>
 
       <!-- Footer -->
@@ -135,6 +179,8 @@
     </main>
   </div>
 
+  {% if not isLogs %}
   {% include 'components/aviso-modal.twig' %}
+  {% endif %}
 
 {% endblock %}

@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Core\Database;
 
 class Helpers
 {
@@ -82,6 +83,19 @@ class Helpers
             $_SESSION['flash'] = [];
         }
         $_SESSION['flash'][] = ['message' => $message, 'type' => $type];
+    }
+
+    public static function logActivity(string $action, string $description): void
+    {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("INSERT INTO activity_log (user_id, action, description, ip_address, user_agent) VALUES (?, ?, ?, ?, ?)");
+        $stmt->execute([
+            $_SESSION['user_id'] ?? null,
+            $action,
+            $description,
+            $_SERVER['REMOTE_ADDR'] ?? null,
+            $_SERVER['HTTP_USER_AGENT'] ?? null
+        ]);
     }
 
     public static function getFlashMessages(): array

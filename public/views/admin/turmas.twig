@@ -23,6 +23,15 @@
           <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#turmaModal">Nova Turma</button>
         </div>
 
+        {% if flashMessages %}
+          {% for message in flashMessages %}
+            <div class="alert alert-{{ message.type == 'success' ? 'success' : 'danger' }} alert-dismissible fade show" role="alert">
+              {{ message.message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+
         <!-- Filters -->
         <div class="card mb-3">
           <div class="card-body">
@@ -78,106 +87,40 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>4A</td>
-                    <td><span class="badge bg-info">4ª Classe</span></td>
-                    <td>Manhã</td>
-                    <td>A101</td>
-                    <td>2025/2026</td>
-                    <td>Maria João</td>
-                    <td>32</td>
-                    <td>
-                      <a href="/admin/turma/show" class="btn btn-sm btn-outline-info me-1">Ver</a>
-                      <button class="btn btn-sm btn-outline-secondary me-1 btn-edit" data-bs-toggle="modal"
-                        data-bs-target="#turmaModal" data-codigo="4ª A" data-classe="4" data-turno="Matutino"
-                        data-sala="A101" data-ano="2025/2026" data-prof="Maria João" data-num="32">Editar</button>
-                      <button class="btn btn-sm btn-outline-danger">Eliminar</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>7B</td>
-                    <td><span class="badge bg-info">7ª Classe</span></td>
-                    <td>Tarde</td>
-                    <td>B202</td>
-                    <td>2024/2025</td>
-                    <td>Joaquim Silva</td>
-                    <td>28</td>
-                    <td>
-                      <a href="turma-detalhes.html" class="btn btn-sm btn-outline-info me-1">Ver</a>
-                      <button class="btn btn-sm btn-outline-secondary me-1 btn-edit" data-bs-toggle="modal"
-                        data-bs-target="#turmaModal" data-codigo="7ª B" data-classe="7" data-turno="Vespertino"
-                        data-sala="B202" data-ano="2024/2025" data-prof="Joaquim Silva" data-num="28">Editar</button>
-                      <button class="btn btn-sm btn-outline-danger">Eliminar</button>
-                    </td>
-                  </tr>
+                  {% if turmas is not empty %}
+                    {% for turma in turmas %}
+                      <tr>
+                        <td>{{ turma.codigo }}</td>
+                        <td><span class="badge bg-info">{{ turma.classe ?: '—' }}</span></td>
+                        <td>{{ turma.turno }}</td>
+                        <td>{{ turma.sala }}</td>
+                        <td>{{ turma.ano_lectivo }}</td>
+                        <td>—</td>
+                        <td>{{ turma.quantidade_alunos }}</td>
+                        <td>
+                          <a href="/admin/turma/show/{{ turma.id }}" class="btn btn-sm btn-outline-info me-1">Ver</a>
+                          <button class="btn btn-sm btn-outline-secondary me-1 btn-edit" data-bs-toggle="modal"
+                            data-bs-target="#turmaModal" data-id="{{ turma.id }}" data-codigo="{{ turma.codigo }}"
+                            data-classe="{{ turma.id_classe }}" data-turno="{{ turma.turno }}"
+                            data-sala="{{ turma.sala }}" data-ano="{{ turma.ano_lectivo }}" data-num="{{ turma.quantidade_alunos }}">Editar</button>
+                          <form action="/admin/turma/{{ turma.id }}/delete" method="POST" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                          </form>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  {% else %}
+                    <tr>
+                      <td colspan="8" class="text-center text-muted">Nenhuma turma cadastrada.</td>
+                    </tr>
+                  {% endif %}
                 </tbody>
               </table>
             </div>
           </div>
         </div>
 
-        <!-- Modal: Adicionar / Editar Turma -->
-        <div class="modal fade" id="turmaModal" tabindex="-1">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="turmaModalTitle">Nova Turma</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-              </div>
-              <form id="formTurma">
-                <div class="modal-body">
-                  <input type="hidden" id="turmaId" value="">
-                  <div class="mb-3">
-                    <label class="form-label">Código</label>
-                    <input id="turmaCodigo" class="form-control" placeholder="Ex: 4ª A, 7ª B">
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Classe</label>
-                    <select id="turmaCiclo" class="form-select form-control">
-                      <option value="">Selecione uma classe</option>
-                      <option value="1">1ª Classe</option>
-                      <option value="2">2ª Classe</option>
-                      <option value="3">3ª Classe</option>
-                      <option value="4">4ª Classe</option>
-                      <option value="5">5ª Classe</option>
-                      <option value="6">6ª Classe</option>
-                      <option value="7">7ª Classe</option>
-                      <option value="8">8ª Classe</option>
-                      <option value="9">9ª Classe</option>
-                    </select>
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Turno</label>
-                    <select id="turmaTurno" class="form-select form-control">
-                      <option value="">Selecione um turno</option>
-                      <option value="Matutino">Matutino (Manhã)</option>
-                      <option value="Vespertino">Vespertino (Tarde)</option>
-                      <option value="Noturno">Noturno (Noite)</option>
-                    </select>
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Sala</label>
-                    <input id="turmaSala" type="text" class="form-control" placeholder="Ex: A101">
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Ano Letivo</label>
-                    <select id="turmaAno" class="form-select form-control">
-                      <option value="2025/2026" selected>2025/2026</option>
-                    </select>
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Nº Alunos</label>
-                    <input id="turmaNum" type="number" class="form-control">
-                  </div>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-                  <button type="submit" class="btn btn-primary">Guardar</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
+        {% include 'components/turma-modal.twig' %}
       </div>
       <footer class="main-footer">
         <p class="mb-0">Escola Conectada &copy; 2026 - Ministério da Educação de Angola</p>
@@ -187,49 +130,47 @@
  
   <script>
     document.addEventListener('DOMContentLoaded', function () {
+      const turmaModalEl = document.getElementById('turmaModal');
+      const turmaForm = document.getElementById('formTurma');
+      const turmaModalTitle = document.getElementById('turmaModalTitle');
+      const turmaIdInput = document.getElementById('turmaId');
+      const turmaCodigo = document.getElementById('turmaCodigo');
+      const turmaClasse = document.getElementById('turmaClasse');
+      const turmaTurno = document.getElementById('turmaTurno');
+      const turmaSala = document.getElementById('turmaSala');
+      const turmaAno = document.getElementById('turmaAno');
+      const turmaNum = document.getElementById('turmaNum');
+
       document.addEventListener('click', function (e) {
         const btn = e.target.closest('.btn-edit');
         if (!btn) return;
+
+        const id = btn.getAttribute('data-id') || '';
         const codigo = btn.getAttribute('data-codigo') || '';
-        const curso = btn.getAttribute('data-curso') || '';
-        const ciclo = btn.getAttribute('data-ciclo') || '';
+        const classe = btn.getAttribute('data-classe') || '';
+        const turno = btn.getAttribute('data-turno') || '';
         const sala = btn.getAttribute('data-sala') || '';
         const ano = btn.getAttribute('data-ano') || '';
-        const prof = btn.getAttribute('data-prof') || '';
         const num = btn.getAttribute('data-num') || '';
 
-        document.getElementById('turmaModalTitle').textContent = 'Editar Turma';
-        document.getElementById('turmaCodigo').value = codigo;
-        document.getElementById('turmaCurso').value = curso;
-        document.getElementById('turmaCiclo').value = ciclo;
-        document.getElementById('turmaSala').value = sala;
-        document.getElementById('turmaAno').value = ano;
-        document.getElementById('turmaProf').value = prof;
-        document.getElementById('turmaNum').value = num;
+        turmaModalTitle.textContent = 'Editar Turma';
+        turmaIdInput.value = id;
+        turmaCodigo.value = codigo;
+        turmaClasse.value = classe;
+        turmaTurno.value = turno;
+        turmaSala.value = sala;
+        turmaAno.value = ano;
+        turmaNum.value = num;
+        turmaForm.action = '/admin/turma/' + id;
       });
 
-      const turmaModalEl = document.getElementById('turmaModal');
       turmaModalEl.addEventListener('hidden.bs.modal', function () {
-        document.getElementById('turmaModalTitle').textContent = 'Nova Turma';
-        document.getElementById('formTurma').reset();
+        turmaModalTitle.textContent = 'Nova Turma';
+        turmaForm.reset();
+        turmaForm.action = '/admin/turma';
+        turmaIdInput.value = '';
       });
 
-      document.getElementById('formTurma').addEventListener('submit', function (e) {
-        e.preventDefault();
-        const data = {
-          codigo: document.getElementById('turmaCodigo').value,
-          curso: document.getElementById('turmaCurso').value,
-          ciclo: document.getElementById('turmaCiclo').value,
-          sala: document.getElementById('turmaSala').value,
-          ano: document.getElementById('turmaAno').value,
-          professor: document.getElementById('turmaProf').value,
-          numero: document.getElementById('turmaNum').value
-        };
-        console.log('Turma form submit (stub):', data);
-        bootstrap.Modal.getInstance(turmaModalEl).hide();
-      });
-
-      // Filter turmas by search, classe, sala and ano letivo
       document.getElementById('btnFilterTurma').addEventListener('click', function() {
         const q = document.getElementById('filterTurmaSearch').value.trim().toLowerCase();
         const classe = document.getElementById('filterTurmaCiclo').value;
@@ -239,14 +180,13 @@
         document.querySelectorAll('table tbody tr').forEach(tr => {
           const cols = tr.children;
           const codigo = (cols[0]?.textContent||'').toLowerCase();
-          const curso = (cols[1]?.textContent||'').toLowerCase();
-          const classeTd = (cols[2]?.textContent||'').trim();
+          const classeTd = (cols[1]?.textContent||'').trim();
+          const turnoTd = (cols[2]?.textContent||'').toLowerCase();
           const salaTd = (cols[3]?.textContent||'').toLowerCase();
           const anoTd = (cols[4]?.textContent||'').trim();
-          const prof = (cols[5]?.textContent||'').toLowerCase();
 
           let matches = true;
-          if (q) matches = matches && (codigo.includes(q) || curso.includes(q) || prof.includes(q));
+          if (q) matches = matches && (codigo.includes(q) || classeTd.toLowerCase().includes(q) || turnoTd.includes(q));
           if (classe) matches = matches && (classeTd === classe);
           if (sala) matches = matches && salaTd.includes(sala);
           if (ano) matches = matches && (anoTd === ano);

@@ -47,6 +47,7 @@ Router::group([
     // Professor
     Router::get('/professores', 'ProfessoresController@index');
     Router::get('/professores/create', 'ProfessoresController@create');
+    Router::get('/professores/show/{id}', 'ProfessoresController@show');
     Router::post('/professores', 'ProfessoresController@store');
     Router::get('/professores/{id}/edit', 'ProfessoresController@edit');
     Router::post('/professores/{id}', 'ProfessoresController@update');
@@ -54,17 +55,18 @@ Router::group([
 
     // Classe
     Router::get('/classes', 'ClasseController@index');
-    Router::get('/classes/create', 'ClasseController@create');
-    Router::get('/classe/show', 'ClasseController@show');
+    Router::get('/classe/create', 'ClasseController@create');
+    Router::get('/classe/show/{id}', 'ClasseController@show');
+    Router::post('/classe', 'ClasseController@store');
     Router::post('/classes', 'ClasseController@store');
     Router::get('/classes/{id}/edit', 'ClasseController@edit');
-    Router::post('/classes/{id}', 'ClasseController@update');
+    Router::post('/classes/{id}/update', 'ClasseController@update');
     Router::post('/classes/{id}/delete', 'ClasseController@destroy');
 
     // Turmas
     Router::get('/turmas', 'TurmaController@index');
     Router::get('/turma/create', 'TurmaController@create');
-    Router::get('/turma/show', 'TurmaController@show');
+    Router::get('/turma/show/{id}', 'TurmaController@show');
     Router::post('/turma', 'TurmaController@store');
     Router::get('/turma/{id}/edit', 'TurmaController@edit');
     Router::post('/turma/{id}', 'TurmaController@update');
@@ -77,11 +79,11 @@ Router::group([
     Router::get('/alunos/{id}/edit', 'AlunosController@edit');
     Router::post('/alunos/{id}', 'AlunosController@update');
     Router::post('/alunos/{id}/delete', 'AlunosController@destroy');
-    Router::get('/aluno/show', 'AlunosController@show');
+    Router::get('/aluno/show/{id}', 'AlunosController@show');
     
     // Encarregado
     Router::get('/encarregados', 'EncarregadoController@index');
-    Router::get('/encarregado/show', 'EncarregadoController@show');
+    Router::get('/encarregado/show/{id}', 'EncarregadoController@show');
     
 
     Router::get('/logout', 'AuthController@logout');

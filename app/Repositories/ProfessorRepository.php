@@ -43,6 +43,57 @@ class ProfessorRepository
     }
 
     /**
+     * Buscar professores com filtros aplicados
+     */
+    public function findFiltered(?string $search = null, ?int $disciplinaId = null, ?int $turmaId = null): array
+    {
+        $sql = "SELECT
+                    p.id,
+                    u.nome_completo AS nome_completo,
+                    u.email,
+                    u.telefone,
+                    p.grau_academico,
+                    p.area_formacao,
+                    p.instituicao_formacao,
+                    p.ano_conclusao,
+                    p.id_usuario,
+                    GROUP_CONCAT(DISTINCT CONCAT(ptd.id_turma, ':', ptd.id_disciplina) SEPARATOR ',') AS turmas_disciplinas
+                FROM professor p
+                INNER JOIN usuarios u ON u.id = p.id_usuario
+                LEFT JOIN professor_turma_disciplina ptd ON ptd.id_professor = p.id";
+
+        $where = [];
+        $params = [];
+
+        if ($search) {
+            $where[] = "(u.nome_completo LIKE :search OR u.email LIKE :search OR u.telefone LIKE :search)";
+            $params['search'] = '%' . $search . '%';
+        }
+
+        if ($disciplinaId) {
+            $where[] = "ptd.id_disciplina = :disciplina_id";
+            $params['disciplina_id'] = $disciplinaId;
+        }
+
+        if ($turmaId) {
+            $where[] = "ptd.id_turma = :turma_id";
+            $params['turma_id'] = $turmaId;
+        }
+
+        if (!empty($where)) {
+            $sql .= " WHERE " . implode(" AND ", $where);
+        }
+
+        $sql .= " GROUP BY p.id, u.nome_completo, u.email, u.telefone, p.grau_academico, p.area_formacao, p.instituicao_formacao, p.ano_conclusao, p.id_usuario
+                  ORDER BY p.id DESC";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute($params);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
      * Criar professor
      */
     public function create(int $usuarioId, array $data): int

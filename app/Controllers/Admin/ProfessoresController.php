@@ -23,7 +23,18 @@ class ProfessoresController extends Controller{
 
     public function index()
     {
-        $professores = $this->professorRepo->getAll();
+        // Obter filtros da query string
+        $search = $_GET['search'] ?? null;
+        $disciplinaId = !empty($_GET['disciplina']) ? (int)$_GET['disciplina'] : null;
+        $turmaId = !empty($_GET['turma']) ? (int)$_GET['turma'] : null;
+
+        // Buscar professores com filtros aplicados
+        if ($search || $disciplinaId || $turmaId) {
+            $professores = $this->professorRepo->findFiltered($search, $disciplinaId, $turmaId);
+        } else {
+            $professores = $this->professorRepo->getAll();
+        }
+
         $turmas = $this->professorRepo->getAllTurmas();
         $disciplinas = $this->professorRepo->getAllDisciplinasGrouped();
 
@@ -39,6 +50,9 @@ class ProfessoresController extends Controller{
             'userName' => $_SESSION['user_nome'] ?? 'Admin',
             'title' => "Professores | Escola Conectada",
             'flashMessages' => Helpers::getFlashMessages(),
+            'search' => $search,
+            'disciplina_id' => $disciplinaId,
+            'turma_id' => $turmaId,
         ]);
     }
 
@@ -95,8 +109,6 @@ class ProfessoresController extends Controller{
 
                 $certificado_pdf = uniqid('cert_', true) . '.' . $ext;
                 $targetPath = $uploadDir . '/' . $certificado_pdf;
-
-            var_dump($uploadDir, $targetPath) ;
 
                 if (!move_uploaded_file($file['tmp_name'], $targetPath)) {
                     Helpers::flashMessage('Erro ao salvar o certificado.', 'error');
@@ -242,6 +254,7 @@ class ProfessoresController extends Controller{
 
                     $professorId = $id;
                     Helpers::flashMessage('Professor "' . $nome_completo . '" atualizado com sucesso!', 'success');
+                    Helpers::logActivity("Professor Atualizado", "Professor '$nome_completo' atualizado.");
                 } else {
                     error_log("Criando novo professor: $nome_completo ($email)");
 
@@ -282,6 +295,7 @@ class ProfessoresController extends Controller{
                     error_log("Professor criado com ID: $professorId");
 
                     Helpers::flashMessage('Professor "' . $nome_completo . '" adicionado com sucesso!', 'success');
+                    Helpers::logActivity("Professor Cadastrado", "Professor '$nome_completo' cadastrado.");
                 }
 
                 if ($professorId) {
@@ -323,6 +337,24 @@ class ProfessoresController extends Controller{
             error_log('Redirecting to /admin/professores');
             Helpers::redirect('/admin/professores');
         }
+    }
+
+    public function show(int $id)
+    {
+        $professor = $this->professorRepo->findById($id);
+
+        if (!$professor) {
+            Helpers::flashMessage('Professor não encontrado.', 'error');
+            Helpers::redirect('/admin/professores');
+            return;
+        }
+
+        echo $this->view('admin/professor_show', [
+            'professor' => $professor,
+            'userName' => $_SESSION['user_nome'] ?? 'Admin',
+            'title' => "Detalhes do Professor | Escola Conectada",
+            'flashMessages' => Helpers::getFlashMessages(),
+        ]);
     }
 
 }

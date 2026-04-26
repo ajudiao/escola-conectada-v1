@@ -1,0 +1,182 @@
+{% extends "layouts/admin.twig" %}
+{% block content %}
+
+        <main class="main-content">
+            <header class="main-header">
+                <div class="header-left"><button class="mobile-toggle">☰</button>
+                    <h1 class="header-title">Detalhes da Classe</h1>
+                </div>
+                <div class="header-right">
+                    <div class="header-user">
+                        <div class="header-user-avatar">AD</div>
+                        <div class="header-user-info"><span class="header-user-name">Administrador</span><span
+                                class="header-user-role">Administração</span></div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="page-content">
+                {% if flashMessages %}
+                  {% for message in flashMessages %}
+                    <div class="alert alert-{{ message.type == 'success' ? 'success' : 'danger' }} alert-dismissible fade show" role="alert">
+                      {{ message.message }}
+                      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                  {% endfor %}
+                {% endif %}
+                <a href="/admin/classes" class="btn-back btn btn-outline-secondary mb-3">← Voltar</a>
+
+                <div class="detail-header">
+                    <h1 class="detail-title">{{ classe.nome }}</h1>
+                    <p class="detail-subtitle">Classe: {{ classe.nome }} • Turmas: {{ turmas|length }} • Alunos: {{ totalAlunos }}</p>
+                </div>
+
+                <h2 class="section-header">Informações da Classe</h2>
+                <div class="info-grid">
+                    <div class="info-item"><span class="info-label">Classe</span>
+                        <div class="info-value">{{ classe.nome }}</div>
+                    </div>
+                    <div class="info-item"><span class="info-label">Nível Educativo</span>
+                        <div class="info-value">Ensino Básico</div>
+                    </div>
+                    <div class="info-item"><span class="info-label">Total de Turmas</span>
+                        <div class="info-value">{{ turmas|length }}</div>
+                    </div>
+                    <div class="info-item"><span class="info-label">Total de Alunos</span>
+                        <div class="info-value">{{ totalAlunos }}</div>
+                    </div>
+                    <div class="info-item"><span class="info-label">Ano Letivo</span>
+                        <div class="info-value">{{ anoLectivo|default('—') }}</div>
+                    </div>
+                </div>
+
+                <h2 class="section-header">Descrição</h2>
+                <div class="info-item mb-3">
+                    <div class="info-value">{{ classe.descricao ?: 'Sem descrição.' }}</div>
+                </div>
+
+                <h2 class="section-header">Disciplinas da Classe</h2>
+                <div class="table-responsive">
+                    <table class="table table-custom">
+                        <thead>
+                            <tr>
+                                <th>Disciplina</th>
+                                <th>Horas/Semana</th>
+                                <th>Professores Responsáveis</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if disciplinas is not empty %}
+                                {% for disciplina in disciplinas %}
+                                    <tr>
+                                        <td>{{ disciplina.nome }}</td>
+                                        <td>—</td>
+                                        <td>—</td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="3">Nenhuma disciplina associada.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2 class="section-header">Turmas Associadas</h2>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th>Identificação</th>
+                                <th>Turno</th>
+                                <th>Sala</th>
+                                <th>Alunos</th>
+                                <th>Ano Letivo</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if turmas is not empty %}
+                                {% for turma in turmas %}
+                                    <tr>
+                                        <td>{{ turma.codigo }}</td>
+                                        <td>{{ turma.turno }}</td>
+                                        <td>{{ turma.sala }}</td>
+                                        <td>{{ turma.quantidade_alunos }}</td>
+                                        <td>{{ turma.ano_lectivo }}</td>
+                                        <td><a href="/admin/turma/show/{{ turma.id }}" class="btn btn-sm btn-outline-info">Ver</a></td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="6">Nenhuma turma associada.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="btnEditClass" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#classModal">Editar Classe</button>
+                    <form method="POST" action="/admin/classes/{{ classe.id }}/delete" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja eliminar esta classe?')">
+                        <button type="submit" class="btn btn-outline-danger">Eliminar Classe</button>
+                    </form>
+                </div>
+
+                <!-- Modal: Editar Classe (reutiliza estrutura) -->
+                <div class="modal fade" id="classModal" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="classModalTitle">Editar Classe</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <form id="formClass" action="/admin/classes/{{ classe.id }}/update" method="POST">
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label class="form-label">Classe</label>
+                                        <select id="classNumero" name="numero" class="form-select form-control">
+                                            <option value="">Selecione a classe</option>
+                                            {% for i in 1..9 %}
+                                                <option value="{{ i }}" {% if classe.nome == i ~ 'ª Classe' %}selected{% endif %}>{{ i }}ª Classe</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Descrição</label>
+                                        <textarea id="classDesc" name="descricao" class="form-control" rows="3" placeholder="Descrição da classe...">{{ classe.descricao }}</textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Disciplinas da Classe</label>
+                                        <div class="row g-2">
+                                            {% for disciplina in allDisciplinas %}
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="disc_item_{{ disciplina.id }}" value="{{ disciplina.id }}" name="disciplinas[]" {% if disciplina.id in selectedDisciplinaIds %}checked{% endif %}>
+                                                    <label class="form-check-label" for="disc_item_{{ disciplina.id }}">{{ disciplina.nome }}</label>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <footer class="main-footer">
+                <p class="mb-0">Escola Conectada &copy; 2026 - Ministério da Educação de Angola</p>
+            </footer>
+        </main>
+    </div>
+
+
+{% endblock %}
