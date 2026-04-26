@@ -138,7 +138,7 @@ class TurmaController extends Controller {
     public function show($id)
     {
         $turma = $this->turmaRepository->findById($id);
-
+        
         if (!$turma) {
             Helpers::flashMessage('Turma não encontrada.', 'error');
             Helpers::redirect('/admin/turmas');

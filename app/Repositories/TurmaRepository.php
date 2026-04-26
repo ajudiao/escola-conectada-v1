@@ -86,12 +86,24 @@ class TurmaRepository
     public function getAlunosByTurma(int $turmaId): array
     {
         $stmt = $this->db->prepare("
-            SELECT a.id, a.n_processo, u.nome_completo, u.email, u.telefone
-            FROM aluno a
-            INNER JOIN usuarios u ON a.id_usuario = u.id
-            WHERE a.id_turma = ?
-            ORDER BY u.nome_completo
+            SELECT 
+                id,
+                nome_completo,
+                email,
+                telefone,
+                n_processo,
+                data_nascimento,
+                sexo,
+                nacionalidade,
+                id_turma,
+                id_encarregado,
+                created_at,
+                updated_at
+            FROM aluno
+            WHERE id_turma = ?
+            ORDER BY nome_completo
         ");
+
         $stmt->execute([$turmaId]);
         return $stmt->fetchAll();
     }
