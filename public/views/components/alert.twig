@@ -1,0 +1,29 @@
+{% if flashMessages is defined and flashMessages is not empty %}
+<div class="alert-container position-fixed top-0 end-0 p-3" style="z-index: 1050; min-width: 300px;">
+    {% for flash in flashMessages %}
+    <div class="alert alert-{{ flash.type == 'error' ? 'danger' : (flash.type == 'warning' ? 'warning' : (flash.type == 'info' ? 'info' : 'success')) }} alert-dismissible fade show shadow" role="alert">
+        <div class="d-flex align-items-center">
+            <i class="bi {{ flash.type == 'success' ? 'bi-check-circle-fill' : (flash.type == 'error' ? 'bi-exclamation-triangle-fill' : (flash.type == 'warning' ? 'bi-exclamation-triangle-fill' : 'bi-info-circle-fill')) }} me-2"></i>
+            <div class="flex-grow-1">
+                <strong>{{ flash.type == 'success' ? 'Sucesso!' : (flash.type == 'error' ? 'Erro!' : (flash.type == 'warning' ? 'Atenção!' : 'Informação!')) }}</strong><br>
+                <span class="alert-message">{{ flash.message }}</span>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+// Auto-ocultar alerts após 5 segundos
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+        const alerts = document.querySelectorAll('.alert-container .alert');
+        alerts.forEach(function(alert) {
+            const bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+        });
+    }, 5000);
+});
+</script>
+{% endif %}

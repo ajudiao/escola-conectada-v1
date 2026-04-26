@@ -8,11 +8,11 @@
       </div>
       <form id="formProfessor" action="/admin/professores" method="POST" enctype="multipart/form-data">
         <div class="modal-body">
-          <input type="hidden" id="profId" name="prof_id" value="">
+          <input type="hidden" id="profId" name="id" value="">
           <input type="hidden" id="perfil" name="perfil" value="professor">
           <div class="mb-3">
             <label class="form-label">Nome Completo</label>
-            <input type="text" id="profNome" name="nome" class="form-control" required>
+            <input type="text" id="profNome" name="nome_completo" class="form-control" required>
           </div>
           <div class="mb-3">
             <label class="form-label">Email</label>
@@ -24,10 +24,12 @@
           </div>
            <div class="mb-3">
             <label class="form-label">Telefone Alternativo</label>
-            <input type="tel" id="profTelefoneAlternativo" name="telefone_alterativo" class="form-control">
+            <input type="tel" id="profTelefoneAlternativo" name="telefone_alternativo" class="form-control">
           </div>
-          <div class="mb-3">
-            <label class="form-label">Senha Inicial</label>
+          <div class="mb-3">            <label class="form-label">Endereço</label>
+            <textarea id="profEndereco" name="endereco" class="form-control" rows="2" placeholder="Rua, número, bairro, cidade..."></textarea>
+          </div>
+          <div class="mb-3">            <label class="form-label">Senha Inicial</label>
             <input type="password" id="profSenha" name="senha" class="form-control" required placeholder="Digite uma senha inicial">
           </div>
           <div class="mb-3">
@@ -37,7 +39,7 @@
               <div class="row g-3 align-items-center mb-3">
                 <div class="col-auto">
                   <div class="form-check mb-0">
-                    <input class="form-check-input turma-checkbox" type="checkbox" id="turma_{{ turma.id }}" value="{{ turma.id }}" name="turmas">
+                    <input class="form-check-input turma-checkbox" type="checkbox" id="turma_{{ turma.id }}" value="{{ turma.id }}" name="turmas[]">
                     <label class="form-check-label" for="turma_{{ turma.id }}">{{ turma.codigo }}</label>
                   </div>
                 </div>
@@ -108,6 +110,15 @@
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const profModalEl = document.getElementById('profModal');
+    const formProfessor = document.getElementById('formProfessor');
+    
+    console.log('Modal loaded, formProfessor:', formProfessor);
+
+    // Listener para submit
+    formProfessor.addEventListener('submit', function (e) {
+      console.log('Form submit fired');
+      // Deixar o submit natural acontecer - não fazer preventDefault
+    });
 
     document.addEventListener('click', function (e) {
       const btn = e.target.closest('.btn-edit');
@@ -143,20 +154,28 @@
 
       const turmaMap = turmas.reduce((map, item) => {
         const parts = item.split(':').map(s => s.trim());
-        const id = parts[0];
-        const disciplina = parts.length > 1 ? parts.slice(1).join(':') : null;
-        if (id) map[id] = disciplina;
+        const turmaId = parts[0];
+        const disciplinaId = parts.length > 1 ? parts.slice(1).join(':') : null;
+        if (!turmaId) return map;
+        if (!map[turmaId]) {
+          map[turmaId] = [];
+        }
+        if (disciplinaId) {
+          map[turmaId].push(disciplinaId);
+        }
         return map;
       }, {});
 
       document.querySelectorAll('.turma-checkbox').forEach(cb => {
         const turmaId = cb.value;
-        const selectedDisciplina = turmaMap[turmaId];
+        const selectedDisciplinas = turmaMap[turmaId] || [];
         const select = document.querySelector(`.turma-disciplina-select[data-turma-id="${turmaId}"]`);
-        cb.checked = selectedDisciplina !== undefined;
+        cb.checked = selectedDisciplinas.length > 0;
         if (select) {
           select.disabled = !cb.checked;
-          select.value = selectedDisciplina || '';
+          Array.from(select.options).forEach(option => {
+            option.selected = selectedDisciplinas.includes(option.value);
+          });
         }
       });
     });
@@ -175,7 +194,9 @@
         const select = document.querySelector(`.turma-disciplina-select[data-turma-id="${turmaId}"]`);
         if (select) {
           select.disabled = !this.checked;
-          if (!this.checked) select.value = '';
+          if (!this.checked) {
+            Array.from(select.options).forEach(option => option.selected = false);
+          }
         }
       });
     });
