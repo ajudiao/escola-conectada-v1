@@ -83,7 +83,10 @@ Router::group([
     
     // Encarregado
     Router::get('/encarregados', 'EncarregadoController@index');
-    Router::get('/encarregado/show/{id}', 'EncarregadoController@show');
+    Router::post('/encarregados', 'EncarregadoController@store');
+    Router::post('/encarregados/{id}', 'EncarregadoController@update');
+    Router::post('/encarregados/{id}/delete', 'EncarregadoController@destroy');
+    Router::get('/encarregados/{id}', 'EncarregadoController@show');
     
 
     Router::get('/logout', 'AuthController@logout');

@@ -40,7 +40,7 @@
             <form method="GET" action="/admin/professores" class="row g-3 align-items-end mb-4">
               <div class="col-md-4">
                 <label class="form-label">Pesquisar</label>
-                <input type="text" class="form-control" name="search" placeholder="Nome, email ou telefone..." value="{{ search is not null ? search : '' }}">
+                <input type="text" id="filterProfessorSearch" class="form-control" name="search" placeholder="Nome, email ou telefone..." value="{{ search is not null ? search : '' }}">
               </div>
               <div class="col-md-3">
                 <label class="form-label">Disciplina</label>
@@ -111,7 +111,7 @@
                               <circle cx="12" cy="12" r="3"/>
                             </svg>
                           </button>
-                          <button type="button" class="btn btn-sm btn-outline-secondary me-1" title="Editar" 
+                          <button type="button" class="btn btn-sm btn-outline-secondary me-1 btn-edit" title="Editar" 
                             data-bs-toggle="modal" data-bs-target="#profModal" 
                             data-id="{{ professor.id }}" 
                             data-nome="{{ professor.nome_completo }}" 
@@ -172,6 +172,45 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
+      // Busca em tempo real
+      document.getElementById('filterProfessorSearch').addEventListener('input', function() {
+        // Debounce para não executar a cada tecla
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => {
+          const searchValue = this.value.trim().toLowerCase();
+
+          document.querySelectorAll('table tbody tr').forEach(tr => {
+            const cols = tr.children;
+            if (cols.length < 8) return;
+
+            const nome = (cols[0]?.textContent || '').toLowerCase();
+            const email = (cols[1]?.textContent || '').toLowerCase();
+            const telefone = (cols[2]?.textContent || '').toLowerCase();
+            const grau = (cols[3]?.textContent || '').toLowerCase();
+            const area = (cols[4]?.textContent || '').toLowerCase();
+            const instituicao = (cols[5]?.textContent || '').toLowerCase();
+            const ano = (cols[6]?.textContent || '').toLowerCase();
+
+            let matches = true;
+
+            // Filtro de pesquisa (nome, email, telefone, grau, área, instituição, ano)
+            if (searchValue) {
+              matches = matches && (
+                nome.includes(searchValue) ||
+                email.includes(searchValue) ||
+                telefone.includes(searchValue) ||
+                grau.includes(searchValue) ||
+                area.includes(searchValue) ||
+                instituicao.includes(searchValue) ||
+                ano.includes(searchValue)
+              );
+            }
+
+            tr.style.display = matches ? '' : 'none';
+          });
+        }, 300);
+      });
+
       // Open edit modal and populate
       document.addEventListener('click', function (e) {
         const btn = e.target.closest('.btn-edit');

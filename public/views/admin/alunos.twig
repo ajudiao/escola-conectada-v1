@@ -15,6 +15,16 @@
       </header>
 
       <div class="page-content">
+        <!-- Flash Messages -->
+        {% if flashMessages %}
+          {% for message in flashMessages %}
+            <div class="alert alert-{{ message.type == 'error' ? 'danger' : message.type }} alert-dismissible fade show" role="alert">
+              {{ message.message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+
         <div class="page-header d-flex justify-content-between align-items-center">
           <div>
             <h2 class="page-title">Gestão de Alunos</h2>
@@ -32,23 +42,27 @@
                 <input id="filterAlunoSearch" type="text" class="form-control" placeholder="Nome ou nº processo">
               </div>
               <div class="col-md-3">
-                <label class="form-label">Curso</label>
-                <select id="filterAlunoCurso" class="form-control form-select">
-                  <option value="">Todos</option>
-                  <option>Informática</option>
-                  <option>Física</option>
+                <label class="form-label">Turma</label>
+                <select id="filterAlunoTurma" class="form-control form-select">
+                  <option value="">Todas</option>
+                  {% for turma in turmas %}
+                  <option value="{{ turma.id }}">{{ turma.codigo }}</option>
+                  {% endfor %}
                 </select>
               </div>
               <div class="col-md-2">
-                <label class="form-label">Ano</label>
-                <select id="filterAlunoAno" class="form-control form-select">
+                <label class="form-label">Sexo</label>
+                <select id="filterAlunoSexo" class="form-control form-select">
                   <option value="">Todos</option>
-                  <option>10ª</option>
-                  <option>11ª</option>
+                  <option value="M">Masculino</option>
+                  <option value="F">Feminino</option>
                 </select>
               </div>
               <div class="col-md-2">
-                <button id="btnFilterAluno" class="btn btn-outline-primary w-100">Filtrar</button>
+                <div class="d-flex gap-2">
+                  <button id="btnFilterAluno" class="btn btn-outline-primary flex-fill">Filtrar</button>
+                  <button id="btnClearFilters" class="btn btn-outline-secondary">Limpar</button>
+                </div>
               </div>
             </div>
           </div>
@@ -62,131 +76,55 @@
                   <tr>
                     <th>Nº Processo</th>
                     <th>Nome</th>
+                    <th>Turma</th>
+                    <th>Encarregado</th>
                     <th>Contacto</th>
                     <th>Ações</th>
                   </tr>
                 </thead>
                 <tbody>
+                  {% for aluno in alunos %}
                   <tr>
-                    <td>2026-001</td>
-                    <td>Ana Pereira</td>
-                    <td>+244 922 000 004</td>
+                    <td>{{ aluno.n_processo }}</td>
+                    <td>{{ aluno.nome_completo }}</td>
                     <td>
-                      <a href="/admin/aluno/show" class="btn btn-sm btn-outline-info me-1">Ver</a>
+                      {% for turma in turmas %}
+                        {% if turma.id == aluno.id_turma %}
+                          {{ turma.codigo }}
+                        {% endif %}
+                      {% endfor %}
+                    </td>
+                    <td>{{ aluno.encarregado_nome }}</td>
+                    <td>{{ aluno.telefone }}</td>
+                    <td>
+                      <a href="/admin/aluno/show/{{ aluno.id }}" class="btn btn-sm btn-outline-info me-1">Ver</a>
                       <button class="btn btn-sm btn-outline-secondary me-1 btn-edit" data-bs-toggle="modal"
-                        data-bs-target="#alunoModal" data-nome="Ana Pereira" data-processo="2026-001"
-                        data-nascimento="2010-05-12" data-sexo="Feminino"
-                        data-email="ana.pereira@escola.med.ao" data-contato="+244 922 000 004"
-                        data-turma="1" data-codigo-encarregado="ENC-001">Editar</button>
-                      <button class="btn btn-sm btn-outline-danger">Eliminar</button>
+                        data-bs-target="#alunoModal"
+                        data-id="{{ aluno.id }}"
+                        data-nome="{{ aluno.nome_completo }}"
+                        data-processo="{{ aluno.n_processo }}"
+                        data-nascimento="{{ aluno.data_nascimento }}"
+                        data-sexo="{{ aluno.sexo }}"
+                        data-nacionalidade="{{ aluno.nacionalidade }}"
+                        data-email="{{ aluno.email }}"
+                        data-telefone="{{ aluno.telefone }}"
+                        data-turma="{{ aluno.id_turma }}"
+                        data-encarregado="{{ aluno.id_encarregado }}">Editar</button>
+                      <form method="POST" action="/admin/alunos/{{ aluno.id }}/delete" style="display: inline;">
+                        <button type="submit" class="btn btn-sm btn-outline-danger"
+                          onclick="return confirm('Tem certeza que deseja eliminar este aluno?')">Eliminar</button>
+                      </form>
                     </td>
                   </tr>
-                  
+                  {% endfor %}
                 </tbody>
               </table>
             </div>
           </div>
         </div>
 
-        <!-- Modal: Adicionar / Editar Aluno -->
-        <div class="modal fade" id="alunoModal" tabindex="-1">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="alunoModalTitle">Novo Aluno</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-              </div>
-              <form id="formAluno" action="processar_aluno.php" method="post">
-                        <div class="modal-body">
-                  <input type="hidden" id="alunoId" name="alunoId" value="">
-
-                  <div class="mb-4 p-3 border rounded bg-light">
-                    <h6 class="mb-3">Dados Pessoais</h6>
-                    <div class="row g-3">
-                      <div class="col-md-6">
-                        <label class="form-label">Nome Completo</label>
-                        <input id="alunoNome" name="alunoNome" class="form-control" required>
-                      </div>
-                      <div class="col-md-6">
-                        <label class="form-label">Nº Processo</label>
-                        <input id="alunoProcesso" name="alunoProcesso" class="form-control" required>
-                      </div>
-                      <div class="col-md-4">
-                        <label class="form-label">Data de Nascimento</label>
-                        <input id="alunoNascimento" name="alunoNascimento" class="form-control" type="date" required>
-                      </div>
-                      <div class="col-md-4">
-                        <label class="form-label">Sexo</label>
-                        <select id="alunoSexo" name="alunoSexo" class="form-select" required>
-                          <option value="">Selecione...</option>
-                          <option value="Masculino">Masculino</option>
-                          <option value="Feminino">Feminino</option>
-                          <option value="Outro">Outro</option>
-                        </select>
-                      </div>
-                      <div class="col-md-4">
-                        <label class="form-label">Nacionalidade</label>
-                        <input id="alunoNacionalidade" name="alunoNacionalidade" class="form-control" type="text" placeholder="Ex: Angolana" required>
-                      </div>
-                      <div class="col-md-6">
-                        <label class="form-label">Email</label>
-                        <input id="alunoEmail" name="alunoEmail" class="form-control" type="email">
-                      </div>
-                      <div class="col-md-6">
-                        <label class="form-label">Telefone/Contacto</label>
-                        <input id="alunoContacto" name="alunoContacto" class="form-control" type="tel" required>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="mb-4 p-3 border rounded bg-light">
-                    <h6 class="mb-3">Turma</h6>
-                    <div class="row g-3">
-                      <div class="col-md-12">
-                        <label class="form-label">Selecione uma Turma</label>
-                        <div class="border rounded p-3">
-                          <div class="form-check">
-                            <input class="form-check-input turma-radio" type="checkbox" id="turma_1" name="alunoTurma" value="1">
-                            <label class="form-check-label" for="turma_1">
-                              <strong>4A</strong> — Manhã — Sala 04
-                            </label>
-                          </div>
-                          <div class="form-check">
-                            <input class="form-check-input turma-radio" type="checkbox" id="turma_2" name="alunoTurma" value="2">
-                            <label class="form-check-label" for="turma_2">
-                              <strong>4B</strong> — Tarde — Sala 12
-                            </label>
-                          </div>
-                          <div class="form-check">
-                            <input class="form-check-input turma-radio" type="checkbox" id="turma_3" name="alunoTurma" value="3">
-                             <label class="form-check-label" for="turma_3">
-                              <strong>4C</strong> — Noite — Sala 15
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="mb-4 p-3 border rounded bg-light">
-                    <h6 class="mb-3">Responsável</h6>
-                    <p class="text-muted small mb-3">⚠️ Certifique-se de que o encarregado já está adicionado no sistema. Utilize o código do encarregado para associá-lo a este aluno.</p>
-                    <div class="row g-3">
-                      <div class="col-md-6">
-                        <label class="form-label">Código do Responsável</label>
-                        <input id="alunoCodigoEncarregado" name="alunoCodigoEncarregado" class="form-control" type="text" placeholder="Ex: ENC-001" required>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-                  <button type="submit" class="btn btn-primary">Guardar</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
+        <!-- Include Modal Component -->
+        {% include 'components/aluno-modal.twig' %}
       </div>
       
       {% include 'components/footer.twig' %}
@@ -198,57 +136,118 @@
       document.addEventListener('click', function (e) {
         const btn = e.target.closest('.btn-edit');
         if (!btn) return;
+
+        const id = btn.getAttribute('data-id') || '';
         const nome = btn.getAttribute('data-nome') || '';
         const processo = btn.getAttribute('data-processo') || '';
         const nascimento = btn.getAttribute('data-nascimento') || '';
         const sexo = btn.getAttribute('data-sexo') || '';
+        const nacionalidade = btn.getAttribute('data-nacionalidade') || '';
         const email = btn.getAttribute('data-email') || '';
-        const contacto = btn.getAttribute('data-contacto') || '';
+        const telefone = btn.getAttribute('data-telefone') || '';
         const turma = btn.getAttribute('data-turma') || '';
-        const codigoEncarregado = btn.getAttribute('data-codigo-encarregado') || '';
+        const encarregado = btn.getAttribute('data-encarregado') || '';
 
         document.getElementById('alunoModalTitle').textContent = 'Editar Aluno';
+        document.getElementById('alunoId').value = id;
         document.getElementById('alunoNome').value = nome;
-        document.getElementById('alunoProcesso').value = processo;
-        document.getElementById('alunoNascimento').value = nascimento;
+        document.getElementById('alunoNProcesso').value = processo;
+        document.getElementById('alunoDataNascimento').value = nascimento;
         document.getElementById('alunoSexo').value = sexo;
+        document.getElementById('alunoNacionalidade').value = nacionalidade;
         document.getElementById('alunoEmail').value = email;
-        document.getElementById('alunoContacto').value = contacto;
-        
-        // Marcar a turma correta
-        document.querySelectorAll('.turma-radio').forEach(cb => cb.checked = false);
-        if (turma) {
-          const turmaCb = document.getElementById('turma_' + turma);
-          if (turmaCb) {
-            turmaCb.checked = true;
-            document.getElementById('turmaCheckboxes').style.display = 'flex';
-          }
-        }
-        
-        document.getElementById('alunoCodigoEncarregado').value = codigoEncarregado;
+        document.getElementById('alunoTelefone').value = telefone;
+        document.getElementById('alunoTurma').value = turma;
+        document.getElementById('alunoEncarregado').value = encarregado;
+
+        // Change form action for update
+        document.getElementById('formAluno').action = '/admin/alunos/update/' + id;
       });
 
       const alunoModalEl = document.getElementById('alunoModal');
       alunoModalEl.addEventListener('hidden.bs.modal', function () {
         document.getElementById('alunoModalTitle').textContent = 'Novo Aluno';
         document.getElementById('formAluno').reset();
-        document.querySelectorAll('.turma-radio').forEach(cb => cb.checked = false);
+        document.getElementById('formAluno').action = '/admin/alunos';
+        document.getElementById('alunoId').value = '';
       });
 
-      // Apenas uma turma pode ser marcada por vez
-      document.querySelectorAll('.turma-radio').forEach(checkbox => {
-        checkbox.addEventListener('change', function () {
-          if (this.checked) {
-            // Desmarcar todos os outros
-            document.querySelectorAll('.turma-radio').forEach(cb => {
-              if (cb !== this) cb.checked = false;
-            });
+      // Botão Filtrar (aplica filtros de dropdown + mantém filtro de texto)
+      document.getElementById('btnFilterAluno').addEventListener('click', function() {
+        const searchValue = document.getElementById('filterAlunoSearch').value.trim().toLowerCase();
+        const turmaValue = document.getElementById('filterAlunoTurma').value;
+        const sexoValue = document.getElementById('filterAlunoSexo').value;
+
+        document.querySelectorAll('table tbody tr').forEach(tr => {
+          const cols = tr.children;
+          if (cols.length < 5) return;
+
+          const nProcesso = (cols[0]?.textContent || '').toLowerCase();
+          const nome = (cols[1]?.textContent || '').toLowerCase();
+
+          // Buscar dados nos data attributes do botão editar
+          const btnEdit = tr.querySelector('.btn-edit');
+          const sexo = btnEdit ? (btnEdit.getAttribute('data-sexo') || '').toLowerCase() : '';
+          const turmaId = btnEdit ? btnEdit.getAttribute('data-turma') : '';
+
+          let matches = true;
+
+          // Filtro de pesquisa (sempre ativo - nome ou nº processo)
+          if (searchValue) {
+            matches = matches && (nProcesso.includes(searchValue) || nome.includes(searchValue));
           }
+
+          // Filtro de turma
+          if (turmaValue) {
+            matches = matches && (turmaId === turmaValue);
+          }
+
+          // Filtro de sexo
+          if (sexoValue) {
+            matches = matches && (sexo === sexoValue.toLowerCase());
+          }
+
+          tr.style.display = matches ? '' : 'none';
         });
       });
 
-      // Submissão do formulário ficará a cargo do backend PHP puro.
-      // O formulário usa action="processar_aluno.php" e method="post" para envio normal.
+      // Botão Limpar Filtros
+      document.getElementById('btnClearFilters').addEventListener('click', function() {
+        document.getElementById('filterAlunoSearch').value = '';
+        document.getElementById('filterAlunoTurma').value = '';
+        document.getElementById('filterAlunoSexo').value = '';
+        // Mostrar todas as linhas
+        document.querySelectorAll('table tbody tr').forEach(tr => {
+          tr.style.display = '';
+        });
+      });
+
+      // Filtros em tempo real (apenas filtro de texto)
+      document.getElementById('filterAlunoSearch').addEventListener('input', function() {
+        // Debounce para não executar a cada tecla
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => {
+          // Aplicar apenas filtro de texto, ignorando dropdowns
+          const searchValue = this.value.trim().toLowerCase();
+
+          document.querySelectorAll('table tbody tr').forEach(tr => {
+            const cols = tr.children;
+            if (cols.length < 5) return;
+
+            const nProcesso = (cols[0]?.textContent || '').toLowerCase();
+            const nome = (cols[1]?.textContent || '').toLowerCase();
+
+            let matches = true;
+
+            // Filtro de pesquisa (nome ou nº processo)
+            if (searchValue) {
+              matches = matches && (nProcesso.includes(searchValue) || nome.includes(searchValue));
+            }
+
+            tr.style.display = matches ? '' : 'none';
+          });
+        }, 300);
+      });
     });
   </script>
 

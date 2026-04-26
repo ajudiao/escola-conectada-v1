@@ -16,255 +16,340 @@
       </header>
 
       <div class="page-content">
-        <a href="professores.html" class="btn-back btn btn-outline-secondary">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="15 18 9 12 15 6" />
-          </svg>
-          Voltar
-        </a>
+        <!-- Flash Messages -->
+        {% if flashMessages %}
+          {% for message in flashMessages %}
+            <div class="alert alert-{{ message.type == 'success' ? 'success' : (message.type == 'warning' ? 'warning' : 'danger') }} alert-dismissible fade show" role="alert">
+              {{ message.message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
 
-        <!-- Header Section -->
-        <div class="detail-header">
-          <h1 class="detail-title">Maria João dos Santos</h1>
-          <p class="detail-subtitle">Docente de Matemática (Ativo)</p>
-        </div>
-
-        <!-- Informações Pessoais -->
-        <h2 class="section-header">Informações Pessoais</h2>
-        <div class="info-grid">
-          <div class="info-item">
-            <span class="info-label">Email</span>
-            <div class="info-value">maria.joao@escola.med.ao</div>
+        <div class="page-header d-flex justify-content-between align-items-center">
+          <div>
+            <h2 class="page-title">Professor: {{ professor.nome_completo }}</h2>
+            <p class="page-subtitle">Informações detalhadas e atribuições</p>
           </div>
-          <div class="info-item">
-            <span class="info-label">Telefone</span>
-            <div class="info-value">+244 923 000 002</div>
-          </div>
-          <div class="info-item">
-            <span class="info-label">Data de Nascimento</span>
-            <div class="info-value">15 de Junho de 1985</div>
-          </div>
-          <div class="info-item">
-            <span class="info-label">Número de ID</span>
-            <div class="info-value">000123456789</div>
-          </div>
-          <div class="info-item">
-            <span class="info-label">Estado Civil</span>
-            <div class="info-value">Casada</div>
-          </div>
-          <div class="info-item">
-            <span class="info-label">Endereço</span>
-            <div class="info-value">Rua da Educação, nº 45, Luanda</div>
+          <div>
+            <a href="/admin/professores" class="btn btn-outline-secondary me-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+              </svg>
+              Voltar
+            </a>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#profModal">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+              </svg>
+              Editar Professor
+            </button>
           </div>
         </div>
 
-        <!-- Informações Académicas -->
-        <h2 class="section-header">Informações Académicas</h2>
-        <div class="info-grid">
-          <div class="info-item">
-            <span class="info-label">Habilitações</span>
-            <div class="info-value">Licenciatura em Matemática</div>
-          </div>
-          <div class="info-item">
-            <span class="info-label">Instituição</span>
-            <div class="info-value">Universidade de Luanda</div>
-          </div>
-          <div class="info-item">
-            <span class="info-label">Data de Admissão</span>
-            <div class="info-value">10 de Janeiro de 2013</div>
-          </div>
-        </div>
-
-        <!-- Disciplinas Lecionadas -->
-        <h2 class="section-header">Disciplinas Lecionadas</h2>
-        <div class="table-responsive-custom">
-          <table class="table table-custom align-middle">
-            <thead>
-              <tr>
-                <th>Disciplina</th>
-                <th>Turma</th>
-                <th>Turno</th>
-                <th>Horas/Semana</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Matemática</strong></td>
-                <td>1A</td>
-                <td>Matutino</td>
-                <td>4</td>
-              </tr>
-              <tr>
-                <td><strong>Matemática</strong></td>
-                <td>8B</td>
-                <td>Vespertino</td>
-                <td>4</td>
-              </tr>
-             
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="action-buttons">
-          <button id="btnEditProfessor" class="btn btn-primary" data-bs-toggle="modal"
-            data-bs-target="#profModal">Editar Professor</button>
-          <button class="btn btn-outline-danger">Eliminar Professor</button>
-        </div>
-
-        <!-- Modal: Adicionar / Editar Professor (reutilizado) -->
-        <div class="modal fade" id="profModal" tabindex="-1">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="profModalTitle">Editar Professor</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <div class="row">
+          <!-- Informações Pessoais -->
+          <div class="col-lg-8">
+            <div class="card mb-4">
+              <div class="card-header">
+                <h5 class="card-title mb-0">Informações Pessoais</h5>
               </div>
-              <form id="formProfessor">
-                <div class="modal-body">
-                  <input type="hidden" id="profId" value="">
-                  <div class="mb-3">
-                    <label class="form-label">Nome Completo</label>
-                    <input type="text" id="profNome" class="form-control" required>
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Email</label>
-                    <input type="email" id="profEmail" class="form-control" required>
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Telefone</label>
-                    <input type="tel" id="profTelefone" class="form-control">
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Disciplinas que Leciona</label>
-                    <div class="border rounded p-3" style="max-height: 200px; overflow-y: auto;">
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="disc_mat" value="Matemática"
-                          name="disciplinas">
-                        <label class="form-check-label" for="disc_mat">Matemática</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="disc_port" value="Português"
-                          name="disciplinas">
-                        <label class="form-check-label" for="disc_port">Português</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="disc_ing" value="Inglês" name="disciplinas">
-                        <label class="form-check-label" for="disc_ing">Inglês</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="disc_fis" value="Física" name="disciplinas">
-                        <label class="form-check-label" for="disc_fis">Física</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="disc_qui" value="Química"
-                          name="disciplinas">
-                        <label class="form-check-label" for="disc_qui">Química</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="disc_bio" value="Biologia"
-                          name="disciplinas">
-                        <label class="form-check-label" for="disc_bio">Biologia</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="disc_hist" value="História"
-                          name="disciplinas">
-                        <label class="form-check-label" for="disc_hist">História</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="disc_geo" value="Geografia"
-                          name="disciplinas">
-                        <label class="form-check-label" for="disc_geo">Geografia</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="disc_info" value="Informática"
-                          name="disciplinas">
-                        <label class="form-check-label" for="disc_info">Informática</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="disc_ed" value="Educação Física"
-                          name="disciplinas">
-                        <label class="form-check-label" for="disc_ed">Educação Física</label>
-                      </div>
-                    </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6">
                     <div class="mb-3">
-                      <label class="form-label">Turmas</label>
-                      <div class="border rounded p-3" style="max-height: 200px; overflow-y: auto;">
-                        <!-- Exemplos estáticos; idealmente carregar via API -->
-                        <div class="form-check">
-                          <input class="form-check-input turma-checkbox" type="checkbox" id="turma_1" value="1"
-                            name="turmas">
-                          <label class="form-check-label" for="turma_1">INFGEST-10AD1 <small class="text-muted">• Turno:
-                              Manhã — Sala: A101</small></label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input turma-checkbox" type="checkbox" id="turma_2" value="2"
-                            name="turmas">
-                          <label class="form-check-label" for="turma_2">Turma B1 <small class="text-muted">• Turno:
-                              Tarde — Sala: B202</small></label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input turma-checkbox" type="checkbox" id="turma_3" value="3"
-                            name="turmas">
-                          <label class="form-check-label" for="turma_3">Turma C1 <small class="text-muted">• Turno:
-                              Noite — Sala: C303</small></label>
-                        </div>
-                      </div>
+                      <label class="form-label fw-bold">Nome Completo</label>
+                      <p class="mb-0">{{ professor.nome_completo }}</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label fw-bold">Email</label>
+                      <p class="mb-0">{{ professor.email }}</p>
                     </div>
                   </div>
                 </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-                  <button type="submit" class="btn btn-primary">Guardar</button>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label fw-bold">Telefone</label>
+                      <p class="mb-0">{{ professor.telefone }}</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label fw-bold">Telefone Alternativo</label>
+                      <p class="mb-0">{{ professor.telefone_alternativo ?: 'Não informado' }}</p>
+                    </div>
+                  </div>
                 </div>
-              </form>
+                <div class="mb-3">
+                  <label class="form-label fw-bold">Endereço</label>
+                  <p class="mb-0">{{ professor.endereco ?: 'Não informado' }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Informações Acadêmicas -->
+            <div class="card mb-4">
+              <div class="card-header">
+                <h5 class="card-title mb-0">Informações Acadêmicas</h5>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label fw-bold">Grau Acadêmico</label>
+                      <p class="mb-0">{{ professor.grau_academico }}</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label fw-bold">Área de Formação</label>
+                      <p class="mb-0">{{ professor.area_formacao }}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label fw-bold">Instituição de Formação</label>
+                      <p class="mb-0">{{ professor.instituicao_formacao }}</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label fw-bold">Ano de Conclusão</label>
+                      <p class="mb-0">{{ professor.ano_conclusao }}</p>
+                    </div>
+                  </div>
+                </div>
+                {% if professor.numero_certificado %}
+                <div class="mb-3">
+                  <label class="form-label fw-bold">Número do Certificado</label>
+                  <p class="mb-0">{{ professor.numero_certificado }}</p>
+                </div>
+                {% endif %}
+                {% if professor.certificado_pdf %}
+                <div class="mb-3">
+                  <label class="form-label fw-bold">Certificado</label>
+                  <p class="mb-0">
+                    <a href="/uploads/certificados/{{ professor.certificado_pdf }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14,2 14,8 20,8"/>
+                      </svg>
+                      Ver Certificado
+                    </a>
+                  </p>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- Atribuições -->
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-title mb-0">Atribuições</h5>
+              </div>
+              <div class="card-body">
+                {% if turmasAgrupadas %}
+                  <div class="table-responsive">
+                    <table class="table table-sm">
+                      <thead>
+                        <tr>
+                          <th>Turma</th>
+                          <th>Classe</th>
+                          <th>Turno</th>
+                          <th>Sala</th>
+                          <th>Disciplinas Lecionadas</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for turmaId, turma in turmasAgrupadas %}
+                          <tr>
+                            <td><strong>{{ turma.codigo }}</strong></td>
+                            <td>{{ turma.classe }}</td>
+                            <td>{{ turma.turno }}</td>
+                            <td>{{ turma.sala }}</td>
+                            <td>
+                              {% for disciplina in turma.disciplinas %}
+                                <span class="badge bg-primary me-1 mb-1">{{ disciplina }}</span>
+                              {% endfor %}
+                            </td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                {% else %}
+                  <div class="text-center py-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                      class="text-muted mb-3">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                      <polyline points="14,2 14,8 20,8"/>
+                      <line x1="16" y1="13" x2="8" y2="13"/>
+                      <line x1="16" y1="17" x2="8" y2="17"/>
+                      <polyline points="10,9 9,9 8,9"/>
+                    </svg>
+                    <p class="text-muted mb-0">Este professor ainda não foi atribuído a nenhuma turma.</p>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <!-- Sidebar com Estatísticas -->
+          <div class="col-lg-4">
+            <div class="card mb-4">
+              <div class="card-header">
+                <h5 class="card-title mb-0">Estatísticas</h5>
+              </div>
+              <div class="card-body">
+                {% if turmasAgrupadas %}
+                  <div class="row text-center">
+                    <div class="col-6">
+                      <div class="stat-card">
+                        <div class="stat-number">{{ turmasAgrupadas|length }}</div>
+                        <div class="stat-label">Turmas</div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="stat-card">
+                        <div class="stat-number">
+                          {% set totalDisciplinas = 0 %}
+                          {% for turmaId, turma in turmasAgrupadas %}
+                            {% set totalDisciplinas = totalDisciplinas + turma.disciplinas|length %}
+                          {% endfor %}
+                          {{ totalDisciplinas }}
+                        </div>
+                        <div class="stat-label">Disciplinas</div>
+                      </div>
+                    </div>
+                  </div>
+                {% else %}
+                  <div class="row text-center">
+                    <div class="col-6">
+                      <div class="stat-card">
+                        <div class="stat-number">0</div>
+                        <div class="stat-label">Turmas</div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="stat-card">
+                        <div class="stat-number">0</div>
+                        <div class="stat-label">Disciplinas</div>
+                      </div>
+                    </div>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-title mb-0">Ações Rápidas</h5>
+              </div>
+              <div class="card-body">
+                <div class="d-grid gap-2">
+                  <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#profModal">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                    </svg>
+                    Editar Professor
+                  </button>
+                  <button type="button" class="btn btn-outline-danger" onclick="confirmarDelecao({{ professor.id }}, '{{ professor.nome_completo | escape('js') }}')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="3 6 5 6 21 6"/>
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                    </svg>
+                    Eliminar Professor
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+
+        {% include 'components/professor-modal.twig' with {'turmas': turmas, 'disciplinas': disciplinas, 'professor': professor} %}
       </div>
 
-      <footer class="main-footer">
-        <p class="mb-0">Escola Conectada &copy; 2026 - Ministério da Educação de Angola</p>
-      </footer>
+      {% include 'components/footer.twig' %}
     </main>
   </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
+      // Preencher modal de edição com dados do professor
+      const editBtn = document.querySelector('[data-bs-target="#profModal"]');
+      if (editBtn) {
+        editBtn.addEventListener('click', function() {
+          // Dados do professor
+          document.getElementById('profId').value = '{{ professor.id }}';
+          document.getElementById('profNome').value = '{{ professor.nome_completo | escape('js') }}';
+          document.getElementById('profEmail').value = '{{ professor.email | escape('js') }}';
+          document.getElementById('profTelefone').value = '{{ professor.telefone | escape('js') }}';
+          document.getElementById('profTelefoneAlternativo').value = '{{ professor.telefone_alternativo | escape('js') }}';
+          document.getElementById('profEndereco').value = '{{ professor.endereco | escape('js') }}';
+          document.getElementById('profGrau').value = '{{ professor.grau_academico | escape('js') }}';
+          document.getElementById('profArea').value = '{{ professor.area_formacao | escape('js') }}';
+          document.getElementById('profInstituicao').value = '{{ professor.instituicao_formacao | escape('js') }}';
+          document.getElementById('profAno').value = '{{ professor.ano_conclusao }}';
+          document.getElementById('profNumeroCertificado').value = '{{ professor.numero_certificado | escape('js') }}';
+
+          // Turmas e disciplinas
+          {% if turmasDisciplinas %}
+            {% for atribuicao in turmasDisciplinas %}
+              // Marcar checkbox da turma
+              const turmaCb = document.querySelector(`input[name="turmas[]"][value="{{ atribuicao.turma_id }}"]`);
+              if (turmaCb) {
+                turmaCb.checked = true;
+                const select = document.querySelector(`select[data-turma-id="{{ atribuicao.turma_id }}"]`);
+                if (select) {
+                  select.disabled = false;
+                  const option = select.querySelector(`option[value="{{ atribuicao.disciplina_id }}"]`);
+                  if (option) option.selected = true;
+                }
+              }
+            {% endfor %}
+          {% endif %}
+
+          document.getElementById('profModalTitle').textContent = 'Editar Professor';
+        });
+      }
+
+      // Reset modal quando fechar
       const profModalEl = document.getElementById('profModal');
-
-      // When modal shown, populate fields from the details page
-      profModalEl.addEventListener('show.bs.modal', function () {
-        const nome = document.querySelector('.detail-title')?.textContent.trim() || '';
-        const email = Array.from(document.querySelectorAll('.info-item')).find(i => i.querySelector('.info-label')?.textContent.trim() === 'Email')?.querySelector('.info-value')?.textContent.trim() || '';
-        const telefone = Array.from(document.querySelectorAll('.info-item')).find(i => i.querySelector('.info-label')?.textContent.trim() === 'Telefone')?.querySelector('.info-value')?.textContent.trim() || '';
-
-        document.getElementById('profModalTitle').textContent = 'Editar Professor';
-        document.getElementById('profNome').value = nome;
-        document.getElementById('profEmail').value = email;
-        document.getElementById('profTelefone').value = telefone;
-
-        // mark disciplines based on the Disciplinas Lecionadas table
-        const disciplinas = Array.from(document.querySelectorAll('.table-custom tbody tr')).map(r => r.children[0]?.textContent.trim()).filter(Boolean).map(s => s.replace(/\n/g, '').trim());
-        document.querySelectorAll('input[name="disciplinas"]').forEach(cb => {
-          cb.checked = disciplinas.some(d => d.toLowerCase().includes(cb.value.toLowerCase()));
+      profModalEl.addEventListener('hidden.bs.modal', function () {
+        document.getElementById('profModalTitle').textContent = 'Novo Professor';
+        document.getElementById('formProfessor').reset();
+        document.querySelectorAll('.turma-disciplina-select').forEach(select => {
+          select.disabled = true;
         });
       });
-
-      // Simple submit stub
-      document.getElementById('formProfessor').addEventListener('submit', function (e) {
-        e.preventDefault();
-        const disciplinas = Array.from(document.querySelectorAll('input[name="disciplinas"]:checked')).map(i => i.value);
-        const data = {
-          nome: document.getElementById('profNome').value,
-          email: document.getElementById('profEmail').value,
-          telefone: document.getElementById('profTelefone').value,
-          disciplinas: disciplinas
-        };
-        console.log('Salvar professor (stub):', data);
-        bootstrap.Modal.getInstance(profModalEl).hide();
-      });
     });
+
+    function confirmarDelecao(professorId, nomeProfessor) {
+      if (confirm(`Tem certeza que deseja eliminar o professor "${nomeProfessor}"? Esta ação não pode ser desfeita.`)) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/admin/professores/${professorId}/delete`;
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = '_method';
+        input.value = 'DELETE';
+        form.appendChild(input);
+        document.body.appendChild(form);
+        form.submit();
+      }
+    }
   </script>
 {% endblock %}

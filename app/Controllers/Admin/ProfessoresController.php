@@ -349,12 +349,62 @@ class ProfessoresController extends Controller{
             return;
         }
 
+        // Buscar turmas e disciplinas do professor
+        $turmasDisciplinas = $this->professorRepo->getTurmasDisciplinasByProfessor($id);
+
+        // Agrupar por turma
+        $turmasAgrupadas = [];
+        foreach ($turmasDisciplinas as $atribuicao) {
+            $turmaId = $atribuicao['turma_id'];
+            if (!isset($turmasAgrupadas[$turmaId])) {
+                $turmasAgrupadas[$turmaId] = [
+                    'codigo' => $atribuicao['turma_codigo'],
+                    'classe' => $atribuicao['classe_nome'],
+                    'turno' => $atribuicao['turno'],
+                    'sala' => $atribuicao['sala'],
+                    'disciplinas' => []
+                ];
+            }
+            $turmasAgrupadas[$turmaId]['disciplinas'][] = $atribuicao['disciplina_nome'];
+        }
+
+        // Buscar todas as turmas e disciplinas para o modal
+        $turmas = $this->professorRepo->getAllTurmas();
+        $disciplinas = $this->professorRepo->getAllDisciplinasGrouped();
+
         echo $this->view('admin/professor_show', [
             'professor' => $professor,
+            'turmasDisciplinas' => $turmasDisciplinas,
+            'turmasAgrupadas' => $turmasAgrupadas,
+            'turmas' => $turmas,
+            'disciplinas' => $disciplinas,
             'userName' => $_SESSION['user_nome'] ?? 'Admin',
             'title' => "Detalhes do Professor | Escola Conectada",
             'flashMessages' => Helpers::getFlashMessages(),
         ]);
+    }
+
+    public function destroy(int $id)
+    {
+        try {
+            $professor = $this->professorRepo->findById($id);
+            if (!$professor) {
+                throw new \Exception('Professor não encontrado.');
+            }
+
+            $this->professorRepo->delete($id);
+            Helpers::flashMessage('Professor "' . $professor['nome_completo'] . '" eliminado com sucesso!', 'success');
+        } catch (\PDOException $e) {
+            if ($e->getCode() == 23000) {
+                Helpers::flashMessage('Não é possível eliminar este professor porque ele possui registros associados.', 'error');
+            } else {
+                Helpers::flashMessage('Erro ao eliminar professor: ' . $e->getMessage(), 'error');
+            }
+        } catch (\Exception $e) {
+            Helpers::flashMessage('Erro ao eliminar professor: ' . $e->getMessage(), 'error');
+        }
+
+        Helpers::redirect('/admin/professores');
     }
 
 }

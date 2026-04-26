@@ -1,0 +1,101 @@
+<!-- Modal: Adicionar / Editar Aluno -->
+<div class="modal fade" id="alunoModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="alunoModalTitle">Novo Aluno</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="formAluno" action="/admin/alunos" method="POST">
+        <div class="modal-body">
+          <div id="alunoFormAlert" class="alert d-none" role="alert"></div>
+          <input type="hidden" id="alunoId" name="id" value="">
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Nome Completo</label>
+                <input id="alunoNome" name="nome_completo" class="form-control" placeholder="Nome completo do aluno" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Número de Processo</label>
+                <input id="alunoNProcesso" name="n_processo" class="form-control" placeholder="Ex: 12345" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Data de Nascimento</label>
+                <input id="alunoDataNascimento" name="data_nascimento" type="date" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Sexo</label>
+                <select id="alunoSexo" name="sexo" class="form-select" required>
+                  <option value="">Selecione o sexo</option>
+                  <option value="M">Masculino</option>
+                  <option value="F">Feminino</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Nacionalidade</label>
+                <input id="alunoNacionalidade" name="nacionalidade" class="form-control" placeholder="Ex: Angolana" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input id="alunoEmail" name="email" type="email" class="form-control" placeholder="email@exemplo.com">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Telefone</label>
+                <input id="alunoTelefone" name="telefone" class="form-control" placeholder="Ex: +244 923 456 789" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Turma</label>
+                <select id="alunoTurma" name="id_turma" class="form-select" required>
+                  <option value="">Selecione uma turma</option>
+                  {% for turma in turmas %}
+                  <option value="{{ turma.id }}">{{ turma.codigo }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Encarregado</label>
+            <select id="alunoEncarregado" name="id_encarregado" class="form-select" required>
+              <option value="">Selecione um encarregado</option>
+              {% for encarregado in encarregados %}
+              <option value="{{ encarregado.id }}">{{ encarregado.nome_completo }} ({{ encarregado.profissao }})</option>
+              {% endfor %}
+            </select>
+            <div class="form-text">Selecione o responsável pelo aluno.</div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

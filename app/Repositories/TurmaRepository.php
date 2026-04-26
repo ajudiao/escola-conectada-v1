@@ -51,7 +51,12 @@ class TurmaRepository
 
     public function findById(int $id)
     {
-        $stmt = $this->db->prepare("SELECT * FROM turma WHERE id = ?");
+        $stmt = $this->db->prepare("
+            SELECT t.*, c.nome AS classe
+            FROM turma t
+            LEFT JOIN classe c ON t.id_classe = c.id
+            WHERE t.id = ?
+        ");
         $stmt->execute([$id]);
         return $stmt->fetch();
     }
@@ -76,5 +81,34 @@ class TurmaRepository
     {
         $stmt = $this->db->prepare("DELETE FROM turma WHERE id = ?");
         return $stmt->execute([$id]);
+    }
+
+    public function getAlunosByTurma(int $turmaId): array
+    {
+        $stmt = $this->db->prepare("
+            SELECT a.id, a.n_processo, u.nome_completo, u.email, u.telefone
+            FROM aluno a
+            INNER JOIN usuarios u ON a.id_usuario = u.id
+            WHERE a.id_turma = ?
+            ORDER BY u.nome_completo
+        ");
+        $stmt->execute([$turmaId]);
+        return $stmt->fetchAll();
+    }
+
+    public function getProfessoresByTurma(int $turmaId): array
+    {
+        $stmt = $this->db->prepare("
+            SELECT DISTINCT p.id, u.nome_completo, GROUP_CONCAT(d.nome SEPARATOR ', ') as disciplinas
+            FROM professor_turma_disciplina ptd
+            INNER JOIN professor p ON ptd.id_professor = p.id
+            INNER JOIN usuarios u ON p.id_usuario = u.id
+            INNER JOIN disciplina d ON ptd.id_disciplina = d.id
+            WHERE ptd.id_turma = ?
+            GROUP BY p.id, u.nome_completo
+            ORDER BY u.nome_completo
+        ");
+        $stmt->execute([$turmaId]);
+        return $stmt->fetchAll();
     }
 }

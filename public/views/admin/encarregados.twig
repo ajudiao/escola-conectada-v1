@@ -15,6 +15,16 @@
       </header>
 
       <div class="page-content">
+        <!-- Flash Messages -->
+        {% if flashMessages %}
+          {% for message in flashMessages %}
+            <div class="alert alert-{{ message.type == 'success' ? 'success' : (message.type == 'warning' ? 'warning' : 'danger') }} alert-dismissible fade show" role="alert">
+              {{ message.message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+
         <div class="page-header d-flex justify-content-between align-items-center">
           <div>
             <h2 class="page-title">Gestão de Encarregados</h2>
@@ -51,78 +61,73 @@
                   </tr>
                 </thead>
                 <tbody id="listaEncarregados">
-                  <tr>
-                    <td>Maria José Santos</td>
-                    <td>+244 912 345 678</td>
-                    <td>maria.santos@email.ao</td>
-                    <td>
-                      <a href="/admin/encarregado/show" class="btn btn-sm btn-outline-info me-1">Ver</a>
-                      <button class="btn btn-sm btn-outline-secondary me-1 btn-edit-enc" data-bs-toggle="modal"
-                        data-bs-target="#encModal" data-id="1" data-nome="Maria José Santos" data-nascimento="1978-05-15"
-                        data-identidade="00123456LA89" data-profissao="Professora" data-endereco="Rua da Paz, 45, Luanda"
-                        data-contacto="+244 912 345 678" data-contacto-alt="+244 913 456 789"
-                        data-email="maria.santos@email.ao" data-relacao="Mãe">Editar</button>
-                      <button class="btn btn-sm btn-outline-danger">Eliminar</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>António Silva</td>
-                    <td>+244 923 111 222</td>
-                    <td>antonio.silva@email.ao</td>
-                    <td>
-                      <a href="encarregado-detalhes.html" class="btn btn-sm btn-outline-info me-1">Ver</a>
-                      <button class="btn btn-sm btn-outline-secondary me-1 btn-edit-enc" data-bs-toggle="modal"
-                        data-bs-target="#encModal" data-id="2" data-nome="António Silva" data-nascimento="1975-08-22"
-                        data-identidade="00234567LA90" data-profissao="Engenheiro" data-endereco="Avenida Angola, 123, Bengo"
-                        data-contacto="+244 923 111 222" data-contacto-alt="+244 924 222 333"
-                        data-email="antonio.silva@email.ao" data-relacao="Pai">Editar</button>
-                      <button class="btn btn-sm btn-outline-danger">Eliminar</button>
-                    </td>
-                  </tr>
+                  {% if encarregados %}
+                    {% for encarregado in encarregados %}
+                      <tr>
+                        <td>{{ encarregado.nome_completo }}</td>
+                        <td>{{ encarregado.telefone }}</td>
+                        <td>{{ encarregado.email }}</td>
+                        <td>
+                          <button type="button" class="btn btn-sm btn-outline-info me-1" title="Ver Detalhes"
+                            onclick="verEncarregado({{ encarregado.id }})">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                              <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                          </button>
+                          <button type="button" class="btn btn-sm btn-outline-secondary me-1 btn-edit-enc" title="Editar"
+                            data-bs-toggle="modal" data-bs-target="#encModal"
+                            data-id="{{ encarregado.id }}"
+                            data-nome="{{ encarregado.nome_completo }}"
+                            data-email="{{ encarregado.email }}"
+                            data-telefone="{{ encarregado.telefone }}"
+                            data-telefone-alternativo="{{ encarregado.telefone_alternativo }}"
+                            data-endereco="{{ encarregado.endereco }}"
+                            data-nascimento="{{ encarregado.data_nascimento }}"
+                            data-identidade="{{ encarregado.n_identidade }}"
+                            data-profissao="{{ encarregado.profissao }}"
+                            data-relacao="{{ encarregado.relacao_educando }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                            </svg>
+                          </button>
+                          <button type="button" class="btn btn-sm btn-outline-danger" title="Eliminar"
+                            onclick="confirmarDelecao({{ encarregado.id }}, '{{ encarregado.nome_completo | escape('js') }}')">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <polyline points="3 6 5 6 21 6"/>
+                              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                            </svg>
+                          </button>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  {% else %}
+                    <tr>
+                      <td colspan="4" class="text-center py-5">
+                        <div class="alert alert-info d-inline-block" role="alert">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="me-2" style="display: inline; vertical-align: text-bottom;">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                          </svg>
+                          Nenhum encarregado registado ainda.
+                        </div>
+                      </td>
+                    </tr>
+                  {% endif %}
                 </tbody>
               </table>
             </div>
           </div>
         </div>
 
-        <!-- Modal: Adicionar / Editar Encarregado -->
-        <div class="modal fade" id="encModal" tabindex="-1">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="encModalTitle">Novo Encarregado</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-              </div>
-              <form id="formEncarregado" action="processar_encarregado.php" method="post">
-                <div class="modal-body">
-                  <input type="hidden" id="encId" name="encId" value="">
-                  <div class="mb-3"><label class="form-label">Nome</label><input id="encNome" name="encNome" class="form-control">
-                  </div>
-                  <div class="row">
-                    <div class="col-md-6 mb-3"><label class="form-label">Data de Nascimento</label><input id="encNascimento" name="encNascimento" type="date" class="form-control"></div>
-                    <div class="col-md-6 mb-3"><label class="form-label">Número de Identidade</label><input id="encIdentidade" name="encIdentidade" class="form-control"></div>
-                  </div>
-                  <div class="mb-3"><label class="form-label">Profissão</label><input id="encProfissao" name="encProfissao" class="form-control">
-                  </div>
-                  <div class="mb-3"><label class="form-label">Endereço</label><input id="encEndereco" name="encEndereco" class="form-control">
-                  </div>
-                  <div class="row">
-                    <div class="col-md-6 mb-3"><label class="form-label">Contacto</label><input id="encContacto" name="encContacto" class="form-control"></div>
-                    <div class="col-md-6 mb-3"><label class="form-label">Número Alternativo</label><input id="encContactoAlt" name="encContactoAlt" class="form-control"></div>
-                  </div>
-                  <div class="mb-3"><label class="form-label">Email</label><input id="encEmail" name="encEmail" class="form-control">
-                  </div>
-                  <div class="mb-3"><label class="form-label">Relação com Educandos</label><input id="encRelacao" name="encRelacao" class="form-control" placeholder="Ex: Mãe, Pai, Avó, Tutor">
-                  </div>
-                  <div class="mb-3"><label class="form-label">Senha Inicial</label><input id="encSenha" name="encSenha" type="password" class="form-control" placeholder="Senha para login inicial"></div>
-                </div>
-                <div class="modal-footer"><button type="button" class="btn btn-outline-secondary"
-                    data-bs-dismiss="modal">Cancelar</button><button type="submit"
-                    class="btn btn-primary">Guardar</button></div>
-              </form>
-            </div>
-          </div>
-        </div>
+        {% include 'components/encarregado-modal.twig' %}
       </div>
 
       {% include 'components/footer.twig' %}
@@ -131,59 +136,63 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      // Edit button population
-      document.addEventListener('click', function (e) {
-        const btn = e.target.closest('.btn-edit-enc');
-        if (!btn) return;
-        const id = btn.getAttribute('data-id') || '';
-        const nome = btn.getAttribute('data-nome') || '';
-        const contacto = btn.getAttribute('data-contacto') || '';
-        const email = btn.getAttribute('data-email') || '';
-        const nascimento = btn.getAttribute('data-nascimento') || '';
-        const identidade = btn.getAttribute('data-identidade') || '';
-        const profissao = btn.getAttribute('data-profissao') || '';
-        const endereco = btn.getAttribute('data-endereco') || '';
-        const contactoAlt = btn.getAttribute('data-contacto-alt') || '';
-        const relacao = btn.getAttribute('data-relacao') || '';
+      // Busca em tempo real
+      document.getElementById('filterEncSearch').addEventListener('input', function() {
+        // Debounce para não executar a cada tecla
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => {
+          const searchValue = this.value.trim().toLowerCase();
 
-        document.getElementById('encModalTitle').textContent = 'Editar Encarregado';
-        document.getElementById('encId').value = id;
-        document.getElementById('encNome').value = nome;
-        document.getElementById('encNascimento').value = nascimento;
-        document.getElementById('encIdentidade').value = identidade;
-        document.getElementById('encProfissao').value = profissao;
-        document.getElementById('encEndereco').value = endereco;
-        document.getElementById('encContacto').value = contacto;
-        document.getElementById('encContactoAlt').value = contactoAlt;
-        document.getElementById('encEmail').value = email;
-        document.getElementById('encRelacao').value = relacao;
-        document.getElementById('encSenha').value = '';
+          document.querySelectorAll('#listaEncarregados tr').forEach(tr => {
+            const cols = tr.children;
+            if (cols.length < 4) return;
+
+            const nome = (cols[0]?.textContent || '').toLowerCase();
+            const contacto = (cols[1]?.textContent || '').toLowerCase();
+            const email = (cols[2]?.textContent || '').toLowerCase();
+
+            let matches = true;
+
+            // Filtro de pesquisa (nome, contacto, email)
+            if (searchValue) {
+              matches = matches && (
+                nome.includes(searchValue) ||
+                contacto.includes(searchValue) ||
+                email.includes(searchValue)
+              );
+            }
+
+            tr.style.display = matches ? '' : 'none';
+          });
+        }, 300);
       });
 
-      const encModalEl = document.getElementById('encModal');
-      encModalEl.addEventListener('hidden.bs.modal', function () {
-        document.getElementById('encModalTitle').textContent = 'Novo Encarregado';
-        document.getElementById('formEncarregado').reset();
-        document.getElementById('encSenha').type = 'password';
-      });
-
-      // Form submit will be handled by PHP
-      // Modal will close after PHP redirect/response
-
-      // Simple filter implementation (client-side)
+      // Botão de filtro (compatibilidade)
       document.getElementById('btnFilterEnc').addEventListener('click', function () {
-        const q = document.getElementById('filterEncSearch').value.toLowerCase().trim();
-        const rows = Array.from(document.querySelectorAll('#listaEncarregados tr'));
-        rows.forEach(r => {
-          const nome = r.children[0].textContent.toLowerCase();
-          const contacto = r.children[1].textContent.toLowerCase();
-          const email = r.children[2].textContent.toLowerCase();
-          let visible = true;
-          if (q && !(nome.includes(q) || contacto.includes(q) || email.includes(q))) visible = false;
-          r.style.display = visible ? '' : 'none';
-        });
+        // A busca em tempo real já filtra automaticamente
       });
     });
+
+    function verEncarregado(id) {
+      window.location.href = '/admin/encarregados/' + id;
+    }
+
+    function confirmarDelecao(id, nome) {
+      if (confirm('Tem certeza que deseja eliminar o encarregado "' + nome + '"?')) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/admin/encarregados/' + id + '/delete';
+
+        const methodField = document.createElement('input');
+        methodField.type = 'hidden';
+        methodField.name = '_method';
+        methodField.value = 'DELETE';
+        form.appendChild(methodField);
+
+        document.body.appendChild(form);
+        form.submit();
+      }
+    }
   </script>
 
 {% endblock %}

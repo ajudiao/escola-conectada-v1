@@ -162,11 +162,24 @@ class ProfessorRepository
     }
 
     /**
-     * Buscar professor por ID
+     * Buscar professor por ID com dados do usuário
      */
     public function findById(int $professorId): ?array
     {
-        $stmt = $this->conn->prepare("SELECT * FROM professor WHERE id = :id LIMIT 1");
+        $sql = "SELECT
+                    p.*,
+                    u.nome_completo,
+                    u.email,
+                    u.telefone,
+                    u.telefone_alternativo,
+                    u.endereco,
+                    u.created_at AS usuario_created_at,
+                    u.updated_at AS usuario_updated_at
+                FROM professor p
+                INNER JOIN usuarios u ON u.id = p.id_usuario
+                WHERE p.id = :id LIMIT 1";
+
+        $stmt = $this->conn->prepare($sql);
         $stmt->execute(['id' => $professorId]);
 
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
@@ -192,12 +205,31 @@ class ProfessorRepository
     }
 
     /**
-     * Deletar atribuições de disciplinas de um professor
+     * Deletar professor e usuário associado
      */
-    public function deleteAssignments(int $professorId): bool
+    public function delete(int $professorId): bool
     {
-        $stmt = $this->conn->prepare("DELETE FROM professor_turma_disciplina WHERE id_professor = :id_professor");
-        return $stmt->execute(['id_professor' => $professorId]);
+        try {
+            // Buscar dados do professor para obter o ID do usuário
+            $professor = $this->findById($professorId);
+            if (!$professor) {
+                return false;
+            }
+
+            // Deletar atribuições primeiro
+            $this->deleteAssignments($professorId);
+
+            // Deletar professor
+            $stmt = $this->conn->prepare("DELETE FROM professor WHERE id = :id");
+            $stmt->execute(['id' => $professorId]);
+
+            // Deletar usuário
+            $usuarioRepo = new \App\Repositories\UsuarioRepository();
+            return $usuarioRepo->delete($professor['id_usuario']);
+
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**
@@ -255,6 +287,35 @@ class ProfessorRepository
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Buscar turmas e disciplinas de um professor específico
+     */
+    public function getTurmasDisciplinasByProfessor(int $professorId): array
+    {
+        $sql = "SELECT 
+                    t.id AS turma_id,
+                    t.codigo AS turma_codigo,
+                    t.sala,
+                    t.turno,
+                    t.ano_lectivo,
+                    c.id AS classe_id,
+                    c.nome AS classe_nome,
+                    d.id AS disciplina_id,
+                    d.nome AS disciplina_nome,
+                    d.descricao AS disciplina_descricao
+                FROM professor_turma_disciplina ptd
+                INNER JOIN turma t ON t.id = ptd.id_turma
+                INNER JOIN classe c ON c.id = t.id_classe
+                INNER JOIN disciplina d ON d.id = ptd.id_disciplina
+                WHERE ptd.id_professor = :professor_id
+                ORDER BY c.id, t.codigo, d.nome";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['professor_id' => $professorId]);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

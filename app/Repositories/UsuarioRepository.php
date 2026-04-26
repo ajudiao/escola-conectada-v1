@@ -31,57 +31,65 @@ class UsuarioRepository
     /**
      * Criar usuário
      */
-    public function create(Usuario $usuario): int
-{
-    $sql = "INSERT INTO usuarios (
-                nome_completo,
-                email,
-                senha,
-                telefone,
-                telefone_alternativo,
-                perfil,
-                foto,
-                endereco,
-                created_at,
-                updated_at
-            ) VALUES (
-                :nome_completo,
-                :email,
-                :senha,
-                :telefone,
-                :telefone_alternativo,
-                :perfil,
-                :foto,
-                :endereco,
-                :created_at,
-                :updated_at
-            )";
+    public function create(array $data): int
+    {
+        $sql = "INSERT INTO usuarios (
+                    nome_completo,
+                    email,
+                    senha,
+                    telefone,
+                    telefone_alternativo,
+                    perfil,
+                    foto,
+                    endereco,
+                    created_at,
+                    updated_at
+                ) VALUES (
+                    :nome_completo,
+                    :email,
+                    :senha,
+                    :telefone,
+                    :telefone_alternativo,
+                    :perfil,
+                    :foto,
+                    :endereco,
+                    :created_at,
+                    :updated_at
+                )";
 
-    $stmt = $this->conn->prepare($sql);
+        $stmt = $this->conn->prepare($sql);
 
-    $stmt->execute([
-        'nome_completo'       => $usuario->nome_completo,
-        'email'               => $usuario->email,
-        'senha'               => $usuario->senha,
-        'telefone'            => $usuario->telefone,
-        'telefone_alternativo' => $usuario->telefone_alternativo,
-        'perfil'              => $usuario->perfil,
-        'foto'                => $usuario->foto,
-        'endereco'            => $usuario->endereco,
-        'created_at'          => $usuario->created_at ?? date('Y-m-d H:i:s'),
-        'updated_at'          => $usuario->updated_at ?? date('Y-m-d H:i:s'),
-    ]);
-    
-    return (int) $this->conn->lastInsertId();
-}
+        $stmt->execute([
+            'nome_completo'       => $data['nome_completo'],
+            'email'               => $data['email'],
+            'senha'               => $data['senha'],
+            'telefone'            => $data['telefone'],
+            'telefone_alternativo' => $data['telefone_alternativo'] ?? '',
+            'perfil'              => $data['perfil'],
+            'foto'                => $data['foto'] ?? null,
+            'endereco'            => $data['endereco'] ?? '',
+            'created_at'          => $data['created_at'] ?? date('Y-m-d H:i:s'),
+            'updated_at'          => $data['updated_at'] ?? date('Y-m-d H:i:s'),
+        ]);
+
+        return (int) $this->conn->lastInsertId();
+    }
 
     /**
      * Verificar duplicidade (email)
      */
-    public function existsByEmail(string $email): bool
+    public function existsByEmail(string $email, int $excludeId = null): bool
     {
-        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM usuarios WHERE email = :email");
-        $stmt->execute(['email' => $email]);
+        $sql = "SELECT COUNT(*) FROM usuarios WHERE email = :email";
+        $params = ['email' => $email];
+
+        if ($excludeId) {
+            $sql .= " AND id != :exclude_id";
+            $params['exclude_id'] = $excludeId;
+        }
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute($params);
 
         return (int)$stmt->fetchColumn() > 0;
     }
@@ -126,7 +134,8 @@ class UsuarioRepository
                     nome_completo = :nome_completo,
                     email = :email,
                     telefone = :telefone,
-                    telefone_alternativo = :telefone_alternativo
+                    telefone_alternativo = :telefone_alternativo,
+                    endereco = :endereco
                 " . (!empty($data['senha']) ? ", senha = :senha" : "") . "
                 WHERE id = :id";
 
@@ -135,7 +144,8 @@ class UsuarioRepository
             'nome_completo' => $data['nome_completo'],
             'email' => $data['email'],
             'telefone' => $data['telefone'],
-            'telefone_alternativo' => $data['telefone_alternativo']
+            'telefone_alternativo' => $data['telefone_alternativo'] ?? '',
+            'endereco' => $data['endereco'] ?? ''
         ];
 
         if (!empty($data['senha'])) {
@@ -146,4 +156,12 @@ class UsuarioRepository
         return $stmt->execute($params);
     }
 
+    /**
+     * Deletar usuário
+     */
+    public function delete(int $id): bool
+    {
+        $stmt = $this->conn->prepare("DELETE FROM usuarios WHERE id = :id");
+        return $stmt->execute(['id' => $id]);
+    }
 }

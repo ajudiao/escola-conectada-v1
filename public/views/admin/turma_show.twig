@@ -1,0 +1,304 @@
+{% extends "layouts/admin.twig" %}
+{% block content %}
+    <main class="main-content">
+      <header class="main-header">
+        <div class="header-left">
+          <button class="mobile-toggle">☰</button>
+          <h1 class="header-title">Detalhes da Turma</h1>
+        </div>
+        <div class="header-right">
+          <div class="header-user">
+            <div class="header-user-avatar">AD</div>
+            <div class="header-user-info"><span class="header-user-name">Administrador</span><span
+                class="header-user-role">Administração</span></div>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-content">
+        <!-- Flash Messages -->
+        {% if flashMessages %}
+          {% for message in flashMessages %}
+            <div class="alert alert-{{ message.type == 'success' ? 'success' : (message.type == 'warning' ? 'warning' : 'danger') }} alert-dismissible fade show" role="alert">
+              {{ message.message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        <div class="page-header d-flex justify-content-between align-items-center">
+          <div>
+            <h2 class="page-title">Turma: {{ turma.codigo }}</h2>
+            <p class="page-subtitle">Informações detalhadas e alunos matriculados</p>
+          </div>
+          <div>
+            <a href="/admin/turmas" class="btn btn-outline-secondary me-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+              </svg>
+              Voltar
+            </a>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#turmaModal">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+              </svg>
+              Editar Turma
+            </button>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- Informações da Turma -->
+          <div class="col-lg-8">
+            <div class="card mb-4">
+              <div class="card-header">
+                <h5 class="card-title mb-0">Informações da Turma</h5>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label fw-bold">Código da Turma</label>
+                      <p class="mb-0">{{ turma.codigo }}</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label fw-bold">Classe</label>
+                      <p class="mb-0">{{ turma.classe ?? 'Não informado' }}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label fw-bold">Turno</label>
+                      <p class="mb-0">{{ turma.turno }}</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label fw-bold">Sala de Aula</label>
+                      <p class="mb-0">{{ turma.sala }}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label fw-bold">Ano Lectivo</label>
+                      <p class="mb-0">{{ turma.ano_lectivo }}</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label fw-bold">Quantidade de Alunos</label>
+                      <p class="mb-0">{{ turma.quantidade_alunos }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Alunos da Turma -->
+            <div class="card mb-4">
+              <div class="card-header">
+                <h5 class="card-title mb-0">Alunos Matriculados</h5>
+              </div>
+              <div class="card-body">
+                {% if alunos and alunos|length > 0 %}
+                  <div class="table-responsive">
+                    <table class="table table-sm">
+                      <thead>
+                        <tr>
+                          <th>Nº</th>
+                          <th>Nome</th>
+                          <th>Nº Processo</th>
+                          <th>Telefone</th>
+                          <th>Email</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for aluno in alunos %}
+                          <tr>
+                            <td>{{ loop.index }}</td>
+                            <td><strong>{{ aluno.nome_completo }}</strong></td>
+                            <td>{{ aluno.n_processo }}</td>
+                            <td>{{ aluno.telefone ?: 'Não informado' }}</td>
+                            <td>{{ aluno.email ?: 'Não informado' }}</td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                {% else %}
+                  <div class="text-center py-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                      class="text-muted mb-3">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                      <polyline points="14,2 14,8 20,8"/>
+                      <line x1="16" y1="13" x2="8" y2="13"/>
+                      <line x1="16" y1="17" x2="8" y2="17"/>
+                      <polyline points="10,9 9,9 8,9"/>
+                    </svg>
+                    <p class="text-muted mb-0">Esta turma ainda não possui alunos matriculados.</p>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- Professores da Turma -->
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-title mb-0">Professores Atribuídos</h5>
+              </div>
+              <div class="card-body">
+                {% if professores and professores|length > 0 %}
+                  <div class="table-responsive">
+                    <table class="table table-sm">
+                      <thead>
+                        <tr>
+                          <th>Nome</th>
+                          <th>Disciplinas Lecionadas</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for professor in professores %}
+                          <tr>
+                            <td><strong>{{ professor.nome_completo }}</strong></td>
+                            <td>
+                              {% for disciplina in professor.disciplinas|split(', ') %}
+                                <span class="badge bg-primary me-1 mb-1">{{ disciplina }}</span>
+                              {% endfor %}
+                            </td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                {% else %}
+                  <div class="text-center py-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                      class="text-muted mb-3">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                      <polyline points="14,2 14,8 20,8"/>
+                      <line x1="16" y1="13" x2="8" y2="13"/>
+                      <line x1="16" y1="17" x2="8" y2="17"/>
+                      <polyline points="10,9 9,9 8,9"/>
+                    </svg>
+                    <p class="text-muted mb-0">Esta turma ainda não possui professores atribuídos.</p>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <!-- Sidebar com Estatísticas -->
+          <div class="col-lg-4">
+            <div class="card mb-4">
+              <div class="card-header">
+                <h5 class="card-title mb-0">Estatísticas</h5>
+              </div>
+              <div class="card-body">
+                <div class="row text-center">
+                  <div class="col-12">
+                    <div class="stat-card">
+                      <div class="stat-number">{{ alunos|length }}</div>
+                      <div class="stat-label">Alunos Matriculados</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row text-center mt-3">
+                  <div class="col-12">
+                    <div class="stat-card">
+                      <div class="stat-number">{{ professores|length }}</div>
+                      <div class="stat-label">Professores Atribuídos</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-title mb-0">Ações Rápidas</h5>
+              </div>
+              <div class="card-body">
+                <div class="d-grid gap-2">
+                  <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#turmaModal">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                    </svg>
+                    Editar Turma
+                  </button>
+                  <button type="button" class="btn btn-outline-danger" onclick="confirmarDelecao({{ turma.id }}, '{{ turma.codigo }}')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="3 6 5 6 21 6"/>
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                    </svg>
+                    Eliminar Turma
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {% include 'components/turma-modal.twig' with {'classes': classes, 'turma': turma} %}
+      </div>
+
+      {% include 'components/footer.twig' %}
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Preencher modal de edição com dados da turma
+      const editBtn = document.querySelector('[data-bs-target="#turmaModal"]');
+      if (editBtn) {
+        editBtn.addEventListener('click', function() {
+          document.getElementById('turmaId').value = '{{ turma.id }}';
+          document.getElementById('turmaCodigo').value = '{{ turma.codigo }}';
+          document.getElementById('turmaClasse').value = '{{ turma.id_classe }}';
+          document.getElementById('turmaSala').value = '{{ turma.sala }}';
+          document.getElementById('turmaTurno').value = '{{ turma.turno }}';
+          document.getElementById('turmaAnoLectivo').value = '{{ turma.ano_lectivo }}';
+          document.getElementById('turmaQuantidadeAlunos').value = '{{ turma.quantidade_alunos }}';
+
+          document.getElementById('turmaModalTitle').textContent = 'Editar Turma';
+        });
+      }
+
+      // Reset modal quando fechar
+      const turmaModalEl = document.getElementById('turmaModal');
+      turmaModalEl.addEventListener('hidden.bs.modal', function () {
+        document.getElementById('turmaModalTitle').textContent = 'Nova Turma';
+        document.getElementById('formTurma').reset();
+      });
+    });
+
+    function confirmarDelecao(turmaId, codigoTurma) {
+      if (confirm(`Tem certeza que deseja eliminar a turma "${codigoTurma}"? Esta ação não pode ser desfeita.`)) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/admin/turmas/${turmaId}/delete`;
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = '_method';
+        input.value = 'DELETE';
+        form.appendChild(input);
+        document.body.appendChild(form);
+        form.submit();
+      }
+    }
+  </script>
+{% endblock %}
+               

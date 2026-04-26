@@ -1,0 +1,114 @@
+<!-- Modal: Adicionar / Editar Encarregado -->
+<div class="modal fade" id="encModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="encModalTitle">Novo Encarregado</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="formEncarregado" action="/admin/encarregados" method="POST" enctype="multipart/form-data">
+        <div class="modal-body">
+          <input type="hidden" id="encId" name="id" value="">
+          <input type="hidden" id="perfil" name="perfil" value="encarregado">
+          <div class="mb-3">
+            <label class="form-label">Nome Completo</label>
+            <input type="text" id="encNome" name="nome_completo" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" id="encEmail" name="email" class="form-control" required>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Telefone</label>
+              <input type="tel" id="encContacto" name="telefone" class="form-control" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Telefone Alternativo</label>
+              <input type="tel" id="encContactoAlt" name="telefone_alternativo" class="form-control">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Endereço</label>
+            <textarea id="encEndereco" name="endereco" class="form-control" rows="2" placeholder="Rua, número, bairro, cidade..."></textarea>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Data de Nascimento</label>
+              <input type="date" id="encNascimento" name="data_nascimento" class="form-control" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Número de Identidade</label>
+              <input type="text" id="encIdentidade" name="n_identidade" class="form-control" required>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Profissão</label>
+              <input type="text" id="encProfissao" name="profissao" class="form-control">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Relação com Educandos</label>
+              <select id="encRelacao" name="relacao_educando" class="form-select" required>
+                <option value="">Selecione uma relação</option>
+                <option value="pai">Pai</option>
+                <option value="mae">Mãe</option>
+                <option value="tio">Tio</option>
+                <option value="avo">Avó</option>
+                <option value="responsavel">Responsável</option>
+                <option value="outro">Outro</option>
+              </select>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Senha Inicial</label>
+            <input type="password" id="encSenha" name="senha" class="form-control" required placeholder="Digite uma senha inicial">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Edit button population
+    document.addEventListener('click', function (e) {
+      const btn = e.target.closest('.btn-edit-enc');
+      if (!btn) return;
+      const id = btn.getAttribute('data-id') || '';
+      const nome = btn.getAttribute('data-nome') || '';
+      const email = btn.getAttribute('data-email') || '';
+      const telefone = btn.getAttribute('data-telefone') || '';
+      const telefoneAlt = btn.getAttribute('data-telefone-alternativo') || '';
+      const endereco = btn.getAttribute('data-endereco') || '';
+      const nascimento = btn.getAttribute('data-nascimento') || '';
+      const identidade = btn.getAttribute('data-identidade') || '';
+      const profissao = btn.getAttribute('data-profissao') || '';
+      const relacao = btn.getAttribute('data-relacao') || '';
+
+      document.getElementById('encModalTitle').textContent = 'Editar Encarregado';
+      document.getElementById('encId').value = id;
+      document.getElementById('encNome').value = nome;
+      document.getElementById('encEmail').value = email;
+      document.getElementById('encContacto').value = telefone;
+      document.getElementById('encContactoAlt').value = telefoneAlt;
+      document.getElementById('encEndereco').value = endereco;
+      document.getElementById('encNascimento').value = nascimento;
+      document.getElementById('encIdentidade').value = identidade;
+      document.getElementById('encProfissao').value = profissao;
+      document.getElementById('encRelacao').value = relacao;
+      document.getElementById('encSenha').value = '';
+    });
+
+    const encModalEl = document.getElementById('encModal');
+    encModalEl.addEventListener('hidden.bs.modal', function () {
+      document.getElementById('encModalTitle').textContent = 'Novo Encarregado';
+      document.getElementById('formEncarregado').reset();
+    });
+  });
+</script>

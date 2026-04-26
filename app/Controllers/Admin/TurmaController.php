@@ -121,6 +121,13 @@ class TurmaController extends Controller {
             $this->turmaRepository->delete($id);
             Helpers::flashMessage('Turma "' . $turma['codigo'] . '" eliminada com sucesso!', 'success');
             Helpers::logActivity('Turma Eliminada', "Turma '{$turma['codigo']}' eliminada.");
+        } catch (\PDOException $e) {
+            if ($e->getCode() == 23000) {
+                Helpers::flashMessage('Não é possível eliminar esta turma porque ela está associada a alunos.', 'error');
+                Helpers::logActivity('Tentativa de Eliminação', "Tentativa falhada de eliminar turma '{$turma['codigo']}' - associada a alunos.");
+            } else {
+                Helpers::flashMessage('Erro ao eliminar turma: ' . $e->getMessage(), 'error');
+            }
         } catch (\Exception $e) {
             Helpers::flashMessage('Erro ao eliminar turma: ' . $e->getMessage(), 'error');
         }
@@ -128,11 +135,33 @@ class TurmaController extends Controller {
         Helpers::redirect('/admin/turmas');
     }
 
-    public function show()
+    public function show($id)
     {
-        echo $this->view('admin/turma-detalhes', [
+        $turma = $this->turmaRepository->findById($id);
+
+        if (!$turma) {
+            Helpers::flashMessage('Turma não encontrada.', 'error');
+            Helpers::redirect('/admin/turmas');
+            return;
+        }
+
+        // Buscar alunos da turma
+        $alunos = $this->turmaRepository->getAlunosByTurma($id);
+
+        // Buscar professores/professores da turma
+        $professores = $this->turmaRepository->getProfessoresByTurma($id);
+
+        // Buscar todas as classes para o modal
+        $classes = $this->classeRepository->findAll();
+
+        echo $this->view('admin/turma_show', [
+            'turma' => $turma,
+            'alunos' => $alunos,
+            'professores' => $professores,
+            'classes' => $classes,
             'userName' => $_SESSION['user_nome'] ?? 'Admin',
-            'title' => "Classe | Escola Conectada",
+            'title' => "Detalhes da Turma | Escola Conectada",
+            'flashMessages' => Helpers::getFlashMessages(),
         ]);
     }
 
